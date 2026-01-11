@@ -1,0 +1,145 @@
+.payment-methods {
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.payment-methods h3 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 22px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.method-header,
+.method-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 0.5fr;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid #ddd;
+}
+
+.method-header {
+  font-weight: bold;
+  color: #555;
+}
+
+.card-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-info img {
+  width: 40px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.icon {
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.edit {
+  color:var(--primary-color);
+  margin: 0px 20px;
+}
+
+.delete {
+  color: #ff6b6b;
+}
+
+.payment-add-btn {
+  margin-top: 20px;
+  background:var(--secondary-color);
+  color: white;
+  padding: 12px 24px;
+  border: 1px solid var(--secondary-color);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.payment-add-btn:hover{
+    background-color: transparent;
+    color: var(--secondary-color);
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: white;
+  border-radius: 8px;
+  width: 600px;
+  padding: 24px;
+  position: relative;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+}
+
+.close {
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.option img {
+  height: 24px;
+}
+
+.input-group {
+  display: flex;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.input-group input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.register-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--secondary-color);
+  color: white;
+  border: 1px solid var(--secondary-color);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.register-btn:hover{
+    background: transparent;
+    color: var(--secondary-color);
+    
+}

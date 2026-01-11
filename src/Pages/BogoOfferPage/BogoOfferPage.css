@@ -1,0 +1,10 @@
+.bogo-offer-page-container {
+  width: 100%;
+  height: fit-content;
+  padding: 0 30px 30px 30px;
+  background: #fefefe;
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease-in-out;
+  margin: auto;
+}

@@ -1,0 +1,114 @@
+/* .category-offer-form-container {
+
+} */
+
+.category-offer-form-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.category-offer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.category-offer-row {
+  display: flex;
+  gap: 16px;
+  /* flex-wrap: wrap; */
+}
+
+.category-offer-row input,
+.category-offer-row select,
+.category-offer-row textarea {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+}
+.category-offer-row textarea::placeholder {
+  color: gray;
+}
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.category-offer-date-time {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.category-offer-date-time label {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.category-offer-date-time input {
+  margin-bottom: 6px;
+}
+
+.category-offer-submit-btn,
+.category-offer-cancel-btn {
+  padding: 12px 20px;
+  background-color: var(--secondary-color);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 100%;
+}
+
+.category-offer-submit-btn:hover {
+  background-color: var(--secondary-color);
+}
+
+.category-offer-input-wrapper {
+  width: 100%;
+}
+.category-offer-input-wrapper input,
+.category-offer-input-wrapper select {
+  width: 100%;
+}
+.category-offer-error {
+  color: red;
+  font-size: 12px;
+}
+
+.category-offer-form-header {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.category-offer-form-header button {
+  width: fit-content;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--secondary-color);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  text-wrap: nowrap;
+  padding: 0.5rem 1rem;
+}
+
+.category-offer-btn-wrapper {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.category-offer-cancel-btn {
+  color: white;
+  background-color: gray;
+}

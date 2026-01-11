@@ -1,0 +1,134 @@
+.admin-add-banner-main-container {
+  /* padding: 20px; */
+  /* background: #1e1e1e; */
+  border-radius: 8px;
+  color: #f1f1f1;
+}
+
+.banner-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.banner-form label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.banner-form input[type="file"],
+.banner-form textarea,
+.banner-form button {
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+  font-size: 14px;
+}
+
+.banner-form textarea {
+  height: 8rem;
+  max-height: 8rem;
+  border: 1px solid #ccc;
+}
+
+.banner-form input[type="file"] {
+  /* background-color: #2c2c2c; */
+  color: #ffffff;
+  border: 1px solid #ccc;
+}
+
+.banner-form button {
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.banner-form button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+.banner-form button:hover:enabled {
+  background-color: #45a049;
+}
+
+.error {
+  color: #ff6b6b;
+  font-size: 13px;
+}
+
+.cropper-wrapper {
+  margin-top: 10px;
+  background-color: #333;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.cropper-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: #000;
+  margin-bottom: 10px;
+}
+
+.crop-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.crop-controls label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.crop-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.crop-buttons button {
+  padding: 6px 12px;
+  background-color: #2196f3;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.crop-buttons button:hover {
+  background-color: #1976d2;
+}
+
+.image-preview img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #555;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.react-select__control {
+  background-color: #2c2c2c;
+  border: none;
+  color: white;
+}
+
+.react-select__multi-value {
+  background-color: #555;
+}
+
+.react-select__menu {
+  background-color: #2c2c2c;
+}
+
+.admin-banner-error-message {
+  color: #ff6b6b;
+  font-size: 13px;
+  margin-top: -10px;
+}

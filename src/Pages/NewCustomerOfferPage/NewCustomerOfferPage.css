@@ -1,0 +1,28 @@
+.new-customer-offer-page-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
+  font-family: sans-serif;
+}
+
+.new-customer-offer-form-header {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.new-customer-offer-form-header button {
+  width: fit-content;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--secondary-color);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  text-wrap: nowrap;
+  padding: 0.5rem 1rem;
+}

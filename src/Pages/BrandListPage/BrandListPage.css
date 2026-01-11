@@ -1,0 +1,50 @@
+.admin-brand-list-main-container{
+    width: 100%;
+    height: 100%;
+}
+.admin-brand-list-logo{
+    width:50px;
+    height: 100%;
+    object-fit: cover;
+}
+.admin-brand-table-user-status{
+    border: none;
+    padding: .3rem .8rem;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+.admin-brand-table-user-status.active{
+    background-color: rgb(15, 214, 45);
+}
+.admin-brand-table-user-status.inactive{
+    background-color: red;
+}
+.admin-brand-list-search{
+    display: flex;
+    justify-content: end;
+    margin: 1rem 0;
+}
+.admin-brand-list-search input{
+    padding: .3rem .8rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+}
+.admin-brand-list-actions{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+.admin-brand-list-actions svg{
+    cursor: pointer;
+}
+.admin-brand-list-actions svg:nth-child(2){
+    color: red;
+}
+.admin-brand-edit-section{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+}

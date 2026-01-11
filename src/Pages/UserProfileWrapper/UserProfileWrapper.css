@@ -1,0 +1,95 @@
+.user-profile-content-wrapper {
+  margin: 50px auto;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.user-profile-content-wrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.user-profile-sidebar {
+  width: 30%;
+}
+
+.orders-table-wrapper {
+  width: 68%;
+  overflow-x: auto;
+}
+.wishlist-section {
+  width: 68%;
+}
+.profile-info-section {
+  width: 68%;
+}
+.address-list-container {
+  width: 68%;
+}
+.payment-methods {
+  width: 68%;
+}
+
+.orders-table-wrapper table.orders-table {
+  min-width: 700px;
+}
+
+.orders-table-wrapper > div {
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 767px) {
+  .user-profile-content-wrapper{
+    margin: 20px auto;
+  }
+  .user-profile-sidebar {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--secondary-color);
+  }
+  .menu-section .section-title{
+    margin: 10px 0px 15px !important;
+  }
+  .Dash-menu-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .Dash-menu-list .Dash-menu-item {
+    width: 48%;
+    border: 1px solid var(--secondary-color);
+  }
+
+  .orders-table-wrapper {
+    width: 100%;
+  }
+
+  .profile-info-section {
+    width: 100%;
+  }
+
+  .address-list-container {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 767px) {
+  .wishlist-section {
+    width: 100%;
+  }
+}
+
+@media(max-width:576px){
+  .Dash-menu-list .Dash-menu-item{
+    width: 100%;
+  }
+  .Dash-menu-list .Dash-menu-item:last-child{
+    margin-bottom: 0;
+  }
+  .profile-form-grid{
+    grid-template-columns:auto;
+    gap: 0px;
+  }
+}

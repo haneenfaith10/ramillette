@@ -1,0 +1,16 @@
+.admin-main-layout-container{
+    width:100% ;
+    height: 100%;
+    display:flex ;
+}
+.admin-main-layout-sidebar{
+    width: 18%;
+    height: 100vh;
+    /* background-color: var(--secondary-color); */
+}
+.admin-main-layout-content{
+    width: 82%;
+    height: 100vh;
+    background-color: transparent;
+    padding:1rem;
+}

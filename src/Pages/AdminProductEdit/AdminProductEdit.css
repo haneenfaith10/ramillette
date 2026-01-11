@@ -1,0 +1,155 @@
+.admin-edit-product-main-container {
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    overflow-y: scroll;
+  }
+  .admin-edit-product-main-container::-webkit-scrollbar {
+    display: none;
+  }
+  .admin-edit-product-container {
+    width: 100%;
+    height: 100%;
+  }
+  .admin-edit-product-form {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+  }
+  .admin-edit-product-form-group {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .admin-edit-product-form-group label{
+    font-size: 14px;
+  }
+  .admin-edit-product-input-wrapper {
+    width: 100%;
+  }
+  .admin-edit-product-input {
+    padding: 0.5rem 0.5rem;
+    border-radius: 5px;
+    width: 100%;
+    border: 1px solid #ccc;
+  }
+  .admin-edit-product-form-group > .admin-edit-product-input-wrapper > textarea {
+    padding: 0.5rem 0.5rem;
+    border-radius: 5px;
+    resize: none;
+    width: 100%;
+    border: 1px solid #ccc;
+  }
+  
+  .admin-edit-product-submit-btn {
+    width: 100%;
+    height: 3rem;
+    background-color: #f0c14b;
+    border-radius: 5px;
+    border: 1px solid #a88734;
+  
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: white;
+  }
+  .admin-edit-product-submit-btn:hover {
+    background-color: #fcf4e0;
+    transition: all 0.3s ease-in-out;
+    color: #f0c14b;
+  }
+  .admin-edit-product-images-preview-container {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .admin-edit-product-images-preview-section {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    gap: 0.5rem;
+  }
+  .admin-edit-product-images-preview {
+    width: 8rem;
+    aspect-ratio: 1/1;
+    /* background-color: red; */
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    position: relative;
+  }
+  .admin-edit-product-images-preview > img {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+  .admin-edit-product-image-delete-btn {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    background-color: rgb(242, 104, 104);
+    color: white;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  .admin-edit-product-input-custom-file {
+    width: 100%;
+    height: 3rem;
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+  }
+  
+  .admin-edit-product-input-custom-file-btn {
+    width: 100%;
+    height: 100%;
+    background-color: #f0c14b;
+    border: 1px solid #a88734;
+    font-size: 1rem;
+    /* font-weight: bold; */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 5px;
+    gap: 0.5rem;
+  }
+  .admin-edit-product-input-custom-file-btn > svg {
+    font-size: 24px;
+  }
+  .custom-file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 100px;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* to remove the arrows in the number input fields  */
+  /* Chrome, Safari, Edge, Opera */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  

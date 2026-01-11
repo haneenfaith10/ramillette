@@ -1,0 +1,118 @@
+.admin-badge-wrapper {
+  padding: 32px;
+  max-width: 1200px;
+  margin: auto;
+  background-color: #f4f6f8;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.admin-badge-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.admin-badge-header h2 {
+  font-size: 32px;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.admin-badge-header p {
+  font-size: 15px;
+  color: #6b7280;
+}
+
+.admin-badge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 28px;
+}
+
+.badge-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+  padding: 24px 16px;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+  position: relative;
+  backdrop-filter: blur(6px);
+  border: 1.5px solid transparent;
+  display: flex;
+  flex-direction: column;
+}
+
+.badge-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  border: 1.5px solid #007bff50;
+}
+
+.badge-icon-wrapper {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f1f5f9;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.badge-card:hover .badge-icon-wrapper {
+  transform: scale(1.05);
+}
+
+.badge-icon {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.badge-label {
+  font-weight: 600;
+  font-size: 15px;
+  color: #111827;
+  margin-top: 6px;
+  display: block;
+}
+
+.badge-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.action-icon {
+  cursor: pointer;
+  font-size: 18px;
+  opacity: 0.8;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.action-icon:hover {
+  transform: scale(1.25);
+  opacity: 1;
+}
+
+.edit-icon {
+  color: #3b82f6;
+}
+
+.delete-icon {
+  color: #ef4444;
+}
+
+.no-badges {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 16px;
+}
+.badge-actions button {
+  border: none;
+  background-color: transparent;
+}

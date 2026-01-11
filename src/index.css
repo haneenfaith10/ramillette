@@ -1,0 +1,318 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* CSS Document © 2024 ProWebPrism */
+
+@import url("https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+::-moz-selection {
+  background: #7b7d7f;
+  color: var(--primary-color);
+  text-shadow: none;
+}
+::selection {
+  background: #7b7d7f;
+  color: var(--primary-color);
+  text-shadow: none;
+}
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video,
+textarea,
+input {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  outline: none;
+  font-family: "Albert Sans", sans-serif;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  color: #000000;
+  background: #ffffff;
+  -webkit-text-size-adjust: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+}
+:root {
+  --primary-color: #4c644c;
+  --secondary-color: #edc862;
+  --global: #000000;
+  overflow: hidden;
+  overflow-y: auto;
+}
+a {
+  text-decoration: none;
+  transition: all 0.25s ease-out 0s;
+  outline: none;
+  box-shadow: none;
+}
+a:hover {
+  text-decoration: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h1 span,
+h2 span,
+h3 span,
+h4 span,
+h5 span,
+h6 span {
+  font-family: "Albert Sans", sans-serif;
+}
+p,
+p span {
+  font-family: "Albert Sans", sans-serif;
+}
+img {
+  border: 0px;
+  max-width: 100%;
+}
+ol,
+ul,
+li {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+* {
+  -webkit-appearance: none;
+}
+::-webkit-input-placeholder {
+  color: #000000;
+}
+::-moz-placeholder {
+  color: #000000;
+}
+:-ms-input-placeholder {
+  color: #000000;
+}
+:-moz-placeholder {
+  color: #000000;
+}
+.wrapper {
+  width: 95%;
+  max-width: 1440px;
+  margin: 0 auto 0;
+  position: relative;
+}
+
+.banner-btn {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  padding: 12px 40px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid var(--primary-color);
+}
+.banner-btn:hover {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.secondry-btn {
+  background-color: var(--secondary-color);
+  color: #ffffff;
+  padding: 12px 40px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid var(--secondary-color);
+  display: inline-block;
+}
+.secondry-btn:hover {
+  background-color: transparent;
+  color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+}
+
+.buy-btn {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 12px 40px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #000000;
+  display: inline-block;
+}
+.buy-btn:hover {
+  background-color: transparent;
+  color: #000000;
+  border: 1px solid #000000;
+}
+
+.error-message {
+  font-size: 14px;
+  color: red;
+  padding-left: 5px;
+}
+
+.app-loader {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff; /* optional: ensures consistent background */
+  animation: fadeUp 0.8s ease-out;
+}
+
+/* Fade-up animation */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.app-loader > img {
+  width: 200px;
+  animation: float 2s ease-in-out infinite; /* optional: subtle floating motion */
+}
+
+/* Optional floating bounce effect for the image */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}

@@ -1,0 +1,175 @@
+.admin-product-list-main-container {
+  width: 100%;
+  height: 100%;
+}
+.admin-product-list-container {
+  width: 100%;
+  height: 100%;
+}
+.admin-product-list-image-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: fit-content;
+  align-items: center;
+}
+.admin-product-list-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+.admin-product-list-action-icons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+.admin-product-list-action-icons-container > svg {
+  cursor: pointer;
+}
+
+.product-active-btn,
+.product-inactive-btn {
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.product-active-btn {
+  background-color: #47d94c;
+}
+.product-inactive-btn {
+  background-color: #db4213;
+}
+.admin-product-rating {
+  display: flex;
+  align-items: center;
+}
+
+.admin-product-list-search-container {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+  margin-bottom: 1rem;
+}
+.admin-product-list-search-container > div {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 0 10px;
+}
+.admin-product-list-search-container input {
+  width: 300px;
+  height: 30px;
+  padding-left: 10px;
+  font-size: 14px;
+}
+.admin-product-list-search-clear {
+  width: fit-content;
+  height: fit-content;
+  border-radius: 50%;
+  background-color: rgba(244, 244, 244, 0.756);
+  display: flex;
+  align-items: center;
+  padding: 1px;
+}
+.admin-product-list-search-clear > svg {
+  cursor: pointer;
+}
+.product-empty-container {
+  width: 100%;
+  height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f1f1f1b6;
+}
+
+/* Container for the control elements */
+.admin-product-list-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px 0;
+  align-items: center;
+  justify-content: flex-start;
+}
+.admin-product-list-controls .search-input-wrapper {
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  padding: 0.4rem 0.4rem .4rem 0.8rem;
+  display: flex;
+  align-items: center;
+}
+.admin-product-list-controls input {
+  border-radius: 8px;
+}
+.admin-product-list-controls input::placeholder {
+  color: gray;
+}
+/* Individual dropdowns */
+.admin-product-list-controls select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.2s ease;
+}
+
+.admin-product-list-controls select:focus {
+  border-color: #007bff;
+}
+
+/* Search input styling */
+.admin-product-list-search-container input[type="text"] {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+  width: 250px;
+  transition: border 0.2s ease;
+}
+
+.admin-product-list-search-container input[type="text"]:focus {
+  border-color: #007bff;
+}
+
+/* Search clear icon */
+.admin-product-list-search-clear {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  cursor: pointer;
+  color: #888;
+}
+
+/* Button for clearing filters */
+.admin-product-list-clear-btn {
+  padding: 8px 14px;
+  background-color: #ccc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.admin-product-list-clear-btn:hover {
+  background-color: #d32f2fa2;
+}

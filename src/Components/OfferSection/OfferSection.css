@@ -1,0 +1,90 @@
+/* Wrapper for the entire section */
+.product-offer-section-wrapper {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-top: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Section Title */
+.product-offer-section-wrapper h2 {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Form container */
+.offer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Grid layout for input fields */
+.offer-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+/* Label styling */
+.offer-form-grid label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #444;
+}
+
+/* Input and select field styling */
+.offer-form-grid input,
+.offer-form-grid select {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.offer-form-grid input:focus,
+.offer-form-grid select:focus {
+  border-color: #edc862;
+}
+
+/* Error message */
+.error {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+/* Submit button */
+.offer-form button {
+  align-self: flex-start;
+  padding: 0.6rem 1.2rem;
+  font-size: .8rem;
+  font-weight: bold;
+  color: white;
+  background-color: #edc862;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.offer-form button:hover {
+  background-color: #d1aa40;
+}
+
+.offer-form button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.offer-section-discount-price::placeholder{
+  color: gray;
+}

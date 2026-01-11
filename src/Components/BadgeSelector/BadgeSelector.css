@@ -1,0 +1,88 @@
+.badge-selector-container {
+  width: 100%;
+  margin: 20px 0;
+  position: relative;
+}
+
+.badge-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.badge-select-box {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arrow {
+  font-size: 12px;
+}
+
+.badge-select-dropdown {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  max-height: 250px;
+  overflow-y: auto;
+  margin-top: 4px;
+}
+
+.badge-option {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.badge-option:hover {
+  background: #f2f2f2;
+}
+
+.badge-option img {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.badge-preview-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.badge-card {
+  display: flex;
+  align-items: center;
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+  padding: 6px 10px;
+  border-radius: 6px;
+  position: relative;
+}
+
+.badge-card img {
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
+}
+
+.remove-btn {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  margin-left: 8px;
+  color: #ff4d4d;
+  cursor: pointer;
+}

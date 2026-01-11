@@ -1,0 +1,139 @@
+.category-wrapper {
+  padding: 32px 16px;
+}
+.category-cards {
+  display: flex;
+  /* grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); */
+  /* gap: 24px; */
+  gap: 2rem;
+
+  padding: 40px 20px;
+  width: 100%;
+  margin: auto;
+  justify-content: center;
+  justify-items: center;
+  flex-wrap: wrap;
+}
+
+.cate-cards {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  max-width: 350px;
+}
+
+.cate-cards::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #0000006a;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cate-cards-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.cate-cards-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+}
+
+/* Border animation effect */
+.cate-cards-image::before,
+.cate-cards-image::after {
+  content: "";
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  bottom: 20px;
+  left: 20px;
+  z-index: 2;
+  transition: all 0.4s ease-out;
+  pointer-events: none;
+}
+
+.cate-cards-image::before {
+  border-top: 2px solid var(--secondary-color);
+  border-bottom: 2px solid var(--secondary-color);
+  transform: scaleX(0);
+}
+
+.cate-cards-image::after {
+  border-left: 2px solid var(--secondary-color);
+  border-right: 2px solid var(--secondary-color);
+  transform: scaleY(0);
+}
+
+.cate-cards-image:hover::before {
+  transform: scaleX(1);
+}
+
+.cate-cards-image:hover::after {
+  transform: scaleY(1);
+}
+
+.cate-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  text-align: center;
+  color: #fff;
+}
+
+.cate-content h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.cate-content .secondry-btn {
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.cate-content .secondry-btn:hover {
+  background-color: #333;
+}
+
+.no-category-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 18px;
+  color: #888;
+  padding: 40px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .cate-content h3 {
+    font-size: 1.5rem;
+  }
+  .cate-content .secondry-btn {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cate-content {
+    width: 100%;
+    padding: 0 16px;
+  }
+}

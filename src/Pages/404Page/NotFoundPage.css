@@ -1,0 +1,85 @@
+/* src/pages/NotFound.css */
+
+.notfound-container {
+  min-height: 100vh;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 24px;
+}
+
+.notfound-box {
+  max-width: 500px;
+  width: 100%;
+}
+
+.notfound-image {
+  width: 100%;
+  max-width: 240px;
+  margin: 0 auto 24px;
+  transform: scale(0.8);
+}
+
+.notfound-title {
+  font-size: 72px;
+  font-weight: 800;
+  color: var(--secondary-color);
+  margin-bottom: 16px;
+}
+
+.notfound-subtitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.notfound-text {
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.notfound-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.btn-outline:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.btn-primary {
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--secondary-color);
+}
+
+.btn-outline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 2px solid var(--secondary-color);
+  color: var(--secondary-color);
+  padding: 10px 20px;
+  border-radius: 9999px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+/* .btn-outline:hover {
+  background-color: #edc862a2;
+} */

@@ -1,0 +1,201 @@
+/* Container */
+.country-config {
+  /* max-width: 900px; */
+  margin: 10px auto;
+  padding: 32px 0;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Heading */
+.country-config h2 {
+  font-size: 28px;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+/* Form */
+.country-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 24px;
+}
+
+.country-form input {
+  flex: 1 1 250px;
+  padding: 10px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border 0.2s;
+}
+
+.country-form input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.submit-btn,
+.cancel-btn {
+  padding: 10px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-btn {
+  width: fit-content;
+  height: fit-content;
+  background-color: #007bff;
+  color: white;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.cancel-btn {
+  width: fit-content;
+  height: fit-content;
+  background-color: #6c757d;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background-color: #5a6268;
+}
+
+/* Table */
+.country-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fefefe;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.country-table th,
+.country-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.country-table th {
+  background-color: #f3f3f3;
+  color: #555;
+  font-weight: 600;
+}
+
+.country-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Action buttons */
+.edit-btn,
+.delete-btn {
+  padding: 6px 12px;
+  margin-right: 6px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: white;
+  font-size: 13px;
+  transition: background-color 0.2s;
+}
+
+.edit-btn {
+  background-color: #28a745;
+}
+
+.edit-btn:hover {
+  background-color: #218838;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.form-error {
+  color: #d93025;
+  font-size: 13px;
+  margin-top: 2px;
+  margin-bottom: 8px;
+}
+
+.no-data-fallback {
+  padding: 16px;
+  text-align: center;
+  font-style: italic;
+  color: #888;
+  background-color: #f9f9f9;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 22px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #4caf50;
+}
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+/* Responsive tweak */
+@media (max-width: 600px) {
+  .country-form {
+    flex-direction: column;
+  }
+
+  .country-form input,
+  .submit-btn,
+  .cancel-btn {
+    width: 100%;
+  }
+}
+.country-table td input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}

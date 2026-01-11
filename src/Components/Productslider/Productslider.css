@@ -1,0 +1,31 @@
+.slider-container {
+  max-width: 500px; /* Adjust based on your design */
+  margin: auto;
+}
+
+.main-slide {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.thumb-slide {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border 0.3s;
+}
+
+.thumb-slide:hover,
+.slick-current .thumb-slide {
+  border: 2px solid black;
+}
+
+.main-slider-sec,
+.thumb-slide-sec {
+  object-fit: cover;
+}

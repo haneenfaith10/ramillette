@@ -1,0 +1,153 @@
+.bogo-offer-form-container {
+  background: #fefefe;
+}
+
+.bogo-offer-form-container h2 {
+  font-weight: bold;
+  margin: 1rem 0;
+  font-size: 20px;
+  color: #222;
+  width: 100%;
+}
+
+.bogo-offer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.bogo-row {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.bogo-row input,
+.bogo-row textarea,
+.bogo-row select {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  transition: border 0.2s ease;
+  width: 100%;
+}
+
+.bogo-row input:focus,
+.bogo-row textarea:focus,
+.bogo-row select:focus {
+  border-color: var(--secondary-color);
+  outline: none;
+}
+.bogo-row input::placeholder,
+.bogo-row textarea::placeholder,
+.bogo-row select::placeholder {
+  color: gray;
+}
+.bogo-row textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.bogo-row label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  /* margin-bottom: 6px; */
+  display: block;
+}
+
+.bogo-row input[type="checkbox"] {
+  appearance: none;
+  width: 5px !important;
+  height: 5px;
+  border: 2px solid #555;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.bogo-row input[type="checkbox"]:checked {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.bogo-row input[type="checkbox"]:checked::after {
+  content: "✔";
+  color: white;
+  font-size: 12px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.bogo-offer-submit-btn,
+.bogo-offer-cancel-btn {
+  align-self: flex-end;
+  padding: 12px 28px;
+  background-color: var(--secondary-color);
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.bogo-offer-submit-btn:hover {
+  background-color: #333; /* fallback if --secondary-color is same */
+}
+
+.bogo-offer-error {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+@media screen and (max-width: 768px) {
+  .bogo-row {
+    flex-direction: column;
+  }
+
+  .bogo-offer-submit-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.bogo-offer-form-header {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.bogo-offer-form-header button {
+  width: fit-content;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--secondary-color);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  text-wrap: nowrap;
+  padding: 0.5rem 1rem;
+}
+.bogo-offer-btn-wrapper{
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.bogo-offer-cancel-btn{
+  color: white;
+  background-color: gray;
+}

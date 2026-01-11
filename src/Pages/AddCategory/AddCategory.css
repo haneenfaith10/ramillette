@@ -1,0 +1,67 @@
+.admin-add-category-main-container {
+  width: 100%;
+  height: 100%;
+}
+.admin-add-category-form {
+  width: 100%;
+  height: fit-content;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.admin-add-category-form-row {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.admin-add-category-form-row label {
+  font-size: 18px;
+}
+.admin-add-category-form-row input {
+  width: 100%;
+  padding: 1rem 1rem;
+  border: 1px solid var(--secondary-color);
+  border-radius: 5px;
+}
+.admin-add-category-form-row input::placeholder {
+  color: gray;
+}
+.admin-add-category-submit-btn-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin-top: 10rem; */
+}
+.admin-add-category-submit-btn-wrapper button {
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  background-color: var(--secondary-color);
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.admin-add-settings-submit-btn-wrapper{
+    margin-top: 1rem !important;
+}
+.admin-add-category-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.admin-add-category-image-preview-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-add-category-image-preview-wrapper img {
+  width: 40%;
+  object-fit: cover;
+}

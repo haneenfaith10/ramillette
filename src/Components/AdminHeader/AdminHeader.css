@@ -1,0 +1,7 @@
+.admin-page-sub-header{
+    background-color: var(--secondary-color);
+    margin-bottom: 2rem;
+    padding: 1rem; 
+    font-size: 20px;
+    font-weight: 600; 
+}
