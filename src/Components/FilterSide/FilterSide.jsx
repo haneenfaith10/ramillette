@@ -244,6 +244,22 @@ export default function FilterSide({
           valueLabelDisplay="off"
           min={actualPriceRange[0]}
           max={actualPriceRange[1]}
+          sx={{
+            color: '#edc862',
+            '& .MuiSlider-track': {
+              backgroundColor: '#edc862',
+              borderColor: '#edc862',
+            },
+            '& .MuiSlider-thumb': {
+              backgroundColor: '#edc862',
+              '&:hover': {
+                backgroundColor: '#d4b04a',
+              },
+            },
+            '& .MuiSlider-rail': {
+              backgroundColor: '#e5e7eb',
+            },
+          }}
         />
         <div className="price-range">
           <span>{selectedCountry.priceLabel}{Math.round(price[0]).toLocaleString()}</span>
@@ -443,6 +459,22 @@ export default function FilterSide({
                         valueLabelDisplay="off"
                         min={actualPriceRange[0]}
                         max={actualPriceRange[1]}
+                        sx={{
+                          color: '#edc862',
+                          '& .MuiSlider-track': {
+                            backgroundColor: '#edc862',
+                            borderColor: '#edc862',
+                          },
+                          '& .MuiSlider-thumb': {
+                            backgroundColor: '#edc862',
+                            '&:hover': {
+                              backgroundColor: '#d4b04a',
+                            },
+                          },
+                          '& .MuiSlider-rail': {
+                            backgroundColor: '#e5e7eb',
+                          },
+                        }}
                       />
                       <div className="price-range">
                         {selectedCountry.priceLabel}{price[0]} – {selectedCountry.priceLabel}{price[1]}+

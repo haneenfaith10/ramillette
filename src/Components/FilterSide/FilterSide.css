@@ -383,13 +383,36 @@
   white-space: nowrap;
 }
 
-.css-xvk2i-MuiSlider-track {
+/* Material-UI Slider styling - using stable class names */
+.filter-section .MuiSlider-root,
+.dropdown-content .MuiSlider-root,
+.mobile-dropdown-wrapper .MuiSlider-root {
+  color: #edc862 !important;
+}
+
+.filter-section .MuiSlider-track,
+.dropdown-content .MuiSlider-track,
+.mobile-dropdown-wrapper .MuiSlider-track {
   background-color: #edc862 !important;
   border-color: #edc862 !important;
 }
 
-.css-1xcmt9q-MuiSlider-thumb {
+.filter-section .MuiSlider-thumb,
+.dropdown-content .MuiSlider-thumb,
+.mobile-dropdown-wrapper .MuiSlider-thumb {
   background-color: #edc862 !important;
+}
+
+.filter-section .MuiSlider-thumb:hover,
+.dropdown-content .MuiSlider-thumb:hover,
+.mobile-dropdown-wrapper .MuiSlider-thumb:hover {
+  background-color: #d4b04a !important;
+}
+
+.filter-section .MuiSlider-rail,
+.dropdown-content .MuiSlider-rail,
+.mobile-dropdown-wrapper .MuiSlider-rail {
+  background-color: #e5e7eb !important;
 }
 
 .mobile-filter-drawer {
