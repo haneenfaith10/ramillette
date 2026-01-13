@@ -220,6 +220,35 @@ table {
   position: relative;
 }
 
+/* Global Container Utility - Reusable across entire website */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  padding: 0 43px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1280px) {
+  /* xl breakpoint */
+  .container {
+    padding: 0 30px;
+  }
+}
+
+@media (max-width: 992px) {
+  /* lg breakpoint */
+  .container {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  /* sm breakpoint */
+  .container {
+    padding: 0 16px;
+  }
+}
+
 .banner-btn {
   background-color: var(--primary-color);
   color: #ffffff;

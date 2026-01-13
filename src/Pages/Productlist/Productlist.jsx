@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import TopHeader from "../../Components/TopHeader/TopHeader";
 import NavBar from "../../Components/NavBar/NavBar";
 import FilterSide from "../../Components/FilterSide/FilterSide";
@@ -16,9 +16,10 @@ import { updateUserWishList } from "../../redux/slices/userSlice";
 import { getAllReviews } from "../../services/ratingApiServices";
 import { useSearchParams } from "react-router-dom";
 import { getDiscountedPrice } from "../../utils/calculation";
-import { Tooltip } from "@mui/material";
-import { TfiLayoutGrid3 } from "react-icons/tfi";
-import { TfiLayoutGrid4 } from "react-icons/tfi";
+import { IoChevronDown } from "react-icons/io5";
+import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
+import { IoClose } from "react-icons/io5";
+import { getActiveCategories } from "../../services/categoryApiServices";
 
 export default function Productlist() {
   const dispatch = useDispatch();
@@ -30,12 +31,35 @@ export default function Productlist() {
   const [actualPriceRange, setActualPriceRange] = useState([0, 100]);
   const [reviews, setReviews] = useState([]);
   const [selectedVariant, setSelectedVariant] = useState("");
-  const [gridCount, setGridCount] = useState("4");
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 1200);
+  const [gridCount, setGridCount] = useState("3");
+  const [categories, setCategories] = useState([]);
+  const [sortBy, setSortBy] = useState("recommended");
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const selectedCountry = useSelector((state) => state?.user?.selectedCountry);
   const query = searchParams.get("query");
   const countryId = searchParams.get("countryId");
 
+  // Close filter on outside click
+  const handleOverlayClick = useCallback((e) => {
+    if (e.target.classList.contains("mobile-filter-overlay")) {
+      setIsMobileFilterOpen(false);
+    }
+  }, []);
+
+  // Prevent body scroll
+  useEffect(() => {
+    if (isMobileFilterOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMobileFilterOpen]);
+
+  // All your existing useEffects (unchanged)
   useEffect(() => {
     (async () => {
       if (user?.id) {
@@ -53,61 +77,103 @@ export default function Productlist() {
     }
   }, [selectedCountry._id, user?.id]);
 
+  useEffect(() => {
+    getActiveCategories(setCategories);
+  }, []);
+
+  // All your existing memos and logic (unchanged)
   const filteredProducts = useMemo(() => {
     const [minPrice, maxPrice] = priceRange;
-
-    // Ensure selectedCountry exists before processing
-    if (!selectedCountry?._id || !Array.isArray(products)) {
-      return [];
-    }
-
+    if (!selectedCountry?._id || !Array.isArray(products)) return [];
     return products
       .map((product) => {
         const variants = product.countryVariants?.[selectedCountry._id] || [];
-
         const filteredVariants = variants.filter((variant) => {
           const basePrice = Number(variant.price);
-
           const discountPercent = Number(product.productDiscount || 0);
           const discountedPrice = getDiscountedPrice(
             basePrice,
             discountPercent
           );
-
           const variantNameMatch =
             !selectedVariant || variant.variantName === selectedVariant;
-
           return (
             discountedPrice >= minPrice &&
             discountedPrice <= maxPrice &&
             variantNameMatch
           );
         });
-
-        // Ensure category is always an array for safe operations
         const safeCategory = Array.isArray(category) ? category : [];
         const matchesCategory =
           safeCategory.length === 0 ||
-          product.productCategory?.some((cat) => safeCategory.includes(cat._id));
-
-        if (filteredVariants.length === 0 || !matchesCategory) {
-          return null;
-        }
-        return {
-          ...product,
-          filteredVariants,
-        };
+          product.productCategory?.some((cat) =>
+            safeCategory.includes(cat._id)
+          );
+        if (filteredVariants.length === 0 || !matchesCategory) return null;
+        return { ...product, filteredVariants };
       })
       .filter(Boolean);
   }, [priceRange, products, category, selectedCountry._id, selectedVariant]);
 
-  // !
+  const sortedProducts = useMemo(() => {
+    if (!filteredProducts || filteredProducts.length === 0) return [];
+    const sorted = [...filteredProducts];
+    switch (sortBy) {
+      case "priceLow":
+        return sorted.sort((a, b) => {
+          const variantsA = a.filteredVariants || [];
+          const variantsB = b.filteredVariants || [];
+          if (variantsA.length === 0 || variantsB.length === 0) return 0;
+          const basePriceA = Math.min(
+            ...variantsA.map((v) => Number(v.price) || 0)
+          );
+          const basePriceB = Math.min(
+            ...variantsB.map((v) => Number(v.price) || 0)
+          );
+          const discountA = Number(a.productDiscount || 0);
+          const discountB = Number(b.productDiscount || 0);
+          const priceA = getDiscountedPrice(basePriceA, discountA);
+          const priceB = getDiscountedPrice(basePriceB, discountB);
+          return priceA - priceB;
+        });
+      case "priceHigh":
+        return sorted.sort((a, b) => {
+          const variantsA = a.filteredVariants || [];
+          const variantsB = b.filteredVariants || [];
+          if (variantsA.length === 0 || variantsB.length === 0) return 0;
+          const basePriceA = Math.min(
+            ...variantsA.map((v) => Number(v.price) || 0)
+          );
+          const basePriceB = Math.min(
+            ...variantsB.map((v) => Number(v.price) || 0)
+          );
+          const discountA = Number(a.productDiscount || 0);
+          const discountB = Number(b.productDiscount || 0);
+          const priceA = getDiscountedPrice(basePriceA, discountA);
+          const priceB = getDiscountedPrice(basePriceB, discountB);
+          return priceB - priceA;
+        });
+      case "nameAsc":
+        return sorted.sort((a, b) =>
+          a.productName
+            ?.toLowerCase()
+            .localeCompare(b.productName?.toLowerCase() || "")
+        );
+      case "nameDesc":
+        return sorted.sort((a, b) =>
+          b.productName
+            ?.toLowerCase()
+            .localeCompare(a.productName?.toLowerCase() || "")
+        );
+      default:
+        return sorted;
+    }
+  }, [filteredProducts, sortBy]);
 
   const discountedPriceRange = useMemo(() => {
     const discountedPrices = products
       .flatMap((product) => {
         const variants = product.countryVariants?.[selectedCountry._id] || [];
-
         return variants.map((variant) => {
           const basePrice = Number(variant.price);
           const discountPercent = Number(product.productDiscount || 0);
@@ -115,14 +181,8 @@ export default function Productlist() {
         });
       })
       .filter((price) => !isNaN(price));
-
-    if (discountedPrices.length === 0) {
-      return [0, 1000];
-    }
-
-    const min = Math.min(...discountedPrices);
-    const max = Math.max(...discountedPrices);
-    return [min, max];
+    if (discountedPrices.length === 0) return [0, 1000];
+    return [Math.min(...discountedPrices), Math.max(...discountedPrices)];
   }, [products, selectedCountry._id]);
 
   useEffect(() => {
@@ -138,9 +198,8 @@ export default function Productlist() {
 
   useEffect(() => {
     if (!query && !countryId) {
-      if (selectedCountry?._id) {
+      if (selectedCountry?._id)
         getAllProductsForUser(setProducts, selectedCountry?._id);
-      }
     } else {
       getSearchResult(query, countryId, setProducts);
     }
@@ -148,33 +207,15 @@ export default function Productlist() {
 
   const allVariants = useMemo(() => {
     const variantsSet = new Set();
-
     products.forEach((product) => {
       const variants = product.countryVariants?.[selectedCountry._id] || [];
-      variants.forEach((variant) => {
-        if (variant?.variantName) {
-          variantsSet.add(variant.variantName);
-        }
-      });
+      variants.forEach(
+        (variant) =>
+          variant?.variantName && variantsSet.add(variant.variantName)
+      );
     });
-
     return Array.from(variantsSet);
   }, [products, selectedCountry._id]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      const desktop = window.innerWidth > 1200;
-      setIsDesktop(desktop);
-
-      // ✅ If switching to non-desktop and current grid is 4 → change to 3
-      if (!desktop && gridCount === "4") {
-        setGridCount("3");
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [gridCount]);
 
   return (
     <div className="product-list-main-wrapper">
@@ -182,9 +223,58 @@ export default function Productlist() {
         <TopHeader />
         <NavBar />
         <div className="product-list-page">
-          <div className="wrapper">
+          <div className="container">
+            {/* MOBILE FILTER OVERLAY */}
+            {isMobileFilterOpen && (
+              <div
+                className="mobile-filter-overlay show"
+                onClick={handleOverlayClick}
+              />
+            )}
+
             <div className="product-list-page-wrap">
-              <div className="product-left">
+              {/* FILTER SIDEBAR - HIDDEN ON MOBILE BY DEFAULT */}
+              <div
+                className={`product-left ${
+                  isMobileFilterOpen ? "mobile-open" : ""
+                }`}
+              >
+                {isMobileFilterOpen && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "24px",
+                      paddingBottom: "16px",
+                      borderBottom: "1px solid #e5e7eb",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        margin: 0,
+                        fontSize: "20px",
+                        fontWeight: 600,
+                        color: "#292524",
+                      }}
+                    >
+                      Filters
+                    </h3>
+                    <button
+                      onClick={() => setIsMobileFilterOpen(false)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        fontSize: "24px",
+                        cursor: "pointer",
+                        padding: "4px 8px",
+                        color: "#525252",
+                      }}
+                    >
+                      <IoClose />
+                    </button>
+                  </div>
+                )}
                 <FilterSide
                   price={priceRange}
                   setPrice={setPriceRange}
@@ -194,25 +284,222 @@ export default function Productlist() {
                   variants={allVariants}
                   setSelectedVariant={setSelectedVariant}
                   selectedVariant={selectedVariant}
+                  onCloseMobileFilter={() => setIsMobileFilterOpen(false)}
                 />
               </div>
+
               <div className="product-right">
-                <div className="product-list-cards">
-                  {filteredProducts && filteredProducts.length > 0 ? (
-                    filteredProducts.map((product) => {
-                      return (
-                        <div
-                          className={`product-list-post-card ${
-                            gridCount === "4" && "four-grid"
-                          } ${gridCount === "3" && "three-grid"}`}
-                          key={product._id}
-                        >
-                          <Productolistproductcard product={product} />
+                <div className="product-list-header">
+                  <div className="product-list-header-left">
+                    <h1 className="product-list-title">Products</h1>
+                    <p className="product-list-count">
+                      <span className="product-count-number">
+                        {sortedProducts.length}
+                      </span>
+                      <span className="product-count-text">
+                        {" "}
+                        Products found
+                      </span>
+                    </p>
+                  </div>
+                  {/* MOBILE FILTER BUTTON */}
+                  <button
+                    className="mobile-filter-toggle"
+                    onClick={() => setIsMobileFilterOpen(true)}
+                  >
+                    <HiOutlineAdjustmentsHorizontal size={16} />
+                    <span>Filters</span>
+                  </button>
+                  {/* DESKTOP SORT - Inside header */}
+                  <div className="product-list-sort desktop-sort">
+                    <span className="sort-label">Sort by:</span>
+                    <div className="sort-dropdown-wrapper">
+                      <button
+                        className="sort-dropdown-button"
+                        onClick={() =>
+                          setIsSortDropdownOpen(!isSortDropdownOpen)
+                        }
+                        onBlur={() =>
+                          setTimeout(() => setIsSortDropdownOpen(false), 200)
+                        }
+                      >
+                        <span className="sort-selected-value">
+                          {sortBy === "recommended" && "Recommended"}
+                          {sortBy === "priceLow" && "Price: Low to High"}
+                          {sortBy === "priceHigh" && "Price: High to Low"}
+                          {sortBy === "nameAsc" && "Name: A to Z"}
+                          {sortBy === "nameDesc" && "Name: Z to A"}
+                        </span>
+                        <IoChevronDown
+                          className={`sort-arrow-icon ${
+                            isSortDropdownOpen ? "open" : ""
+                          }`}
+                        />
+                      </button>
+                      {isSortDropdownOpen && (
+                        <div className="sort-dropdown-menu">
+                          <button
+                            className={`sort-option ${
+                              sortBy === "recommended" ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              setSortBy("recommended");
+                              setIsSortDropdownOpen(false);
+                            }}
+                          >
+                            Recommended
+                          </button>
+                          <button
+                            className={`sort-option ${
+                              sortBy === "priceLow" ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              setSortBy("priceLow");
+                              setIsSortDropdownOpen(false);
+                            }}
+                          >
+                            Price: Low to High
+                          </button>
+                          <button
+                            className={`sort-option ${
+                              sortBy === "priceHigh" ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              setSortBy("priceHigh");
+                              setIsSortDropdownOpen(false);
+                            }}
+                          >
+                            Price: High to Low
+                          </button>
+                          <button
+                            className={`sort-option ${
+                              sortBy === "nameAsc" ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              setSortBy("nameAsc");
+                              setIsSortDropdownOpen(false);
+                            }}
+                          >
+                            Name: A to Z
+                          </button>
+                          <button
+                            className={`sort-option ${
+                              sortBy === "nameDesc" ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              setSortBy("nameDesc");
+                              setIsSortDropdownOpen(false);
+                            }}
+                          >
+                            Name: Z to A
+                          </button>
                         </div>
-                      );
-                    })
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* MOBILE SORT - Outside header */}
+                <div className="product-list-sort mobile-sort">
+                  <span className="sort-label">Sort by:</span>
+                  <div className="sort-dropdown-wrapper">
+                    <button
+                      className="sort-dropdown-button"
+                      onClick={() =>
+                        setIsSortDropdownOpen(!isSortDropdownOpen)
+                      }
+                      onBlur={() =>
+                        setTimeout(() => setIsSortDropdownOpen(false), 200)
+                      }
+                    >
+                      <span className="sort-selected-value">
+                        {sortBy === "recommended" && "Recommended"}
+                        {sortBy === "priceLow" && "Price: Low to High"}
+                        {sortBy === "priceHigh" && "Price: High to Low"}
+                        {sortBy === "nameAsc" && "Name: A to Z"}
+                        {sortBy === "nameDesc" && "Name: Z to A"}
+                      </span>
+                      <IoChevronDown
+                        className={`sort-arrow-icon ${
+                          isSortDropdownOpen ? "open" : ""
+                        }`}
+                      />
+                    </button>
+                    {isSortDropdownOpen && (
+                      <div className="sort-dropdown-menu">
+                        <button
+                          className={`sort-option ${
+                            sortBy === "recommended" ? "active" : ""
+                          }`}
+                          onClick={() => {
+                            setSortBy("recommended");
+                            setIsSortDropdownOpen(false);
+                          }}
+                        >
+                          Recommended
+                        </button>
+                        <button
+                          className={`sort-option ${
+                            sortBy === "priceLow" ? "active" : ""
+                          }`}
+                          onClick={() => {
+                            setSortBy("priceLow");
+                            setIsSortDropdownOpen(false);
+                          }}
+                        >
+                          Price: Low to High
+                        </button>
+                        <button
+                          className={`sort-option ${
+                            sortBy === "priceHigh" ? "active" : ""
+                          }`}
+                          onClick={() => {
+                            setSortBy("priceHigh");
+                            setIsSortDropdownOpen(false);
+                          }}
+                        >
+                          Price: High to Low
+                        </button>
+                        <button
+                          className={`sort-option ${
+                            sortBy === "nameAsc" ? "active" : ""
+                          }`}
+                          onClick={() => {
+                            setSortBy("nameAsc");
+                            setIsSortDropdownOpen(false);
+                          }}
+                        >
+                          Name: A to Z
+                        </button>
+                        <button
+                          className={`sort-option ${
+                            sortBy === "nameDesc" ? "active" : ""
+                          }`}
+                          onClick={() => {
+                            setSortBy("nameDesc");
+                            setIsSortDropdownOpen(false);
+                          }}
+                        >
+                          Name: Z to A
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="product-list-cards">
+                  {sortedProducts.length > 0 ? (
+                    sortedProducts.map((product) => (
+                      <div
+                        className={`product-list-post-card ${
+                          gridCount === "4" && "four-grid"
+                        } ${gridCount === "3" && "three-grid"}`}
+                        key={product._id}
+                      >
+                        <Productolistproductcard product={product} />
+                      </div>
+                    ))
                   ) : (
-                    // need to implement no product found page
                     <div className="product-list-empty-product-fallback">
                       <p>No products available</p>
                     </div>

@@ -403,6 +403,7 @@ export default function Checkout() {
     <div className="checkout-cart-content">
       {/* 🔥 MOBILE VERSION - Only visible on mobile */}
       <div className="mobile-checkout-wrapper">
+        <div className="container">
         {/* Sticky Price Summary */}
         <div className="checkout-sticky-summary">
           <button
@@ -757,11 +758,13 @@ export default function Checkout() {
             </button>
           </div>
         )}
+        </div>
       </div>
 
       {/* 💻 DESKTOP VERSION - Only visible on desktop (992px+) */}
       <div className="desktop-checkout-wrapper">
-        <div className="checkout-cart-items-container">
+        <div className="container">
+          <div className="checkout-cart-items-container">
       {cartItems.length > 0 ? (
         cartItems.map((item) => {
           const variants = item.productVariants || [];
@@ -1047,10 +1050,10 @@ export default function Checkout() {
           <p>No cart items available</p>
         </div>
       )}
-        </div>
+          </div>
 
-      {/*  Subtotal & Note Section */}
-      <div className="checkout-cart-summary">
+          {/*  Subtotal & Note Section */}
+          <div className="checkout-cart-summary">
         <div className="checkout-price-details-card">
           <div className="checkout-price-details-section">
             <div className="price-details-header">
@@ -1124,7 +1127,8 @@ export default function Checkout() {
             </button>
           )}
         </div>
-      </div>
+        </div>
+        </div>
       </div>
     </div>
   );

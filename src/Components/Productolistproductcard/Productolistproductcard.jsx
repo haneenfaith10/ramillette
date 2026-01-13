@@ -1,4 +1,3 @@
-import Slider from "react-slick";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import "./Productolistproductcard.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -28,17 +27,6 @@ export default function Productolistproductcard(Props) {
     }
   }, []);
   const userCart = useSelector((state) => state.user.user?.cart?.items);
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 300,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false,
-    autoplay: true,
-    autoplaySpeed: 2000,
-  };
 
   // function to add item in wishlist
   async function addPRoductToWishlist() {
@@ -119,22 +107,23 @@ export default function Productolistproductcard(Props) {
   const discountPercent = Number(product.productDiscount || 0);
   const discountedPrice = getDiscountedPrice(basePrice, discountPercent);
 
+  // Check if product is bestseller (you can adjust this logic based on your data)
+  const isBestseller = product?.isBestseller || product?.bestseller || false;
+
   return (
     <div className="product-list-card">
       <div className="image-wrapper">
+        {isBestseller && (
+          <div className="bestseller-badge">Bestseller</div>
+        )}
         <Link to={`/${selectedCountry.code}/product-inner/${product._id}`}>
-          <Slider {...settings}>
-            {product &&
-              Object.keys(product).length > 0 &&
-              product?.productImages.map((img, i) => (
-                <img
-                  key={i}
-                  src={`${import.meta.env.VITE_BASE_URL}/${img.path || img}`}
-                  alt={`product-${i}`}
-                  className="product-image"
-                />
-              ))}
-          </Slider>
+          {product?.productImages && product.productImages.length > 0 && (
+            <img
+              src={`${import.meta.env.VITE_BASE_URL}/${product.productImages[0].path || product.productImages[0]}`}
+              alt={product?.productName || "Product"}
+              className="product-image"
+            />
+          )}
         </Link>
         <button
           className="wishlist-btn"
@@ -158,13 +147,19 @@ export default function Productolistproductcard(Props) {
         <div className="product-price">
           <span className="price">
             {selectedCountry.priceLabel}
-            {discountedPrice}
+            {discountedPrice.toLocaleString()}
           </span>
-          <span className="original-price">
-            {selectedCountry.priceLabel}
-            {basePrice}
-          </span>
-          <span className="discount">({discountPercent}% OFF)</span>
+          {discountPercent > 0 && (
+            <>
+              <span className="original-price">
+                {selectedCountry.priceLabel}
+                {basePrice.toLocaleString()}
+              </span>
+              <span className="discount">
+                ({discountPercent}% OFF)
+              </span>
+            </>
+          )}
         </div>
         <div>
           {isInCart() ? (
