@@ -138,7 +138,8 @@ body {
   font-smoothing: antialiased;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 :root {
   --primary-color: #4c644c;

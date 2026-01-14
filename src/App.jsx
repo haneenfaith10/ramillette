@@ -21,7 +21,8 @@ function App() {
     const fetchUserLocation = async () => {
       try {
         const response = await axios.get(
-          `https://ipinfo.io/json?token=${import.meta.env.VITE_LOCATION_KEY}`
+          `https://ipinfo.io/json?token=${import.meta.env.VITE_LOCATION_KEY}`,
+          { timeout: 5000 }
         );
         const data = response.data;
         const { country: userCountryCode } = data;
@@ -39,7 +40,7 @@ function App() {
             if (matchedCountry) {
               dispatch(setSelectedCountry(matchedCountry));
             } else {
-              const primaryCountry = countries.find(
+              const primaryCountry = res.payload.find(
                 (country) => country.isPrimary === true
               );
 
@@ -47,13 +48,33 @@ function App() {
                 dispatch(setSelectedCountry(primaryCountry));
               } else {
                 console.warn("No primary country found, using first available");
-                dispatch(setSelectedCountry(countries[0]));
+                dispatch(setSelectedCountry(res.payload[0]));
               }
             }
           }
         });
       } catch (error) {
         console.error("Failed to fetch IP location", error);
+        // Fallback: try to get countries without location
+        try {
+          const res = await dispatch(fetchCountries());
+          if (
+            res.meta.requestStatus === "fulfilled" &&
+            res.payload.length > 0 &&
+            !selectedCountry.code
+          ) {
+            const primaryCountry = res.payload.find(
+              (country) => country.isPrimary === true
+            );
+            if (primaryCountry) {
+              dispatch(setSelectedCountry(primaryCountry));
+            } else {
+              dispatch(setSelectedCountry(res.payload[0]));
+            }
+          }
+        } catch (fallbackError) {
+          console.error("Failed to fetch countries", fallbackError);
+        }
       } finally {
         setTimeout(() => {
           setLoading(false);
