@@ -40,9 +40,9 @@ export default function ProductInner() {
 
   useEffect(() => {
     if (product._id) {
-      getRelatedProduct(product._id, setRelatedProducts,selectedCountry._id);
+      getRelatedProduct(product._id, setRelatedProducts, selectedCountry._id);
     }
-  }, [product._id,selectedCountry._id]);
+  }, [product._id, selectedCountry._id]);
 
   useEffect(() => {
     const userReviews = reviews.find((review) => review.user._id === userId);
@@ -54,95 +54,102 @@ export default function ProductInner() {
       <div className="product-inner-page">
         <TopHeader />
         <NavBar />
-        <div className="product-inner-wrap">
-          <div className="wrapper">
-            <div className="product-inner-sec">
-              <ProductInnerproduct
-                product={product}
-                setChanged={setChanged}
-                userReviews={userReviews}
-                reviews={reviews}
-              />
+        <div className="container">
+          <div className="product-inner-wrap">
+            <div className="">
+              <div className="product-inner-sec">
+                <ProductInnerproduct
+                  product={product}
+                  setChanged={setChanged}
+                  userReviews={userReviews}
+                  reviews={reviews}
+                />
+              </div>
             </div>
           </div>
-        </div>
-
-
-        {/* <div className="testimonial-sec">
+          {/* <div className="testimonial-sec">
           <div className="wrapper">
             <Testimonial reviews={reviews} />
           </div>
         </div> */}
-        {reviews && reviews.length > 0 && (
-          <div className="review-content">
-            <div className="wrapper">
-              <div className="review-content-wrapp-sec">
-                <div className="review-content-header">
-                  <h2>Reviews</h2>
-                </div>
-                <div className="review-content-wrapper">
-                  {reviews && reviews.length > 0 && (
-                    <>
-                      {(showAllReviews ? reviews : reviews.slice(0, 3)).map(
-                        (review, index) => (
-                          <div key={index}>
-                            <div className="review-header">
-                              <div className="author-profile">
-                                <div className="author-head">
-                                  <div className="author-image">
-                                    <img
-                                      src={`${import.meta.env.VITE_BASE_URL}/${review.user.userImage}`}
-                                      alt=""
-                                      onError={(e) =>
-                                        (e.currentTarget.src = reviewauthor)
-                                      }
-                                    />
-                                  </div>
-                                  <div className="author-name">
-                                    <div className="author-rating">
-                                      <Rating
-                                        name="read-only"
-                                        value={review.rating || 1}
-                                        sx={{ fontSize: "40px" }}
-                                        precision={0.5}
-                                        readOnly
+          {reviews && reviews.length > 0 && (
+            <div className="review-content">
+              <div className="wrapper">
+                <div className="review-content-wrapp-sec">
+                  <div className="review-content-header">
+                    <h2>Reviews</h2>
+                  </div>
+                  <div className="review-content-wrapper">
+                    {reviews && reviews.length > 0 && (
+                      <>
+                        {(showAllReviews ? reviews : reviews.slice(0, 3)).map(
+                          (review, index) => (
+                            <div key={index}>
+                              <div className="review-header">
+                                <div className="author-profile">
+                                  <div className="author-head">
+                                    <div className="author-image">
+                                      <img
+                                        src={`${
+                                          import.meta.env.VITE_BASE_URL
+                                        }/${review.user.userImage}`}
+                                        alt=""
+                                        onError={(e) =>
+                                          (e.currentTarget.src = reviewauthor)
+                                        }
                                       />
                                     </div>
-                                    <h2>
-                                      {`${review.user.firstName} ${review.user.lastName}`}
-                                    </h2>
-                                    <div className="author-para">
-                                      <p>{review.content || ""}</p>
+                                    <div className="author-name">
+                                      <div className="author-rating">
+                                        <Rating
+                                          name="read-only"
+                                          value={review.rating || 1}
+                                          sx={{ fontSize: "40px" }}
+                                          precision={0.5}
+                                          readOnly
+                                        />
+                                      </div>
+                                      <h2>
+                                        {`${review.user.firstName} ${review.user.lastName}`}
+                                      </h2>
+                                      <div className="author-para">
+                                        <p>{review.content || ""}</p>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        )
-                      )}
+                          )
+                        )}
 
-                      {/* View more / View less button */}
-                      {reviews.length > 3 && (
-                        <div style={{ textAlign: "center", marginTop: "1rem" }}>
-                          <button
-                            type="button"
-                            className="view-more-reviews-btn"
-                            onClick={() => setShowAllReviews((s) => !s)}
+                        {/* View more / View less button */}
+                        {reviews.length > 3 && (
+                          <div
+                            style={{ textAlign: "center", marginTop: "1rem" }}
                           >
-                            {showAllReviews ? "View less" : `View more (${reviews.length - 3})`}
-                          </button>
-                        </div>
-                      )}
-                    </>
-                  )}
+                            <button
+                              type="button"
+                              className="view-more-reviews-btn"
+                              onClick={() => setShowAllReviews((s) => !s)}
+                            >
+                              {showAllReviews
+                                ? "View less"
+                                : `View more (${reviews.length - 3})`}
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}  {relatedProducts && relatedProducts.length > 0 && (
-          <RelatedProducts relatedProducts={relatedProducts} />
-        )}
+          )}{" "}
+          {relatedProducts && relatedProducts.length > 0 && (
+            <RelatedProducts relatedProducts={relatedProducts} />
+          )}
+        </div>
 
         <div className="footer-sec">
           <div className="wrapper">

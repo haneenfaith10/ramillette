@@ -35,8 +35,16 @@ function CustomRelatedProductCard({ product }) {
       <div className="related-product-info">
         <h3 className="related-title">{product.productName}</h3>
         <div className="related-price">
-          <span className="discounted-price">₹{discountedPrice}</span>
-          {discount > 0 && <span className="original-price">₹{basePrice}</span>}
+          <span className="discounted-price">
+            {selectedCountry?.priceLabel || "₹"}
+            {discountedPrice.toFixed(2)}
+          </span>
+          {discount > 0 && (
+            <span className="original-price">
+              {selectedCountry?.priceLabel || "₹"}
+              {basePrice.toFixed(2)}
+            </span>
+          )}
         </div>
       </div>
     </Link>
@@ -49,29 +57,29 @@ export default function RelatedProducts({ relatedProducts }) {
     dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: 5,
+    slidesToShow: 4,
     slidesToScroll: 1,
     centerMode: false,
     centerPadding: "0px",
     responsive: [
       {
-        breakpoint: 1269,
+        breakpoint: 1400,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 3,
           centerMode: false,
           centerPadding: "0px",
         },
       },
       {
-        breakpoint: 890,
+        breakpoint: 991,
         settings: {
-          slidesToShow:3,
+          slidesToShow: 3,
           centerMode: false,
           centerPadding: "0px",
         },
       },
       {
-        breakpoint: 679,
+        breakpoint: 767,
         settings: {
           slidesToShow: 2,
           centerMode: false,
@@ -93,7 +101,7 @@ export default function RelatedProducts({ relatedProducts }) {
 
   return (
     <div className="related-products-slider">
-      <div className="wrapper">
+      <div className="">
         <div className="related-product-wrap">
           <h2>
             Related Products

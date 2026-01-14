@@ -14,31 +14,34 @@ import { postRating } from "../../services/ratingApiServices";
 import * as Yup from "yup";
 import { FaHeart } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa6";
+import { IoShareOutline } from "react-icons/io5";
 import {
   addToWishlist,
   removeFromWishlist,
 } from "../../services/wishlistApiServices";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode, Navigation, Thumbs } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
-import "swiper/css/thumbs";
 
 // Accordion component
-const Accordion = ({ title, children, defaultOpen = false }) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+const Accordion = ({ title, children, defaultOpen = false, isOpen, onToggle, id }) => {
+  const handleToggle = () => {
+    if (onToggle) {
+      onToggle(id);
+    }
+  };
+
+  const openState = isOpen !== undefined ? isOpen : defaultOpen;
 
   return (
-    <div className={`accordion ${isOpen ? "open" : ""}`}>
-      <div className="accordion-header" onClick={() => setIsOpen(!isOpen)}>
+    <div className={`accordion ${openState ? "open" : ""}`}>
+      <div className="accordion-header" onClick={handleToggle}>
         <h4>{title}</h4>
-        <span>{isOpen ? "−" : "+"}</span>
+        <span className="accordion-icon">{openState ? "−" : "+"}</span>
       </div>
-      {isOpen && (
+      {openState && (
         <div className="accordion-body">
           {typeof children === "function"
-            ? children(() => setIsOpen(false))
+            ? children(() => {
+                if (onToggle) onToggle(null);
+              })
             : children}
         </div>
       )}
@@ -47,8 +50,6 @@ const Accordion = ({ title, children, defaultOpen = false }) => {
 };
 
 export default function ProductInner(Props) {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  const [landscapeThumbs, setLandscapeThumbs] = useState(null);
   const { product = {}, setChanged = () => {}, reviews } = Props;
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.user?.user?.cart);
@@ -57,24 +58,12 @@ export default function ProductInner(Props) {
   }, [cart]);
   const [quantity, setQuantity] = useState(0);
   const [readMore, setReadMore] = useState(false);
+  const [openAccordion, setOpenAccordion] = useState("KEY BENEFITS"); // Default open accordion
   const selectedCountry = useSelector((state) => state.user.selectedCountry);
   const token = localStorage.getItem("remilletteTkn");
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
   const [validOffers, setValidOffers] = useState();
-
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
-
-  useEffect(() => {
-    function handleResize() {
-      setIsMobile(window.innerWidth <= 767);
-    }
-
-    window.addEventListener("resize", handleResize);
-
-    // cleanup on unmount
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   useEffect(() => {
     const filterValidOffers = () => {
@@ -128,6 +117,11 @@ export default function ProductInner(Props) {
 
   // toggle to show and hide the complete description
   const toggleShowFull = () => setReadMore((prev) => !prev);
+
+  // Handle accordion toggle - only one open at a time
+  const handleAccordionToggle = (accordionId) => {
+    setOpenAccordion((prev) => (prev === accordionId ? null : accordionId));
+  };
 
   // function to add product in the cart
   async function addProductToCart() {
@@ -243,147 +237,155 @@ export default function ProductInner(Props) {
     }
   }
 
-  const portraitImages =
-    product?.productImages?.filter((img) => img.orientation === "portrait") ||
-    [];
-  const landscapeImages =
-    product?.productImages?.filter((img) => img.orientation === "landscape") ||
-    [];
+  const galleryImages = product?.productImages || [];
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
+  const [isZooming, setIsZooming] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+
+  // Calculate average rating from reviews or use productRating
+  const averageRating = useMemo(() => {
+    if (reviews && reviews.length > 0) {
+      const sum = reviews.reduce(
+        (acc, review) => acc + (review.rating || 0),
+        0
+      );
+      return parseFloat((sum / reviews.length).toFixed(1));
+    }
+    // Use productRating if available, otherwise default to 0
+    const productRating = product?.productRating;
+    if (
+      productRating !== null &&
+      productRating !== undefined &&
+      productRating !== ""
+    ) {
+      return parseFloat(productRating) || 0;
+    }
+    return 0;
+  }, [reviews, product?.productRating]);
+
+  const ratingCount = reviews && reviews.length ? reviews.length : 0;
+
+  // Calculate unit price and total price based on quantity
+  const unitPrice = useMemo(() => {
+    const basePrice = product?.productPrice || 0;
+    const discount = product?.productDiscount || 0;
+    return getDiscountedPrice(basePrice, discount);
+  }, [product?.productPrice, product?.productDiscount]);
+
+  const totalPrice = useMemo(() => {
+    return quantity > 0 ? unitPrice * quantity : unitPrice;
+  }, [unitPrice, quantity]);
+
+  const unitMRP = useMemo(() => {
+    return product?.productPrice || 0;
+  }, [product?.productPrice]);
+
+  const totalMRP = useMemo(() => {
+    return quantity > 0 ? unitMRP * quantity : unitMRP;
+  }, [unitMRP, quantity]);
+
+  // Function to copy product link to clipboard
+  const copyProductLink = async () => {
+    const productLink = `${window.location.origin}${window.location.pathname}`;
+    try {
+      await navigator.clipboard.writeText(productLink);
+      setLinkCopied(true);
+      setTimeout(() => {
+        setLinkCopied(false);
+      }, 2000);
+    } catch (err) {
+      console.error("Failed to copy link:", err);
+    }
+  };
 
   const availableVariants = product?.variants?.filter((v) => v.stock > 0) || [];
 
   return (
     <div className="product-inner-page">
-      <div className="wrapper">
+      <div className="">
         <div className="product-inner-page-wrap">
           <div className="product-inner-left">
-            {/* LANDSCAPE SLIDER */}
-            {landscapeImages.length > 1 ? (
-              <div className="landscape-slider">
-                <Swiper
-                  style={{
-                    "--swiper-navigation-color": "#fff",
-                    "--swiper-pagination-color": "#fff",
-                  }}
-                  loop={true}
-                  spaceBetween={10}
-                  navigation={true}
-                  thumbs={{
-                    swiper:
-                      landscapeThumbs && !landscapeThumbs.destroyed
-                        ? landscapeThumbs
-                        : null,
-                  }}
-                  modules={[FreeMode, Navigation, Thumbs]}
-                  className="main-image-slider"
-                >
-                  {landscapeImages.map((img, i) => (
-                    <SwiperSlide key={i}>
+            {galleryImages && galleryImages.length > 0 && (
+              <div className="product-gallery">
+                <div className="product-gallery-thumbs">
+                  {galleryImages.map((img, index) => (
+                    <button
+                      type="button"
+                      key={index}
+                      className={`product-gallery-thumb ${
+                        index === activeImageIndex ? "active" : ""
+                      }`}
+                      onClick={() => setActiveImageIndex(index)}
+                    >
                       <img
                         src={`${import.meta.env.VITE_BASE_URL}/${img.path}`}
                         alt=""
-                        className="product-inner-slider-main-image"
                       />
-                    </SwiperSlide>
+                    </button>
                   ))}
-                </Swiper>
-
-                {/* Thumbnail Swiper */}
-                <Swiper
-                  onSwiper={setLandscapeThumbs}
-                  loop={true}
-                  spaceBetween={10}
-                  slidesPerView={4}
-                  freeMode={true}
-                  watchSlidesProgress={true}
-                  modules={[FreeMode, Navigation, Thumbs]}
-                  className="main-thumb-slider"
-                >
-                  {landscapeImages.map((img, i) => (
-                    <SwiperSlide key={i}>
-                      <img
-                        src={`${import.meta.env.VITE_BASE_URL}/${img.path}`}
-                        alt=""
-                        className="product-inner-slider-image"
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              </div>
-            ) : landscapeImages.length === 1 ? (
-              <div className="single-image-wrapper">
-                <img
-                  src={`${import.meta.env.VITE_BASE_URL}/${
-                    landscapeImages[0].path
-                  }`}
-                  alt=""
-                  className="product-inner-slider-main-image"
-                />
-              </div>
-            ) : null}
-            {portraitImages.length > 1 ? (
-              <div className="portrait-slider">
-                <Swiper
-                  style={{
-                    "--swiper-navigation-color": "#fff",
-                    "--swiper-pagination-color": "#fff",
+                </div>
+                <div
+                  className="product-gallery-main"
+                  onMouseEnter={() => setIsZooming(true)}
+                  onMouseLeave={() => setIsZooming(false)}
+                  onMouseMove={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    setZoomPosition({ x, y });
                   }}
-                  loop={true}
-                  spaceBetween={10}
-                  navigation={true}
-                  thumbs={{
-                    swiper:
-                      thumbsSwiper && !thumbsSwiper.destroyed
-                        ? thumbsSwiper
-                        : null,
-                  }}
-                  modules={[FreeMode, Navigation, Thumbs]}
-                  className="main-portrait-image-slider"
                 >
-                  {portraitImages.map((img, i) => (
-                    <SwiperSlide key={i}>
-                      <img
-                        src={`${import.meta.env.VITE_BASE_URL}/${img.path}`}
-                        alt=""
-                        className="product-inner-slider-main-image"
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-
-                <Swiper
-                  onSwiper={setThumbsSwiper}
-                  loop={true}
-                  spaceBetween={10}
-                  slidesPerView={4}
-                  freeMode={true}
-                  watchSlidesProgress={true}
-                  direction={isMobile ? "horizontal" : "vertical"}
-                  modules={[FreeMode, Navigation, Thumbs]}
-                  className="main-portrait-thumb-slider"
-                >
-                  {portraitImages.map((img, i) => (
-                    <SwiperSlide key={i}>
-                      <img
-                        src={`${import.meta.env.VITE_BASE_URL}/${img.path}`}
-                        alt=""
-                        className="product-inner-slider-image"
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+                  {/* Wishlist and Share Icons */}
+                  <div className="product-gallery-actions">
+                    <button
+                      type="button"
+                      className="product-gallery-action-btn"
+                      onClick={() => {
+                        if (isWishListed()) {
+                          removeProductFromWishlist();
+                        } else {
+                          addPRoductToWishlist();
+                        }
+                      }}
+                      title={
+                        isWishListed()
+                          ? "Remove from wishlist"
+                          : "Add to wishlist"
+                      }
+                    >
+                      {isWishListed() ? (
+                        <FaHeart color="red" size={20} />
+                      ) : (
+                        <FaRegHeart size={20} />
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      className="product-gallery-action-btn"
+                      onClick={() => setShowShareModal(true)}
+                      title="Share product"
+                    >
+                      <IoShareOutline size={20} />
+                    </button>
+                  </div>
+                  <div className="product-gallery-main-wrapper">
+                    <img
+                      src={`${import.meta.env.VITE_BASE_URL}/${
+                        galleryImages[activeImageIndex].path
+                      }`}
+                      alt=""
+                      className="product-gallery-main-image"
+                      style={{
+                        transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                        transform: isZooming ? "scale(2.5)" : "scale(1)",
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
-            ) : !isMobile && portraitImages.length === 1 ? (
-              <div className="single-image-wrapper">
-                <img
-                  src={`${import.meta.env.VITE_BASE_URL}/${
-                    portraitImages[0].path
-                  }`}
-                  alt=""
-                  className="product-inner-slider-main-image"
-                />
-              </div>
-            ) : null}
+            )}
           </div>
 
           <div className="product-inner-right">
@@ -393,75 +395,49 @@ export default function ProductInner(Props) {
                 <h4>{product?.productShortName || ""}</h4>
               </div>
 
-              <div className="product-star-rating">
-                <div className="star-rating">
-                  <img src={star} alt="Rating Star" />
-                  <p>{product?.productRating || 3}</p>
-                  <p
-                    style={{
-                      padding: "0 .5rem ",
-                      borderLeft: "2px solid gray",
-                      color: "gray",
-                    }}
-                  >
-                    {reviews && reviews.length ? reviews.length : 0} Ratings
-                  </p>
-                </div>
-              </div>
-              <button
-                type="button"
-                className="product-inner-wishlist-btn-wrapper"
-              >
-                {isWishListed() && "In "}
-                Wishlist&nbsp;
-                {isWishListed() ? (
-                  <FaHeart
-                    color="red"
-                    size={20}
-                    style={{ cursor: "pointer" }}
-                    onClick={removeProductFromWishlist}
-                  />
-                ) : (
-                  <FaRegHeart
-                    size={20}
-                    style={{ cursor: "pointer" }}
-                    onClick={addPRoductToWishlist}
-                  />
-                )}
-              </button>
-
               <div className="details-container">
                 <div className="price-section">
-                  <span className="discount">
-                    –{product?.productDiscount || 0}%
-                  </span>
-                  <span className="price">
-                    {selectedCountry.priceLabel}
-                    {getDiscountedPrice(
-                      product?.productPrice,
-                      product?.productDiscount
-                    )}
-                  </span>
-                  <div className="mrp">
-                    MRP:{" "}
-                    <del>
+                  <div className="price-section-inline">
+                    <span className="price">
                       {selectedCountry.priceLabel}
-                      {product?.productPrice || 0}.00
-                    </del>
+                      {totalPrice.toFixed(2)}
+                    </span>
+                    {unitMRP > unitPrice && (
+                      <span className="mrp">
+                        {selectedCountry.priceLabel}
+                        {totalMRP.toFixed(2)}
+                      </span>
+                    )}
+                    {product?.productDiscount > 0 && (
+                      <span className="discount">
+                        {product?.productDiscount}% Off
+                      </span>
+                    )}
+
+                    {averageRating > 0 && (
+                      <div className="rating-badge">
+                        <img src={star} alt="Rating Star" />
+                        <span className="rating-value">{averageRating}</span>
+                        {ratingCount > 0 && (
+                          <>
+                            <span className="rating-separator">|</span>
+                            <span className="rating-count">{ratingCount}</span>
+                          </>
+                        )}
+                      </div>
+                    )}
                   </div>
                   <div className="tax-info">Inclusive of all taxes</div>
                 </div>
-                {bestOffer ? (
-                  <>
-                    <div className="applied-offer">
+                {bestOffer && (
+                  <div className="applied-offer-badge">
+                    <span>
                       {bestOffer.discountType === "percent"
                         ? `${bestOffer.discountValue}% OFF`
-                        : `₹${bestOffer.discountValue} OFF`}{" "}
+                        : `${selectedCountry.priceLabel}${bestOffer.discountValue} OFF`}{" "}
                       Applicable
-                    </div>
-                  </>
-                ) : (
-                  <></>
+                    </span>
+                  </div>
                 )}
                 {availableVariants.length > 0 && (
                   <div className="variant-section">
@@ -470,15 +446,20 @@ export default function ProductInner(Props) {
                       checkout.
                     </p>
 
-                    <ul className="variant-list">
+                    <div className="variant-list">
                       {availableVariants.map((variant, index) => (
-                        <li key={index} className="variant-item">
-                          <strong>{variant.variantName}</strong>
-                          {` | Stock: ${variant.stock}`}
-                          {` | Price: ${selectedCountry.priceLabel}${variant.price}`}
-                        </li>
+                        <div key={index} className="variant-badge">
+                          <span className="variant-name">
+                            {variant.variantName}
+                          </span>
+                          <span className="variant-details">
+                            Stock: {variant.stock} | Price:{" "}
+                            {selectedCountry.priceLabel}
+                            {variant.price}
+                          </span>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                 )}
 
@@ -548,7 +529,7 @@ export default function ProductInner(Props) {
                   )}
                 </div>
 
-                <p className="description">
+                {/* <p className="description">
                   {product?.productDescription ? (
                     <>
                       {readMore
@@ -566,7 +547,7 @@ export default function ProductInner(Props) {
                       )}
                     </>
                   ) : null}
-                </p>
+                </p> */}
 
                 {/* <div className="offers">
                   <h3>EXCLUSIVE OFFERS</h3>
@@ -685,7 +666,12 @@ export default function ProductInner(Props) {
         </div>
         {/* Accordion Section */}
         <div className="product-details-accordion">
-          <Accordion title="KEY BENEFITS" defaultOpen={true}>
+          <Accordion 
+            id="KEY BENEFITS"
+            title="KEY BENEFITS" 
+            isOpen={openAccordion === "KEY BENEFITS"}
+            onToggle={handleAccordionToggle}
+          >
             <ul>
               {product?.productBenefits &&
                 product?.productBenefits.length > 0 &&
@@ -695,7 +681,12 @@ export default function ProductInner(Props) {
             </ul>
           </Accordion>
 
-          <Accordion title="HOW TO USE">
+          <Accordion 
+            id="HOW TO USE"
+            title="HOW TO USE"
+            isOpen={openAccordion === "HOW TO USE"}
+            onToggle={handleAccordionToggle}
+          >
             <ul>
               {product?.productUseCase &&
                 product?.productUseCase.length > 0 &&
@@ -705,7 +696,12 @@ export default function ProductInner(Props) {
             </ul>
           </Accordion>
 
-          <Accordion title="FAQs">
+          <Accordion 
+            id="FAQs"
+            title="FAQs"
+            isOpen={openAccordion === "FAQs"}
+            onToggle={handleAccordionToggle}
+          >
             {product &&
             product?.productFAQ &&
             product?.productFAQ.length > 0 ? (
@@ -726,11 +722,21 @@ export default function ProductInner(Props) {
             )}
           </Accordion>
 
-          <Accordion title="OTHER INFORMATION">
+          <Accordion 
+            id="OTHER INFORMATION"
+            title="OTHER INFORMATION"
+            isOpen={openAccordion === "OTHER INFORMATION"}
+            onToggle={handleAccordionToggle}
+          >
             <p>{product?.productOtherInfo || "No other information"}</p>
           </Accordion>
 
-          <Accordion title="ALL INGREDIENTS">
+          <Accordion 
+            id="ALL INGREDIENTS"
+            title="ALL INGREDIENTS"
+            isOpen={openAccordion === "ALL INGREDIENTS"}
+            onToggle={handleAccordionToggle}
+          >
             <p>{product?.productIngredients || "Ingredients nor available"}</p>
           </Accordion>
           {/* <Accordion title="REVIEW">
@@ -771,7 +777,12 @@ export default function ProductInner(Props) {
               </button>
             </div>
           </Accordion> */}
-          <Accordion title="REVIEW" defaultOpen={false}>
+          <Accordion 
+            id="REVIEW"
+            title="REVIEW"
+            isOpen={openAccordion === "REVIEW"}
+            onToggle={handleAccordionToggle}
+          >
             {(closeAccordion) => (
               <div className="product-inner-review-form-section">
                 <textarea
@@ -814,6 +825,44 @@ export default function ProductInner(Props) {
           </Accordion>
         </div>
       </div>
+
+      {/* Share Modal */}
+      {showShareModal && (
+        <div
+          className="share-modal-overlay"
+          onClick={() => setShowShareModal(false)}
+        >
+          <div className="share-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="share-modal-header">
+              <h3>Copy link</h3>
+              <button
+                type="button"
+                className="share-modal-close"
+                onClick={() => setShowShareModal(false)}
+              >
+                ×
+              </button>
+            </div>
+            <div className="share-modal-content">
+              <div className="share-link-container">
+                <input
+                  type="text"
+                  readOnly
+                  value={`${window.location.origin}${window.location.pathname}`}
+                  className="share-link-input"
+                />
+                <button
+                  type="button"
+                  className="share-copy-btn"
+                  onClick={copyProductLink}
+                >
+                  {linkCopied ? "✓ Copied" : "Copy"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
