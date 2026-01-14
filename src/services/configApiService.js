@@ -112,7 +112,9 @@ export async function toggleCountryStatus(id, isActive) {
 
 export async function getActiveCountries() {
   try {
-    const response = await axios.get(getActiveCountriesUrl);
+    const response = await axios.get(getActiveCountriesUrl, {
+      timeout: 5000, // 5 second timeout for mobile networks
+    });
     if (response.status === 200 && response?.data?.isSuccess) {
       return response.data.countries;
     } else {
@@ -120,7 +122,8 @@ export async function getActiveCountries() {
     }
   } catch (error) {
     console.error("Error fetching active countries:", error);
-    throw error;
+    // Return empty array instead of throwing to prevent app from blocking
+    return [];
   }
 }
 

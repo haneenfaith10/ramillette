@@ -16,105 +16,95 @@ function App() {
   const dispatch = useDispatch();
   const selectedCountry = useSelector((state) => state.user.selectedCountry);
   const [loading, setLoading] = useState(true);
-  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
-    const maxWaitTime = 3000; // Maximum 3 seconds wait
+    const maxWaitTime = 2000; // Reduced to 2 seconds for faster mobile loading
     const startTime = Date.now();
 
-    const fetchUserLocation = async () => {
+    const initializeApp = async () => {
+      // If country already exists in persisted state, use it immediately
+      if (selectedCountry && selectedCountry.code) {
+        if (isMounted) {
+          const elapsed = Date.now() - startTime;
+          const remainingTime = Math.max(0, Math.min(500, maxWaitTime - elapsed));
+          setTimeout(() => {
+            if (isMounted) {
+              setLoading(false);
+            }
+          }, remainingTime);
+        }
+        return;
+      }
+
+      // Try to fetch country data
       try {
-        // Try to fetch location with timeout
-        const locationPromise = axios.get(
-          `https://ipinfo.io/json?token=${import.meta.env.VITE_LOCATION_KEY}`,
-          { timeout: 3000 }
-        );
-        
-        const response = await locationPromise;
-        const data = response.data;
-        const { country: userCountryCode } = data;
-        
-        const res = await dispatch(fetchCountries());
+        // First, try to get countries (this is the critical API)
+        const countriesRes = await dispatch(fetchCountries());
+
         if (
           isMounted &&
-          res.meta.requestStatus === "fulfilled" &&
-          res.payload.length > 0 &&
-          !selectedCountry.code
+          countriesRes.meta?.requestStatus === "fulfilled" &&
+          countriesRes.payload?.length > 0
         ) {
-          const matchedCountry = res.payload.find(
-            (country) =>
-              country.code.toLowerCase() === userCountryCode.toLowerCase()
-          );
+          let countryToSet = null;
 
-          if (matchedCountry) {
-            dispatch(setSelectedCountry(matchedCountry));
-          } else {
-            const primaryCountry = res.payload.find(
-              (country) => country.isPrimary === true
+          // Try to get user location (non-blocking, with timeout)
+          try {
+            const locationResponse = await axios.get(
+              `https://ipinfo.io/json?token=${import.meta.env.VITE_LOCATION_KEY}`,
+              { timeout: 2000 }
             );
-
-            if (primaryCountry) {
-              dispatch(setSelectedCountry(primaryCountry));
-            } else if (res.payload[0]) {
-              dispatch(setSelectedCountry(res.payload[0]));
+            
+            const userCountryCode = locationResponse.data?.country;
+            if (userCountryCode) {
+              const matchedCountry = countriesRes.payload.find(
+                (country) =>
+                  country.code?.toLowerCase() === userCountryCode.toLowerCase()
+              );
+              if (matchedCountry) {
+                countryToSet = matchedCountry;
+              }
             }
+          } catch (locationError) {
+            // Location detection failed - not critical, continue
+            console.log("Location detection skipped");
+          }
+
+          // If no match from location, use primary or first country
+          if (!countryToSet) {
+            countryToSet = countriesRes.payload.find(
+              (country) => country.isPrimary === true
+            ) || countriesRes.payload[0];
+          }
+
+          if (countryToSet && isMounted) {
+            dispatch(setSelectedCountry(countryToSet));
           }
         }
       } catch (error) {
-        console.error("Failed to fetch IP location", error);
-        // Fallback: try to get countries without location
-        try {
-          const res = await dispatch(fetchCountries());
-          if (
-            isMounted &&
-            res.meta.requestStatus === "fulfilled" &&
-            res.payload.length > 0 &&
-            !selectedCountry.code
-          ) {
-            const primaryCountry = res.payload.find(
-              (country) => country.isPrimary === true
-            );
-            if (primaryCountry) {
-              dispatch(setSelectedCountry(primaryCountry));
-            } else if (res.payload[0]) {
-              dispatch(setSelectedCountry(res.payload[0]));
-            }
-          }
-        } catch (fallbackError) {
-          console.error("Failed to fetch countries", fallbackError);
-        }
+        console.error("Failed to initialize app:", error);
+        // App will still work - just without country selection
       } finally {
+        // Always stop loading after max time, regardless of API results
         if (isMounted) {
           const elapsed = Date.now() - startTime;
           const remainingTime = Math.max(0, maxWaitTime - elapsed);
           setTimeout(() => {
             if (isMounted) {
               setLoading(false);
-              setInitialized(true);
             }
           }, remainingTime);
         }
       }
     };
 
-    if (!selectedCountry || !selectedCountry.code) {
-      fetchUserLocation();
-    } else {
-      // If country already exists, just wait a minimal time for smooth transition
-      setTimeout(() => {
-        if (isMounted) {
-          setLoading(false);
-          setInitialized(true);
-        }
-      }, 300);
-    }
+    initializeApp();
 
-    // Safety timeout - always stop loading after max time
+    // Absolute safety timeout - always stop loading
     const safetyTimeout = setTimeout(() => {
       if (isMounted) {
         setLoading(false);
-        setInitialized(true);
       }
     }, maxWaitTime);
 
