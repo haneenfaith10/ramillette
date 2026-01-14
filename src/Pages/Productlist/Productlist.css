@@ -331,7 +331,7 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: 1002;
 }
 
 .mobile-filter-overlay.show {
@@ -457,6 +457,11 @@
 
 /* MOBILE SMALL (≤375px) - SINGLE COLUMN */
 @media (max-width: 375px) {
+  /* Hide sidebar filters on very small mobile, use drawer instead */
+  .product-left {
+    display: none !important;
+  }
+
   .product-list-page {
     padding: 16px 12px 32px;
   }
@@ -466,6 +471,7 @@
   }
 
   .mobile-filter-toggle {
+    display: flex !important;
     padding: 8px 12px;
     font-size: 12px;
     margin-bottom: 0;
@@ -496,7 +502,12 @@
     font-size: 12px;
   }
 
-  .product-list-sort {
+  .product-list-sort.desktop-sort {
+    display: none;
+  }
+
+  .product-list-sort.mobile-sort {
+    display: flex;
     flex-direction: row;
     align-items: center;
     gap: 8px;
@@ -521,11 +532,12 @@
   }
 
   .product-list-cards {
-    gap: 20px !important;
-    padding: 0 8px;
+    gap: 16px !important;
+    padding: 0 4px;
   }
 
   .product-list-post-card {
+    /* Single card per row on smallest mobile screens */
     flex: 0 0 100% !important;
     width: 100% !important;
     max-width: none !important;
@@ -534,6 +546,16 @@
 
 /* MOBILE FILTER DRAWER */
 @media (max-width: 768px) {
+  /* Hide desktop sort on all mobile screens */
+  .product-list-sort.desktop-sort {
+    display: none !important;
+  }
+
+  /* Show mobile sort on all mobile screens */
+  .product-list-sort.mobile-sort {
+    display: flex !important;
+  }
+
   .product-left.mobile-open {
     display: flex !important;
     flex-direction: column;
@@ -544,7 +566,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 1001;
+    z-index: 1003;
     background: #fff;
     box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
     overflow-y: auto;
