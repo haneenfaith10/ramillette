@@ -58,9 +58,7 @@ export default function UserRoute() {
     // Block rendering while redirecting
     return null;
   }
-
-  // Show loader for non-auth routes if country not set
-  if (!selectedCountry?.code && !isAuthRoute) {
+  if (!selectedCountry?.code) {
     return (
       <div className="app-loader">
         <img src={Logo} alt="Logo" />
@@ -70,7 +68,7 @@ export default function UserRoute() {
 
   return (
     <Routes>
-      {/* Global routes (not country-specific) - always accessible */}
+      {/* Global routes (not country-specific) */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/forgetPassword" element={<ForgetPasswordPage />} />
@@ -117,6 +115,10 @@ export default function UserRoute() {
           element={<PaymentSingleProduct />}
         />
       </Route>
+
+      {/* {setTimeout(() => {
+        <Route path="*" element={<NotFoundPage />} />;
+      }, 1000)} */}
     </Routes>
   );
 }

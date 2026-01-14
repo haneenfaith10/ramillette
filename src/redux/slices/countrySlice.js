@@ -1,16 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getActiveCountries } from '../../services/configApiService';
 
-export const fetchCountries = createAsyncThunk('countries/fetchCountries', async (_, { rejectWithValue }) => {
-  try {
-    const res = await getActiveCountries();
-    // If we get an empty array, still return it (don't reject)
-    return res || [];
-  } catch (error) {
-    // Return empty array instead of rejecting to prevent app blocking
-    console.error('Error in fetchCountries:', error);
-    return rejectWithValue([]);
-  }
+export const fetchCountries = createAsyncThunk('countries/fetchCountries', async () => {
+  const res = await getActiveCountries()
+  return res;
 });
 
 const countrySlice = createSlice({

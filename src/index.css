@@ -138,8 +138,7 @@ body {
   font-smoothing: antialiased;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
 }
 :root {
   --primary-color: #4c644c;
@@ -310,16 +309,12 @@ table {
 }
 
 .app-loader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
-  z-index: 9999;
+  background-color: #fff; /* optional: ensures consistent background */
   animation: fadeUp 0.8s ease-out;
 }
 
