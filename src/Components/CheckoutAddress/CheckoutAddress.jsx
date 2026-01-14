@@ -331,75 +331,117 @@ export default function CheckoutAddress() {
 
   return (
     <div className="checkout-address-container">
-      <div className="checkout-address-content-section">
-        <CheckoutSummeryCard cartItem={cartItem} />
+      <div className="container">
+        <div className="checkout-address-content-section">
+          <div className="checkout-address-main-content">
+          <h2 className="checkout-address-title">Address</h2>
 
-        <h2 className="checkout-address-title">Checkout Address</h2>
-        <hr />
+          {/* ✅ Saved Addresses */}
+          {addresses?.length > 0 ? (
+            <>
+              <div className="checkout-address-address-list-container">
+                <h3 className="checkout-address-section-title">Saved Addresses</h3>
+                <div className="checkout-address-address-list">
+                  {addresses.map((address, index) => (
+                    <div
+                      className={`checkout-address-address-item ${
+                        selectedAddress === address ? "selected" : ""
+                      }`}
+                      key={index}
+                      onClick={() => handleAddressChange(address)}
+                    >
+                      <div className="checkout-address-radio-wrapper">
+                        <input
+                          type="radio"
+                          name="address"
+                          checked={selectedAddress === address}
+                          readOnly
+                        />
+                        <span className="checkout-address-radio-label">
+                          {selectedAddress === address ? "Selected" : "Select"}
+                        </span>
+                      </div>
+                      <div className="checkout-address-details">
+                        <p className="checkout-address-name">
+                          {address.firstName} {address.lastName}
+                        </p>
+                        <p className="checkout-address-text">
+                          {address.streetAddress}
+                        </p>
+                        <p className="checkout-address-text">
+                          {address.city}, {address.state}, {address.country}
+                        </p>
+                        <p className="checkout-address-text">
+                          Zip: {address.zip}
+                        </p>
+                        <p className="checkout-address-phone">
+                          Phone: {address.phone}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-        {/* ✅ Saved Addresses */}
-        {addresses?.length > 0 && (
-          <>
-            <div className="checkout-address-address-list-container">
-              <h3>Saved Addresses</h3>
-              <div className="checkout-address-address-list">
-                {addresses.map((address, index) => (
-                  <div
-                    className="checkout-address-address-item"
-                    key={index}
-                    onClick={() => handleAddressChange(address)}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedAddress === address}
-                      readOnly
-                    />
-                    <p>
-                      Name: {address.firstName} {address.lastName}
-                    </p>
-                    <p>Address: {address.streetAddress}</p>
-                    <p>Phone: {address.phone}</p>
-                    <p>
-                      {address.city}, {address.state}, {address.country}
-                    </p>
-                    <p>Zip: {address.zip}</p>
-                  </div>
-                ))}
+              <div className="checkout-address-add-button-wrapper">
+                <button
+                  type="button"
+                  className="checkout-address-add-btn"
+                  onClick={() =>
+                    navigate(`/${userSelectedCountry.code}/profile/addresses`)
+                  }
+                >
+                  + Add New Address
+                </button>
+              </div>
+
+              {/* ✅ Navigation Buttons - Desktop */}
+              <div className="checkout-address-submit-button-wrapper checkout-address-buttons-desktop">
+                <button
+                  type="button"
+                  className="checkout-address-back-btn"
+                  onClick={() => navigate(`/${userSelectedCountry.code}/checkout`)}
+                >
+                  <MdKeyboardArrowLeft />
+                  Back to Checkout
+                </button>
+                <button
+                  type="submit"
+                  className="checkout-address-proceed-btn"
+                  onClick={() =>
+                    selectedAddress ? submitCheckoutAddress() : handleSubmit()
+                  }
+                  disabled={!selectedAddress}
+                >
+                  Proceed to Payment
+                  <MdKeyboardArrowRight />
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="checkout-address-empty-state">
+              <div className="checkout-address-empty-content">
+                <p className="checkout-address-empty-text">
+                  No saved addresses found
+                </p>
+                <p className="checkout-address-empty-subtext">
+                  Please add an address to continue with checkout
+                </p>
+                <button
+                  type="button"
+                  className="checkout-address-add-btn-primary"
+                  onClick={() =>
+                    navigate(`/${userSelectedCountry.code}/profile/addresses`)
+                  }
+                >
+                  + Add Address
+                </button>
               </div>
             </div>
-            <hr />
-          </>
-        )}
+          )}
+          </div>
 
-        <div className="checkout-address-show-button-wrapper">
-          <button
-            type="button"
-            onClick={() =>
-              navigate(`/${userSelectedCountry.code}/profile/addresses`)
-            }
-          >
-            Add Address
-          </button>
-        </div>
-
-        {/* ✅ Navigation Buttons */}
-        <div className="checkout-address-submit-button-wrapper">
-          <button
-            type="button"
-            onClick={() => navigate(`/${userSelectedCountry.code}/checkout`)}
-          >
-            <MdKeyboardArrowLeft />
-            Back to Checkout
-          </button>
-          <button
-            type="submit"
-            onClick={() =>
-              selectedAddress ? submitCheckoutAddress() : handleSubmit()
-            }
-          >
-            Proceed to Payment
-            <MdKeyboardArrowRight />
-          </button>
+          <CheckoutSummeryCard cartItem={cartItem} />
         </div>
       </div>
     </div>
