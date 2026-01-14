@@ -16,49 +16,58 @@ function App() {
   const dispatch = useDispatch();
   const selectedCountry = useSelector((state) => state.user.selectedCountry);
   const [loading, setLoading] = useState(true);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
+    const maxWaitTime = 3000; // Maximum 3 seconds wait
+    const startTime = Date.now();
+
     const fetchUserLocation = async () => {
       try {
-        const response = await axios.get(
+        // Try to fetch location with timeout
+        const locationPromise = axios.get(
           `https://ipinfo.io/json?token=${import.meta.env.VITE_LOCATION_KEY}`,
-          { timeout: 5000 }
+          { timeout: 3000 }
         );
+        
+        const response = await locationPromise;
         const data = response.data;
         const { country: userCountryCode } = data;
-        dispatch(fetchCountries()).then((res) => {
-          if (
-            res.meta.requestStatus === "fulfilled" &&
-            res.payload.length > 0 &&
-            !selectedCountry.code
-          ) {
-            const matchedCountry = res.payload.find(
-              (country) =>
-                country.code.toLowerCase() === userCountryCode.toLowerCase()
+        
+        const res = await dispatch(fetchCountries());
+        if (
+          isMounted &&
+          res.meta.requestStatus === "fulfilled" &&
+          res.payload.length > 0 &&
+          !selectedCountry.code
+        ) {
+          const matchedCountry = res.payload.find(
+            (country) =>
+              country.code.toLowerCase() === userCountryCode.toLowerCase()
+          );
+
+          if (matchedCountry) {
+            dispatch(setSelectedCountry(matchedCountry));
+          } else {
+            const primaryCountry = res.payload.find(
+              (country) => country.isPrimary === true
             );
 
-            if (matchedCountry) {
-              dispatch(setSelectedCountry(matchedCountry));
-            } else {
-              const primaryCountry = res.payload.find(
-                (country) => country.isPrimary === true
-              );
-
-              if (primaryCountry) {
-                dispatch(setSelectedCountry(primaryCountry));
-              } else {
-                console.warn("No primary country found, using first available");
-                dispatch(setSelectedCountry(res.payload[0]));
-              }
+            if (primaryCountry) {
+              dispatch(setSelectedCountry(primaryCountry));
+            } else if (res.payload[0]) {
+              dispatch(setSelectedCountry(res.payload[0]));
             }
           }
-        });
+        }
       } catch (error) {
         console.error("Failed to fetch IP location", error);
         // Fallback: try to get countries without location
         try {
           const res = await dispatch(fetchCountries());
           if (
+            isMounted &&
             res.meta.requestStatus === "fulfilled" &&
             res.payload.length > 0 &&
             !selectedCountry.code
@@ -68,7 +77,7 @@ function App() {
             );
             if (primaryCountry) {
               dispatch(setSelectedCountry(primaryCountry));
-            } else {
+            } else if (res.payload[0]) {
               dispatch(setSelectedCountry(res.payload[0]));
             }
           }
@@ -76,41 +85,62 @@ function App() {
           console.error("Failed to fetch countries", fallbackError);
         }
       } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
+        if (isMounted) {
+          const elapsed = Date.now() - startTime;
+          const remainingTime = Math.max(0, maxWaitTime - elapsed);
+          setTimeout(() => {
+            if (isMounted) {
+              setLoading(false);
+              setInitialized(true);
+            }
+          }, remainingTime);
+        }
       }
     };
+
     if (!selectedCountry || !selectedCountry.code) {
       fetchUserLocation();
     } else {
+      // If country already exists, just wait a minimal time for smooth transition
       setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+        if (isMounted) {
+          setLoading(false);
+          setInitialized(true);
+        }
+      }, 300);
     }
+
+    // Safety timeout - always stop loading after max time
+    const safetyTimeout = setTimeout(() => {
+      if (isMounted) {
+        setLoading(false);
+        setInitialized(true);
+      }
+    }, maxWaitTime);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(safetyTimeout);
+    };
   }, [dispatch, selectedCountry?.code]);
 
-  if (loading) {
-    return (
-      <div className="app-loader">
-        <img src={Logo} alt="Logo" />
-      </div>
-    );
-  }
-
+  // Always render the app, even if loading - this prevents blank screens on mobile
   return (
     <>
-      {!loading && (
-        <Router>
-          <ScrollToTop />
-          <Toaster position="top-right" richColors />
-          <Routes>
-            <Route path="/*" element={<UserRoute />} />
-            <Route path="/admin/*" element={<AdminRoute />} />
-            <Route path="*" element={<NotFoundPage />} />;
-          </Routes>
-        </Router>
+      {loading && (
+        <div className="app-loader">
+          <img src={Logo} alt="Logo" />
+        </div>
       )}
+      <Router>
+        <ScrollToTop />
+        <Toaster position="top-right" richColors />
+        <Routes>
+          <Route path="/*" element={<UserRoute />} />
+          <Route path="/admin/*" element={<AdminRoute />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Router>
     </>
   );
 }

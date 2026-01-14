@@ -63,9 +63,13 @@ export default function ProductInner(Props) {
   const user = useSelector((state) => state.user.user);
   const [validOffers, setValidOffers] = useState();
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth <= 767 : false
+  );
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    
     function handleResize() {
       setIsMobile(window.innerWidth <= 767);
     }
