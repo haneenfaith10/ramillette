@@ -5,9 +5,11 @@ import { placeOrder } from "../../services/orderApiService";
 import { useNavigate } from "react-router-dom";
 import { clearCheckoutData, updateCart } from "../../redux/slices/userSlice";
 import { getTaxByCountry } from "../../services/taxApiServices";
-import { IoChevronBackOutline } from "react-icons/io5";
+import { MdKeyboardArrowLeft } from "react-icons/md";
 import { getUserDetails } from "../../services/userApiServices";
 import OrderSuccess from "../OrderSuccess/OrderSuccess";
+import { CheckoutSummeryCard } from "../CheckoutAddress/CheckoutAddress";
+import { calculateTotalPriceWithTax } from "../../utils/calculation";
 
 export default function Payment() {
   const navigate = useNavigate();
@@ -52,74 +54,162 @@ export default function Payment() {
     }
   }
 
+  // Calculate order total
+  const subtotal = checkoutData?.cart?.reduce((acc, item) => {
+    const effectivePrice =
+      item.discountedPrice ?? item.selectedVariant?.price ?? 0;
+    return acc + effectivePrice * item.qty;
+  }, 0) || 0;
+
+  const { totalPrice } = calculateTotalPriceWithTax(subtotal, tax);
+
   return (
     <div className="checkout-payment-main-container">
       {!orderSuccess ? (
-        <div className="checkout-payment-content-section">
-          <div className="checkout-payment-left-section">
-            <ul>
-              {userDetails.status && (
-                <li onClick={() => setPaymentMethod("cashOnDelivery")}>
-                  Cash on Delivery
-                </li>
+        <div className="container">
+          <div className="checkout-payment-content-section">
+            <div className="checkout-payment-main-content">
+              <h2 className="checkout-payment-title">Payment</h2>
+
+              <div className="checkout-payment-methods-section">
+                <h3 className="checkout-payment-section-title">
+                  Select Payment Method
+                </h3>
+                <div className="checkout-payment-methods-list">
+                  {userDetails.status && (
+                    <div
+                      className={`checkout-payment-method-card ${
+                        paymentMethod === "cashOnDelivery" ? "selected" : ""
+                      }`}
+                      onClick={() => setPaymentMethod("cashOnDelivery")}
+                    >
+                      <div className="payment-method-details">
+                        <h4>Cash on Delivery</h4>
+                        <p>Pay when your order arrives</p>
+                      </div>
+                      <div className="payment-method-radio">
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          checked={paymentMethod === "cashOnDelivery"}
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div
+                    className={`checkout-payment-method-card ${
+                      paymentMethod === "online" ? "selected" : ""
+                    }`}
+                    onClick={() => setPaymentMethod("online")}
+                  >
+                    <div className="payment-method-details">
+                      <h4>Online Payment</h4>
+                      <p>Pay securely with card or digital wallet</p>
+                    </div>
+                    <div className="payment-method-radio">
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        checked={paymentMethod === "online"}
+                        readOnly
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {paymentMethod === "cashOnDelivery" && (
+                <div className="checkout-payment-details-section">
+                  <div className="cash-on-delivery-info">
+                    <h3>Cash on Delivery</h3>
+                    <p>
+                      You have selected <strong>Cash on Delivery</strong>.
+                      Please ensure you have the exact amount ready when your
+                      order arrives.
+                    </p>
+                    <p>
+                      No advance payment is required. Our delivery agent will
+                      collect the payment at your doorstep.
+                    </p>
+                  </div>
+
+                  <div className="cash-on-delivery-button-wrapper">
+                    <button
+                      type="button"
+                      className="payment-back-btn"
+                      onClick={() =>
+                        navigate(`/${selectedCountry.code}/checkout/address`)
+                      }
+                    >
+                      <MdKeyboardArrowLeft />
+                      BACK TO ADDRESS
+                    </button>
+                    <button
+                      type="button"
+                      className="payment-place-order-btn"
+                      onClick={placeItemOrder}
+                    >
+                      PROCEED TO PAYMENT
+                    </button>
+                  </div>
+                </div>
               )}
-              <li>Online Payment</li>
-            </ul>
-          </div>
-          <div className="checkout-payment-right-section">
-            {paymentMethod === "cashOnDelivery" && (
-              <div>
-                <div className="cash-on-delivery-info">
-                  <h3>Cash on Delivery</h3>
-                  <p>
-                    You have selected <strong>Cash on Delivery</strong>. Please
-                    ensure you have the exact amount ready when your order
-                    arrives.
-                  </p>
-                  <p>
-                    No advance payment is required. Our delivery agent will
-                    collect the payment at your doorstep.
-                  </p>
+
+              {paymentMethod === "online" && (
+                <div className="checkout-payment-details-section">
+                  <div className="online-payment-info">
+                    <h3>Online Payment</h3>
+                    <p>
+                      You will be redirected to a secure payment gateway to
+                      complete your transaction.
+                    </p>
+                    <p>
+                      We accept all major credit cards, debit cards, and digital
+                      wallets.
+                    </p>
+                  </div>
+
+                  <div className="cash-on-delivery-button-wrapper">
+                    <button
+                      type="button"
+                      className="payment-back-btn"
+                      onClick={() =>
+                        navigate(`/${selectedCountry.code}/checkout/address`)
+                      }
+                    >
+                      <MdKeyboardArrowLeft />
+                      Back to Address
+                    </button>
+                    <button
+                      type="button"
+                      className="payment-place-order-btn"
+                      onClick={placeItemOrder}
+                    >
+                      Proceed to Payment
+                    </button>
+                  </div>
                 </div>
-                <div className="cash-on-delivery-button-wrapper">
-                  <button
-                    type="button"
-                    className="cancel-btn"
-                    onClick={() => navigate(-1)}
-                  >
-                    <IoChevronBackOutline
-                      size={18}
-                      style={{ fontWeight: 700 }}
-                    />
-                    Go Back
-                  </button>
-                  <button type="button" onClick={placeItemOrder}>
-                    Place Order
-                  </button>
-                </div>
-              </div>
-            )}
-            {!paymentMethod && (
-              <div className="checkout-payment-empty-section">
-                <h3>Please select a payment method</h3>
-                <p>
-                  Choose a payment option from the left to proceed with your
-                  order.
-                </p>
-                {!userDetails.status && (
-                  <p
-                    style={{
-                      color: "red",
-                      fontWeight: "500",
-                      fontSize: "15px",
-                      marginTop: "1rem",
-                    }}
-                  >
-                    Your account is inactive. Cash on Delivery is not available.
+              )}
+
+              {!paymentMethod && (
+                <div className="checkout-payment-empty-section">
+                  <h3>Please select a payment method</h3>
+                  <p>
+                    Choose a payment option above to proceed with your order.
                   </p>
-                )}
-              </div>
-            )}
+                  {!userDetails.status && (
+                    <div className="payment-error-message">
+                      Your account is inactive. Cash on Delivery is not
+                      available.
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <CheckoutSummeryCard cartItem={checkoutData} />
           </div>
         </div>
       ) : (
