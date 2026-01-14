@@ -5,7 +5,6 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: 'dist',
     rollupOptions: {
       output: {
         manualChunks: undefined,
@@ -16,6 +15,4 @@ export default defineConfig({
   server: {
     host: true,
   },
-  // Ensure proper base path for Vercel
-  base: '/',
 })
