@@ -245,7 +245,7 @@ export default function NavBar() {
         ref={headerRef}
         className={`header-sec ${isSticky ? " sticky" : ""}`}
       >
-        <div className="wrapper">
+        <div className="container">
           <div className="header-row">
             <div className="header-col1">
               <div className="logo">

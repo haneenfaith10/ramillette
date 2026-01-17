@@ -510,7 +510,7 @@ export default function Productlist() {
           </div>
         </div>
         <div className="testimonial-sec">
-          <div className="wrapper">
+          <div className="container">
             <Testimonial reviews={reviews} />
           </div>
         </div>

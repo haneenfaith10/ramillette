@@ -85,7 +85,7 @@ export default function Topheader() {
   return (
     <>
       <div className="top-header-sec">
-        <div className="wrapper">
+        <div className="container">
           <div className="top-header-row">
             <div className="topheader-col1">
               <div className="store-location">
