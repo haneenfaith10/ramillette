@@ -11,7 +11,7 @@ export default function Shipping() {
 
   return (
     <div>
-      <div className="shipping-sec">
+      <div className="">
         <div className="">
           <div className="shipping-row">
             <div className="shipping-col1">

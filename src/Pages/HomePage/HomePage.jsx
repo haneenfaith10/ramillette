@@ -35,6 +35,28 @@ export default function HomePage() {
       <TopHeader />
       <NavBar />
       <Banner />
+      <div className="product-sec">
+        <div className="container">
+          <h2>
+            Latest <span>Products</span>
+          </h2>
+          <div className="product-cards-row">
+            {latestProducts && latestProducts.length > 0 ? (
+              latestProducts
+                .slice(0, 4)
+                .map((product) => (
+                  <Productcard
+                    key={product._id}
+                    product={product}
+                    maxLength={27}
+                  />
+                ))
+            ) : (
+              <div className="no-product">No Product Found</div>
+            )}
+          </div>
+        </div>
+      </div>
       <div className="best-seller-sec">
         <div className="container">
           <h2>
@@ -49,22 +71,6 @@ export default function HomePage() {
             Shop By <span> Category</span>
           </h2>
           <Category />
-        </div>
-      </div>
-      <div className="product-sec">
-        <div className="container">
-          <h2>
-            Latest <span>Products</span>
-          </h2>
-          <div className="product-cards-row">
-            {latestProducts && latestProducts.length > 0 ? (
-              latestProducts.slice(0, 4).map((product) => (
-                <Productcard key={product._id} product={product} maxLength={27} />
-              ))
-            ) : (
-              <div className="no-product">No Product Found</div>
-            )}
-          </div>
         </div>
       </div>
       <div className="shippping-sec">

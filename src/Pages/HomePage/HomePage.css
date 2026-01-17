@@ -1,5 +1,6 @@
 .best-seller-sec {
   padding: 40px 0px;
+  background-color: #fafafa;
 }
 .best-seller-sec h2 {
   font-size: 3rem;
@@ -14,7 +15,7 @@
 }
 .category-sec {
   padding: 80px 0px;
-  background-color: #fafafa;
+  /* background-color: #fafafa; */
 }
 
 .category-sec h2 {
@@ -80,11 +81,11 @@
   background-color: #fafafa;
 }
 
-.product-cards-row .product-image img,
+/* .product-cards-row .product-image img,
 .product-cards-row .product-card:hover .product-hover-image img {
   height: 220px;
   max-width: 100%;
-}
+} */
 
 .product-cards-row .product-content {
   margin-top: 16px;
