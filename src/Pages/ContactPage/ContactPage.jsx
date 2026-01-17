@@ -52,7 +52,7 @@ export default function ContactPage() {
         <Topheader />
         <NavBar />
         <div className="contact-page">
-          <div className="wrapper">
+          <div className="container">
             <div className="contact-header">
               <h2>Contact Us</h2>
               <p>
@@ -112,6 +112,7 @@ export default function ContactPage() {
                       value={formik.values.subject}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
+                      className={formik.values.subject === "" ? "placeholder-selected" : ""}
                     >
                       <option value="">Subject</option>
                       <option value="General Inquiry">General Inquiry</option>

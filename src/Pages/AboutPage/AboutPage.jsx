@@ -29,7 +29,7 @@ export default function AboutPage() {
         <TopHeader />
         <NavBar />
         <div className="about-page">
-          <div className="wrapper">
+          <div className="container">
             <div className="about-page-content">
               <div className="about-row">
                 <div className="about-col1">
@@ -62,11 +62,11 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="shippping-sec">
-            <div className="wrapper">
+            <div className="container">
               <Shipping />
             </div>
           </div>
-          <div className="wrapper">
+          <div className="container">
             <div className="manufacturing-sec">
               <div className="manufactring-row">
                 <div className="manufacturing-col1">
