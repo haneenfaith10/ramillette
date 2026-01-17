@@ -52,14 +52,14 @@ export default function HomePage() {
         </div>
       </div>
       <div className="product-sec">
-        <div className="wrapper">
+        <div className="container">
           <h2>
             Latest <span>Products</span>
           </h2>
           <div className="product-cards-row">
             {latestProducts && latestProducts.length > 0 ? (
-              latestProducts.map((product) => (
-                <Productcard key={product._id} product={product} />
+              latestProducts.slice(0, 4).map((product) => (
+                <Productcard key={product._id} product={product} maxLength={27} />
               ))
             ) : (
               <div className="no-product">No Product Found</div>

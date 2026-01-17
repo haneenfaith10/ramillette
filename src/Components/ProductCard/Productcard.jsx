@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateCart } from "../../redux/slices/userSlice";
 
 export default function Productcard(Props) {
-  const { product } = Props;
+  const { product, maxLength } = Props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -97,9 +97,9 @@ export default function Productcard(Props) {
                 alt="product-image-2"
               />
             </div>
-            <div className="product-new-label">
+            {/* <div className="product-new-label">
               <p>{product?.specialOffers[0]?.badge || "New"}</p>
-            </div>
+            </div> */}
             {(product?.specialOffers?.length > 0 ||
               product?.productDiscount > 0) && (
               <div className="product-offer-label">
@@ -113,7 +113,11 @@ export default function Productcard(Props) {
           </Link>
         </div>
         <div className="product-content">
-          <h3>{product?.productName || ""}</h3>
+          <h3>
+            {maxLength && product?.productName?.length > maxLength
+              ? `${product.productName.substring(0, maxLength)}...`
+              : product?.productName || ""}
+          </h3>
           <p>
             {selectedCountry.priceLabel}
             {getDiscountedPrice(productPrice, product?.productDiscount)}
