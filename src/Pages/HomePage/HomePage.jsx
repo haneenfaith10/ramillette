@@ -68,7 +68,7 @@ export default function HomePage() {
         </div>
       </div>
       <div className="shippping-sec">
-        <div className="wrapper">
+        <div className="container">
           <Shipping />
         </div>
       </div>

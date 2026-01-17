@@ -12,7 +12,7 @@ export default function Shipping() {
   return (
     <div>
       <div className="shipping-sec">
-        <div className="wrapper">
+        <div className="">
           <div className="shipping-row">
             <div className="shipping-col1">
               <div className="shipping-card">
