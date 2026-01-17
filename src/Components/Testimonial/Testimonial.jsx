@@ -1,32 +1,50 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./Testimonial.css";
 import Rating from "@mui/material/Rating";
+import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import UserAvatar from "../../assets/images/userAvathar.jpg";
 
 const TestimonialSlider = (Props) => {
   const { reviews } = Props;
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const sliderRef = useRef(null);
+
+  // Slider settings with autoplay
   const settings = {
+    dots: false,
     infinite: true,
-    slidesToShow: 5,
+    speed: 500,
+    slidesToShow: 3,
     slidesToScroll: 1,
-    centerMode: true,
-    centerPadding: "0px", // Keeps slides centered
-    arrows: reviews.length > 1,
-    loop: true,
-    focusOnSelect: true,
-    beforeChange: (_, newIndex) => setCurrentSlide(newIndex),
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnHover: true,
+    arrows: false,
+    swipe: true,
+    touchMove: true,
+    swipeToSlide: true,
+    useCSS: true,
+    useTransform: true,
     responsive: [
       {
         breakpoint: 1024,
-        settings: { slidesToShow: 5, centerPadding: "30px" },
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          swipe: true,
+          touchMove: true,
+        },
       },
-      { breakpoint: 768, settings: { slidesToShow: 5, centerPadding: "20px" } },
-      { breakpoint: 600, settings: { slidesToShow: 3, centerPadding: "0px" } },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          swipe: true,
+          touchMove: true,
+        },
+      },
     ],
   };
 
@@ -34,82 +52,44 @@ const TestimonialSlider = (Props) => {
     <div className="testimonial-container">
       {reviews && reviews.length > 0 && (
         <>
+          {/* <div className="testimonial-badge">TESTIMONIALS</div> */}
           <h2>
-            What Our <span>Customers</span> Have To Say
+            Our trusted <span>Clients</span>
           </h2>
-          <Slider {...settings} className="testimonial-slider" ref={sliderRef}>
-            {reviews.map((testimonial, index) => {
-              let slideClass = "testimonial-card";
-
-              const totalSlides = reviews.length;
-              const leftIndex = (currentSlide - 1 + totalSlides) % totalSlides;
-              const rightIndex = (currentSlide + 1) % totalSlides;
-              const leftOuterIndex =
-                (currentSlide - 2 + totalSlides) % totalSlides;
-              const rightOuterIndex = (currentSlide + 2) % totalSlides;
-
-              if (index === currentSlide) {
-                slideClass += " active";
-              } else if (index === leftIndex || index === rightIndex) {
-                slideClass += " adjacent";
-              } else if (
-                index === leftOuterIndex ||
-                index === rightOuterIndex
-              ) {
-                slideClass += " outer";
-              }
-
-              return (
-                <div key={index} className={slideClass}>
-                  <img
-                    src={`${import.meta.env.VITE_BASE_URL}/${
-                      testimonial?.user?.userImage
-                    }`}
-                    alt={testimonial?.user?.userImage || "review"}
-                    className="testimonial-img"
-                    onError={(e) => {
-                      e.currentTarget.src = UserAvatar;
-                    }}
-                  />
+          <Slider {...settings} className="testimonial-slider">
+            {reviews.map((testimonial, index) => (
+              <div key={index} className="testimonial-slide">
+                <div className="testimonial-card">
+                  <FormatQuoteIcon className="quote-icon" />
+                  <div className="review-content">
+                    <p className="review-text">
+                      {testimonial?.content ||
+                        "Great product and excellent service!"}
+                    </p>
+                  </div>
+                  <div className="testimonial-separator"></div>
+                  <div className="testimonial-author-info">
+                    <img
+                      src={`${import.meta.env.VITE_BASE_URL}/${
+                        testimonial?.user?.userImage
+                      }`}
+                      alt={testimonial?.user?.firstName || "user"}
+                      className="testimonial-avatar"
+                      onError={(e) => {
+                        e.currentTarget.src = UserAvatar;
+                      }}
+                    />
+                    <div className="author-details">
+                      <p className="author-name">
+                        {testimonial?.user?.firstName || ""}{" "}
+                        {testimonial?.user?.lastName || ""}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </Slider>
-          {/* Dynamic Review Content */}
-          <div className="testimonial-content">
-            <p className="stars">
-              <Rating
-                name="read-only"
-                value={
-                  reviews &&
-                  reviews[currentSlide] &&
-                  reviews[currentSlide]?.rating
-                    ? reviews[currentSlide]?.rating
-                    : 0
-                }
-                sx={{ fontSize: "40px" }}
-                precision={0.5}
-                readOnly
-              />
-            </p>
-            <p className="review-text">
-              {reviews &&
-                reviews[currentSlide] &&
-                reviews[currentSlide].content &&
-                reviews[currentSlide]?.content}
-            </p>
-            <p className="author">
-              —{" "}
-              {reviews &&
-                reviews[currentSlide] &&
-                // reviews[currentSlide].firstName &&
-                reviews[currentSlide]?.user.firstName}{" "}
-              {reviews &&
-                reviews[currentSlide] &&
-                // reviews[currentSlide].lastName &&
-                reviews[currentSlide]?.user.lastName}
-            </p>
-          </div>
         </>
       )}
     </div>

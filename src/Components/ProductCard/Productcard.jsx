@@ -76,6 +76,16 @@ export default function Productcard(Props) {
     }
   }
 
+
+  function truncateProductName(name) {
+    if (!name) return "";
+    const maxLength = 22;
+    if (name.length > maxLength) {
+      return `${name.substring(0, maxLength)}...`;
+    }
+    return name;
+  }
+
   return (
     <div>
       <div className="product-card">
@@ -113,19 +123,19 @@ export default function Productcard(Props) {
           </Link>
         </div>
         <div className="product-content">
-          <h3>
-            {maxLength && product?.productName?.length > maxLength
-              ? `${product.productName.substring(0, maxLength)}...`
-              : product?.productName || ""}
-          </h3>
-          <p>
-            {selectedCountry.priceLabel}
-            {getDiscountedPrice(productPrice, product?.productDiscount)}
-            <span className="cutting-money">
+          <div className="product-info-section">
+            <h3>
+              {truncateProductName(product?.productName)}
+            </h3>
+            <p>
               {selectedCountry.priceLabel}
-              {productPrice || 0}.00
-            </span>
-          </p>
+              {getDiscountedPrice(productPrice, product?.productDiscount)}
+              <span className="cutting-money">
+                {selectedCountry.priceLabel}
+                {productPrice || 0}.00
+              </span>
+            </p>
+          </div>
           <div className="quick-btn">
             <Tooltip text="Quick View">
               <button
@@ -137,18 +147,20 @@ export default function Productcard(Props) {
             </Tooltip>
           </div>
         </div>
-        {isInCart() ? (
-          <button
-            className="secondry-btn buy-now"
-            onClick={() => navigate(`/${selectedCountry.code}/checkout`)}
-          >
-            Buy Now
-          </button>
-        ) : (
-          <button className="secondry-btn" onClick={addProductToCart}>
-            ADD TO CART
-          </button>
-        )}
+        <div className="product-button-section">
+          {isInCart() ? (
+            <button
+              className="secondry-btn buy-now"
+              onClick={() => navigate(`/${selectedCountry.code}/checkout`)}
+            >
+              Buy Now
+            </button>
+          ) : (
+            <button className="secondry-btn" onClick={addProductToCart}>
+              ADD TO CART
+            </button>
+          )}
+        </div>
       </div>
       <Popup
         isOpen={isOpen}
