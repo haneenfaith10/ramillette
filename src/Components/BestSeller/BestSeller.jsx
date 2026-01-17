@@ -19,30 +19,39 @@ const Bestseller = () => {
   }, [selectedCountry._id]);
 
   const settings = {
-    infinite: false,
-    speed: 500,
-    slidesToShow: 5,
+    infinite: true,
+    speed: 800,
+    slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true,
-    loop: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 3000,
+    pauseOnHover: true,
+    pauseOnFocus: true,
+    cssEase: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    easing: 'ease-in-out',
     responsive: [
       {
-        breakpoint: 1300,
+        breakpoint: 1200,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 3,
+          infinite: true,
+          autoplay: true,
         },
       },
       {
         breakpoint: 991,
         settings: {
           slidesToShow: 2,
+          infinite: true,
+          autoplay: true,
         },
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
+          infinite: true,
+          autoplay: true,
         },
       },
     ],

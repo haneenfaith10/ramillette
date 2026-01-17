@@ -36,7 +36,7 @@ export default function HomePage() {
       <NavBar />
       <Banner />
       <div className="best-seller-sec">
-        <div className="wrapper">
+        <div className="container">
           <h2>
             Discover <span>Our Bestsellers</span>
           </h2>
