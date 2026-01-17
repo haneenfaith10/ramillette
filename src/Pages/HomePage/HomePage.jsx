@@ -44,7 +44,7 @@ export default function HomePage() {
         </div>
       </div>
       <div className="category-sec">
-        <div className="wrapper">
+        <div className="container">
           <h2>
             Shop By <span> Category</span>
           </h2>
