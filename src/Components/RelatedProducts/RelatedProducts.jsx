@@ -57,33 +57,25 @@ export default function RelatedProducts({ relatedProducts }) {
     dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 1,
     slidesToScroll: 1,
     centerMode: false,
     centerPadding: "0px",
+    arrows: false,
+    swipe: true,
+    touchMove: true,
+    draggable: true,
     responsive: [
-      {
-        breakpoint: 1400,
-        settings: {
-          slidesToShow: 3,
-          centerMode: false,
-          centerPadding: "0px",
-        },
-      },
-      {
-        breakpoint: 991,
-        settings: {
-          slidesToShow: 3,
-          centerMode: false,
-          centerPadding: "0px",
-        },
-      },
       {
         breakpoint: 767,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           centerMode: false,
           centerPadding: "0px",
+          arrows: false,
+          swipe: true,
+          touchMove: true,
+          draggable: true,
         },
       },
       {
@@ -92,12 +84,19 @@ export default function RelatedProducts({ relatedProducts }) {
           slidesToShow: 1,
           centerMode: false,
           centerPadding: "0px",
+          arrows: false,
+          swipe: true,
+          touchMove: true,
+          draggable: true,
         },
       },
     ],
   };
 
   if (!relatedProducts || relatedProducts.length === 0) return null;
+
+  // Limit to 4 products for desktop
+  const displayProducts = relatedProducts.slice(0, 4);
 
   return (
     <div className="related-products-slider">
@@ -106,13 +105,24 @@ export default function RelatedProducts({ relatedProducts }) {
           <h2>
             Related Products
           </h2>
-          <Slider {...settings}>
-            {relatedProducts.map((product) => (
-              <div key={product._id} className="slider-item">
+          {/* Grid layout for desktop */}
+          <div className="related-products-grid">
+            {displayProducts.map((product) => (
+              <div key={product._id} className="grid-item">
                 <CustomRelatedProductCard product={product} />
               </div>
             ))}
-          </Slider>
+          </div>
+          {/* Slider for mobile */}
+          <div className="related-products-mobile-slider">
+            <Slider {...settings}>
+              {relatedProducts.map((product) => (
+                <div key={product._id} className="slider-item">
+                  <CustomRelatedProductCard product={product} />
+                </div>
+              ))}
+            </Slider>
+          </div>
         </div>
       </div>
     </div>

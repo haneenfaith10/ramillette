@@ -208,15 +208,18 @@
 /* TABLET (769px - 991px) - 2 COLUMNS */
 @media (max-width: 991px) and (min-width: 769px) {
   .product-list-card .image-wrapper {
-    height: 240px;
-    min-height: 240px;
-    max-height: 240px;
+    height: 200px;
+    min-height: 200px;
+    max-height: 200px;
   }
   
   .product-list-card .product-image {
-    height: 240px;
-    min-height: 240px;
-    max-height: 240px;
+    width: 100%;
+    height: 200px;
+    min-height: 200px;
+    max-height: 200px;
+    object-fit: contain;
+    object-position: center;
   }
 
   .product-list-card .product-name {
@@ -239,15 +242,18 @@
   }
 
   .product-list-card .image-wrapper {
-    height: 220px;
-    min-height: 220px;
-    max-height: 220px;
+    height: 180px;
+    min-height: 180px;
+    max-height: 180px;
   }
   
   .product-list-card .product-image {
-    height: 220px;
-    min-height: 220px;
-    max-height: 220px;
+    width: 100%;
+    height: 180px;
+    min-height: 180px;
+    max-height: 180px;
+    object-fit: contain;
+    object-position: center;
   }
 
   .product-list-card .product-name {
@@ -317,15 +323,18 @@
 /* MOBILE MEDIUM (376px - 480px) */
 @media (max-width: 480px) and (min-width: 376px) {
   .product-list-card .image-wrapper {
-    height: 200px;
-    min-height: 200px;
-    max-height: 200px;
+    height: 160px;
+    min-height: 160px;
+    max-height: 160px;
   }
   
   .product-list-card .product-image {
-    height: 200px;
-    min-height: 200px;
-    max-height: 200px;
+    width: 100%;
+    height: 160px;
+    min-height: 160px;
+    max-height: 160px;
+    object-fit: contain;
+    object-position: center;
   }
 
   .product-list-card .product-name {
@@ -351,17 +360,17 @@
 /* MOBILE SMALL (≤375px) */
 @media (max-width: 375px) {
   .product-list-card .image-wrapper {
-    height: 200px;
-    min-height: 200px;
-    max-height: 200px;
+    height: 160px;
+    min-height: 160px;
+    max-height: 160px;
   }
   
   .product-list-card .product-image {
     width: 100%;
-    height: 200px;
-    min-height: 200px;
-    max-height: 200px;
-    object-fit: cover;
+    height: 160px;
+    min-height: 160px;
+    max-height: 160px;
+    object-fit: contain;
     object-position: center;
   }
 
@@ -416,15 +425,18 @@
 /* EXTRA SMALL MOBILE (≤320px) */
 @media (max-width: 320px) {
   .product-list-card .image-wrapper {
-    height: 180px;
-    min-height: 180px;
-    max-height: 180px;
+    height: 140px;
+    min-height: 140px;
+    max-height: 140px;
   }
   
   .product-list-card .product-image {
-    height: 180px;
-    min-height: 180px;
-    max-height: 180px;
+    width: 100%;
+    height: 140px;
+    min-height: 140px;
+    max-height: 140px;
+    object-fit: contain;
+    object-position: center;
   }
 
   .product-list-card .product-name {

@@ -1,13 +1,55 @@
 /* Related Products Slider Container */
 .related-products-slider {
   width: 100%;
-  /* padding: 0 3rem; */
+  max-width: 100%;
   margin: 60px 0;
   text-align: left;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
 }
 
 .related-product-wrap {
   text-align: left;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Grid layout for desktop - show 4 products */
+.related-products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.related-products-grid .grid-item {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.related-products-grid .related-product-card {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Hide slider on desktop, show grid */
+.related-products-mobile-slider {
+  display: none;
+}
+
+.related-products-slider .slick-slider {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
 }
 
 .related-product-wrap h2 {
@@ -26,11 +68,25 @@
   display: flex !important;
   justify-content: flex-start;
   align-items: stretch;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Ensure slider shows only 1 card on mobile */
+.related-products-mobile-slider .slick-slide {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.related-products-mobile-slider .slick-slide > div {
+  width: 100% !important;
+  min-width: 0 !important;
 }
 
 /* Product Card */
 .related-product-card {
   width: 100%;
+  max-width: 100%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   border-radius: 12px;
   background: #fff;
@@ -42,6 +98,8 @@
   height: 100%;
   text-decoration: none;
   color: inherit;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .related-product-card:hover {
@@ -139,26 +197,61 @@
   justify-content: flex-start !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 .related-products-slider .slick-slide {
   display: flex;
   height: auto;
   justify-content: flex-start;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .related-products-slider .slick-slide > div {
   width: 100%;
+  max-width: 100%;
   height: 100%;
   display: flex;
   justify-content: flex-start;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .related-products-slider .slick-list {
   margin: 0 -10px;
   padding: 10px 0;
   text-align: left;
-  overflow: visible;
+  overflow: hidden;
+  width: calc(100% + 20px);
+  max-width: calc(100% + 20px);
+}
+
+/* Mobile slider specific - ensure single card */
+.related-products-mobile-slider .slick-list {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.related-products-mobile-slider .slick-track {
+  width: 100% !important;
+  display: flex !important;
+}
+
+.related-products-mobile-slider .slick-slide {
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  flex: 0 0 100% !important;
+}
+
+.related-products-mobile-slider .slider-item {
+  padding: 0;
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 .related-products-slider .slick-list .slick-track {
@@ -176,6 +269,9 @@
   z-index: 10;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
 }
 
 .related-products-slider .slick-prev:hover,
@@ -186,10 +282,24 @@
 
 .related-products-slider .slick-prev:before,
 .related-products-slider .slick-next:before {
-  color: #333;
-  font-size: 22px;
-  font-weight: 700;
-  opacity: 1;
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  border: solid #333;
+  border-width: 0 3px 3px 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.related-products-slider .slick-prev:before {
+  transform: translate(-50%, -50%) rotate(135deg);
+}
+
+.related-products-slider .slick-next:before {
+  transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 .related-products-slider .slick-prev {
@@ -207,8 +317,14 @@
 
 /* Responsive Design */
 @media (max-width: 1199px) {
+  .related-products-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
   .related-products-slider {
     padding: 0 2.5rem;
+    overflow: hidden;
   }
 
   .related-product-image-wrapper {
@@ -226,9 +342,19 @@
 }
 
 @media (max-width: 991px) {
+  /* Hide grid, show slider on tablet and below */
+  .related-products-grid {
+    display: none;
+  }
+
+  .related-products-mobile-slider {
+    display: block;
+  }
+
   .related-products-slider {
     padding: 0 2rem;
     margin: 50px 0;
+    overflow: hidden;
   }
 
   .related-product-wrap h2 {
@@ -253,19 +379,27 @@
     font-size: 16px;
   }
 
-  .related-products-slider .slick-prev {
-    left: -18px;
-  }
-
+  /* Hide navigation arrows on tablet and mobile */
+  .related-products-slider .slick-prev,
   .related-products-slider .slick-next {
-    right: -18px;
+    display: none !important;
   }
 }
 
 @media (max-width: 767px) {
+  /* Hide grid, show slider on mobile */
+  .related-products-grid {
+    display: none;
+  }
+
+  .related-products-mobile-slider {
+    display: block;
+  }
+
   .related-products-slider {
     padding: 0 1.5rem;
     margin: 40px 0;
+    overflow: hidden;
   }
 
   .related-product-wrap h2 {
@@ -295,18 +429,10 @@
     font-size: 13px;
   }
 
+  /* Hide navigation arrows on mobile */
   .related-products-slider .slick-prev,
   .related-products-slider .slick-next {
-    width: 38px;
-    height: 38px;
-  }
-
-  .related-products-slider .slick-prev {
-    left: -15px;
-  }
-
-  .related-products-slider .slick-next {
-    right: -15px;
+    display: none !important;
   }
 }
 
@@ -314,6 +440,7 @@
   .related-products-slider {
     padding: 0 1rem;
     margin: 35px 0;
+    overflow: hidden;
   }
 
   .related-product-wrap h2 {
@@ -349,23 +476,10 @@
     left: 10px;
   }
 
+  /* Hide navigation arrows on smaller screens */
   .related-products-slider .slick-prev,
   .related-products-slider .slick-next {
-    width: 36px;
-    height: 36px;
-  }
-
-  .related-products-slider .slick-prev:before,
-  .related-products-slider .slick-next:before {
-    font-size: 20px;
-  }
-
-  .related-products-slider .slick-prev {
-    left: -12px;
-  }
-
-  .related-products-slider .slick-next {
-    right: -12px;
+    display: none !important;
   }
 
   .related-products-slider .slider-item {
@@ -385,6 +499,7 @@
 
   .related-products-slider {
     padding: 0 0.8rem;
+    overflow: hidden;
   }
 
   .related-product-wrap h2 {
@@ -402,10 +517,16 @@
   height: inherit !important;
   display: flex !important;
   justify-content: flex-start;
+  min-width: 0 !important;
+  max-width: 100% !important;
 }
 
 .related-products-slider .slick-slide > div {
   height: 100%;
+  width: 100%;
+  max-width: 100%;
   display: flex !important;
   justify-content: flex-start;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
 }
