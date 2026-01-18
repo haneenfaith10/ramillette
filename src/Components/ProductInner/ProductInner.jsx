@@ -19,6 +19,9 @@ import {
   addToWishlist,
   removeFromWishlist,
 } from "../../services/wishlistApiServices";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 // Accordion component
 const Accordion = ({ title, children, defaultOpen = false, isOpen, onToggle, id }) => {
@@ -241,6 +244,21 @@ export default function ProductInner(Props) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
   const [isZooming, setIsZooming] = useState(false);
+
+  // Slider settings for mobile
+  const sliderSettings = {
+    dots: true,
+    infinite: false,
+    speed: 300,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    swipe: true,
+    touchMove: true,
+    draggable: true,
+    arrows: false,
+    initialSlide: activeImageIndex,
+    afterChange: (index) => setActiveImageIndex(index),
+  };
   const [showShareModal, setShowShareModal] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
 
@@ -308,83 +326,140 @@ export default function ProductInner(Props) {
         <div className="product-inner-page-wrap">
           <div className="product-inner-left">
             {galleryImages && galleryImages.length > 0 && (
-              <div className="product-gallery">
-                <div className="product-gallery-thumbs">
-                  {galleryImages.map((img, index) => (
-                    <button
-                      type="button"
-                      key={index}
-                      className={`product-gallery-thumb ${
-                        index === activeImageIndex ? "active" : ""
-                      }`}
-                      onClick={() => setActiveImageIndex(index)}
-                    >
-                      <img
-                        src={`${import.meta.env.VITE_BASE_URL}/${img.path}`}
-                        alt=""
-                      />
-                    </button>
-                  ))}
-                </div>
-                <div
-                  className="product-gallery-main"
-                  onMouseEnter={() => setIsZooming(true)}
-                  onMouseLeave={() => setIsZooming(false)}
-                  onMouseMove={(e) => {
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    const x = ((e.clientX - rect.left) / rect.width) * 100;
-                    const y = ((e.clientY - rect.top) / rect.height) * 100;
-                    setZoomPosition({ x, y });
-                  }}
-                >
-                  {/* Wishlist and Share Icons */}
-                  <div className="product-gallery-actions">
-                    <button
-                      type="button"
-                      className="product-gallery-action-btn"
-                      onClick={() => {
-                        if (isWishListed()) {
-                          removeProductFromWishlist();
-                        } else {
-                          addPRoductToWishlist();
+              <>
+                {/* Desktop Gallery - Thumbnails + Main Image */}
+                <div className="product-gallery product-gallery-desktop">
+                  <div className="product-gallery-thumbs">
+                    {galleryImages.map((img, index) => (
+                      <button
+                        type="button"
+                        key={index}
+                        className={`product-gallery-thumb ${
+                          index === activeImageIndex ? "active" : ""
+                        }`}
+                        onClick={() => setActiveImageIndex(index)}
+                      >
+                        <img
+                          src={`${import.meta.env.VITE_BASE_URL}/${img.path}`}
+                          alt=""
+                        />
+                      </button>
+                    ))}
+                  </div>
+                  <div
+                    className="product-gallery-main"
+                    onMouseEnter={() => setIsZooming(true)}
+                    onMouseLeave={() => setIsZooming(false)}
+                    onMouseMove={(e) => {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      const x = ((e.clientX - rect.left) / rect.width) * 100;
+                      const y = ((e.clientY - rect.top) / rect.height) * 100;
+                      setZoomPosition({ x, y });
+                    }}
+                  >
+                    {/* Wishlist and Share Icons */}
+                    <div className="product-gallery-actions">
+                      <button
+                        type="button"
+                        className="product-gallery-action-btn"
+                        onClick={() => {
+                          if (isWishListed()) {
+                            removeProductFromWishlist();
+                          } else {
+                            addPRoductToWishlist();
+                          }
+                        }}
+                        title={
+                          isWishListed()
+                            ? "Remove from wishlist"
+                            : "Add to wishlist"
                         }
-                      }}
-                      title={
-                        isWishListed()
-                          ? "Remove from wishlist"
-                          : "Add to wishlist"
-                      }
-                    >
-                      {isWishListed() ? (
-                        <FaHeart color="red" size={20} />
-                      ) : (
-                        <FaRegHeart size={20} />
-                      )}
-                    </button>
-                    <button
-                      type="button"
-                      className="product-gallery-action-btn"
-                      onClick={() => setShowShareModal(true)}
-                      title="Share product"
-                    >
-                      <IoShareOutline size={20} />
-                    </button>
-                  </div>
-                  <div className="product-gallery-main-wrapper">
-                    <img
-                      src={`${import.meta.env.VITE_BASE_URL}/${
-                        galleryImages[activeImageIndex].path
-                      }`}
-                      alt=""
-                      className="product-gallery-main-image"
-                      style={{
-                        transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
-                        transform: isZooming ? "scale(2.5)" : "scale(1)",
-                      }}
-                    />
+                      >
+                        {isWishListed() ? (
+                          <FaHeart color="red" size={20} />
+                        ) : (
+                          <FaRegHeart size={20} />
+                        )}
+                      </button>
+                      <button
+                        type="button"
+                        className="product-gallery-action-btn"
+                        onClick={() => setShowShareModal(true)}
+                        title="Share product"
+                      >
+                        <IoShareOutline size={20} />
+                      </button>
+                    </div>
+                    <div className="product-gallery-main-wrapper">
+                      <img
+                        src={`${import.meta.env.VITE_BASE_URL}/${
+                          galleryImages[activeImageIndex].path
+                        }`}
+                        alt=""
+                        className="product-gallery-main-image"
+                        style={{
+                          transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                          transform: isZooming ? "scale(2.5)" : "scale(1)",
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
+
+                {/* Mobile Gallery - Slider */}
+                <div className="product-gallery product-gallery-mobile">
+                  <div className="product-gallery-mobile-slider">
+                    <Slider {...sliderSettings}>
+                      {galleryImages.map((img, index) => (
+                        <div key={index} className="product-gallery-mobile-slide">
+                          <div className="product-gallery-mobile-main">
+                            {/* Wishlist and Share Icons */}
+                            <div className="product-gallery-actions">
+                              <button
+                                type="button"
+                                className="product-gallery-action-btn"
+                                onClick={() => {
+                                  if (isWishListed()) {
+                                    removeProductFromWishlist();
+                                  } else {
+                                    addPRoductToWishlist();
+                                  }
+                                }}
+                                title={
+                                  isWishListed()
+                                    ? "Remove from wishlist"
+                                    : "Add to wishlist"
+                                }
+                              >
+                                {isWishListed() ? (
+                                  <FaHeart color="red" size={20} />
+                                ) : (
+                                  <FaRegHeart size={20} />
+                                )}
+                              </button>
+                              <button
+                                type="button"
+                                className="product-gallery-action-btn"
+                                onClick={() => setShowShareModal(true)}
+                                title="Share product"
+                              >
+                                <IoShareOutline size={20} />
+                              </button>
+                            </div>
+                            <div className="product-gallery-main-wrapper">
+                              <img
+                                src={`${import.meta.env.VITE_BASE_URL}/${img.path}`}
+                                alt={`Product image ${index + 1}`}
+                                className="product-gallery-main-image"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </Slider>
+                  </div>
+                </div>
+              </>
             )}
           </div>
 

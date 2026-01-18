@@ -208,7 +208,7 @@
 }
 .checkout-address-address-item {
   list-style: none;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
   cursor: pointer;
 }
 
