@@ -67,10 +67,8 @@ export default function HomePage() {
                 speed={800}
                 slidesToShow={4}
                 slidesToScroll={1}
-                autoplay={true}
-                autoplaySpeed={3000}
-                pauseOnHover={true}
-                pauseOnFocus={true}
+                autoplay={false}
+                arrows={true}
                 cssEase="cubic-bezier(0.4, 0, 0.2, 1)"
                 easing="ease-in-out"
                 responsive={[
@@ -79,7 +77,8 @@ export default function HomePage() {
                     settings: {
                       slidesToShow: 3,
                       infinite: true,
-                      autoplay: true,
+                      autoplay: false,
+                      arrows: true,
                     },
                   },
                   {
@@ -87,7 +86,8 @@ export default function HomePage() {
                     settings: {
                       slidesToShow: 2,
                       infinite: true,
-                      autoplay: true,
+                      autoplay: false,
+                      arrows: true,
                     },
                   },
                   {
@@ -95,7 +95,8 @@ export default function HomePage() {
                     settings: {
                       slidesToShow: 1,
                       infinite: true,
-                      autoplay: true,
+                      autoplay: false,
+                      arrows: true,
                     },
                   },
                 ]}

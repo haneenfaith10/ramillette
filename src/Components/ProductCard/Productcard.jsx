@@ -3,8 +3,6 @@ import Perfumimg from "../../assets/images/perfume.png";
 import Perfumhoverimg from "../../assets/images/perfume-hover.png";
 import "./Productcard.css";
 import { useState } from "react";
-import quickview from "../../assets/images/search.png";
-import Tooltip from "../Tooltip/Tooltip";
 import Popup from "../ProductPopup/ProductPopup";
 import { Link, useNavigate } from "react-router-dom";
 import { addToCart } from "../../services/userApiServices";
@@ -135,16 +133,6 @@ export default function Productcard(Props) {
               {productPrice || 0}.00
             </span>
           </p>
-          </div>
-          <div className="quick-btn">
-            <Tooltip text="Quick View">
-              <button
-                onClick={() => setIsOpen(true)}
-                className="quick-view-div"
-              >
-                <img src={quickview} alt="" />
-              </button>
-            </Tooltip>
           </div>
         </div>
         <div className="product-button-section">
