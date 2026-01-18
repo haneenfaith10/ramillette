@@ -13,6 +13,9 @@ import Footer from "../../Components/Footer/Footer";
 import { getLatestProductsForUser } from "../../services/productApiServices";
 import { useSelector } from "react-redux";
 import { getTestimonialData } from "../../services/testimonialApiServices";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export default function HomePage() {
   const [latestProducts, setLatestProducts] = useState([]);
@@ -40,7 +43,8 @@ export default function HomePage() {
           <h2>
             Latest <span>Products</span>
           </h2>
-          <div className="product-cards-row">
+          {/* Grid layout for desktop */}
+          <div className="product-cards-row product-cards-grid">
             {latestProducts && latestProducts.length > 0 ? (
               latestProducts
                 .slice(0, 4)
@@ -51,6 +55,60 @@ export default function HomePage() {
                     maxLength={27}
                   />
                 ))
+            ) : (
+              <div className="no-product">No Product Found</div>
+            )}
+          </div>
+          {/* Slider layout - same as BestSeller */}
+          <div className="product-cards-slider">
+            {latestProducts && latestProducts.length > 0 ? (
+              <Slider
+                infinite={true}
+                speed={800}
+                slidesToShow={4}
+                slidesToScroll={1}
+                autoplay={true}
+                autoplaySpeed={3000}
+                pauseOnHover={true}
+                pauseOnFocus={true}
+                cssEase="cubic-bezier(0.4, 0, 0.2, 1)"
+                easing="ease-in-out"
+                responsive={[
+                  {
+                    breakpoint: 1200,
+                    settings: {
+                      slidesToShow: 3,
+                      infinite: true,
+                      autoplay: true,
+                    },
+                  },
+                  {
+                    breakpoint: 991,
+                    settings: {
+                      slidesToShow: 2,
+                      infinite: true,
+                      autoplay: true,
+                    },
+                  },
+                  {
+                    breakpoint: 480,
+                    settings: {
+                      slidesToShow: 1,
+                      infinite: true,
+                      autoplay: true,
+                    },
+                  },
+                ]}
+              >
+                {latestProducts.slice(0, 4).map((product) => (
+                  <div key={product._id}>
+                    <Productcard
+                      product={product}
+                      maxLength={27}
+                    />
+                  </div>
+                ))}
+              </Slider>
             ) : (
               <div className="no-product">No Product Found</div>
             )}
