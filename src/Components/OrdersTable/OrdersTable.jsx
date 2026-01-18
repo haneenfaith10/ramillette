@@ -88,23 +88,25 @@ export default function OrdersTable() {
         <div className="no-orders">
           <img src={EmptyData} alt="No Orders" />
           <h3>No orders yet</h3>
-          <p>Looks like you haven’t purchased anything yet.</p>
+          <p>Looks like you haven't purchased anything yet.</p>
         </div>
       ) : (
         <>
-          <div
-            style={{ display: "flex", justifyContent: "flex-end", gap: "1rem" }}
-          >
+          <div className="orders-header">
+            <h2>My Orders</h2>
+          </div>
+
+          <div className="orders-filters">
             {/* Filter by Status */}
             <div className="filter-sort-controls">
               <div className="filter-dropdown">
-                <label htmlFor="statusFilter">Filter by Status:</label>
+                <label htmlFor="statusFilter">Status</label>
                 <select
                   id="statusFilter"
                   value={statusFilter}
                   onChange={handleStatusFilterChange}
                 >
-                  <option value="All">All</option>
+                  <option value="All">All Status</option>
                   <option value="Processing">Processing</option>
                   <option value="Cancelled">Cancelled</option>
                   <option value="Returned">Returned</option>
@@ -119,14 +121,13 @@ export default function OrdersTable() {
             {/* Filter by Currency */}
             <div className="filter-sort-controls">
               <div className="filter-dropdown">
-                <label htmlFor="currencyFilter">Filter by Currency:</label>
+                <label htmlFor="currencyFilter">Currency</label>
                 <select
                   id="currencyFilter"
                   value={currencyFilter}
                   onChange={handleCurrencyFilterChange}
-                  style={{ minWidth: "100px" }}
                 >
-                  <option value="All">All</option>
+                  <option value="All">All Currencies</option>
                   {countries &&
                     countries.map((country) => (
                       <option key={country._id} value={country.currency}>
@@ -136,9 +137,15 @@ export default function OrdersTable() {
                 </select>
               </div>
             </div>
-            <p className="order-table-clear-filters-btn" onClick={clearFilters}>
-              Clear Filters
-            </p>
+
+            {(statusFilter !== "All" || currencyFilter !== "All") && (
+              <button
+                className="order-table-clear-filters-btn"
+                onClick={clearFilters}
+              >
+                Clear Filters
+              </button>
+            )}
           </div>
 
           {showEmptyData ? (
@@ -149,6 +156,7 @@ export default function OrdersTable() {
             </div>
           ) : (
             <>
+              {/* Desktop Table View */}
               <div className="orders-table-container">
                 <table className="orders-table">
                   <thead>
@@ -239,6 +247,92 @@ export default function OrdersTable() {
                   </tbody>
                 </table>
               </div>
+
+              {/* Mobile Card View */}
+              <div className="orders-mobile-cards">
+                {paginatedOrders.map((order) => {
+                  const firstItem = order.orderItems[0];
+                  const product = firstItem?.productId;
+                  const moreItemsCount = order.orderItems.length - 1;
+
+                  return (
+                    <div key={order._id} className="order-card">
+                      <div className="order-card-header">
+                        <div className="order-card-product">
+                          <img
+                            src={`${import.meta.env.VITE_BASE_URL}/${
+                              product?.productImages?.[0].path
+                            }`}
+                            alt={product?.productName}
+                            className="order-card-image"
+                          />
+                          <div className="order-card-details">
+                            <div
+                              className="order-card-product-name"
+                              onClick={() => {
+                                if (
+                                  selectedCountry.currency.toUpperCase() ===
+                                  order.currency.toUpperCase()
+                                ) {
+                                  navigate(
+                                    `/${selectedCountry.code}/product-inner/${order.orderItems[0].productId._id}`
+                                  );
+                                }
+                              }}
+                            >
+                              {product?.productName}
+                            </div>
+                            {moreItemsCount > 0 && (
+                              <div className="order-card-more-items">
+                                + {moreItemsCount} more item
+                                {moreItemsCount > 1 ? "s" : ""}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <div className="order-card-status">
+                          <span
+                            className={`order-table-status-badge ${
+                              statusColorsClass[order.status]
+                            }`}
+                          >
+                            {order.status}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="order-card-info">
+                        <div className="order-card-info-row">
+                          <span className="order-card-info-label">Date</span>
+                          <span className="order-card-info-value">
+                            {new Date(order.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <div className="order-card-info-row">
+                          <span className="order-card-info-label">Total</span>
+                          <span className="order-card-info-value">
+                            {`${order.totalPrice.toFixed(2)} ${order.currency}`}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="order-card-actions">
+                        <button
+                          className="order-card-view-btn"
+                          onClick={() =>
+                            navigate(
+                              `/${selectedCountry?.code}/order/${order._id}`
+                            )
+                          }
+                        >
+                          View Order Details
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
               {filteredOrders.length > ORDERS_PER_PAGE && (
                 <div className="mui-pagination">
                   <Stack spacing={2} alignItems="center" marginTop={3}>

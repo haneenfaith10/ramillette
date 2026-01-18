@@ -20,7 +20,7 @@ export default function UserProfileWrapper() {
         <Topheader />
         <NavBar />
         <div className="user-profile-wrapper-container">
-          <InnerBanner />
+          {/* <InnerBanner /> */}
           <div className="wrapper">
             <div className="user-profile-content-wrapper">
               <UserProfileSidebar />
