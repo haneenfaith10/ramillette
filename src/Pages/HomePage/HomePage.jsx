@@ -137,9 +137,9 @@ export default function HomePage() {
           <Shipping />
         </div>
       </div>
-      <div className="secondry-banner-sec">
+      {/* <div className="secondry-banner-sec">
         <SecondryBanner />
-      </div>
+      </div> */}
       <div className="testimonial-sec">
         <div className="container">
           <Testimonial reviews={reviews} />

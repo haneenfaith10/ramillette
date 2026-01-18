@@ -167,7 +167,7 @@ export default function Productolistproductcard(Props) {
               className="secondry-btn buy-now-btn"
               onClick={() => navigate(`/${selectedCountry.code}/checkout`)}
             >
-              BUY NOW
+              Go to Checkout
             </button>
           ) : (
             <button className="secondry-btn" onClick={addProductToCart}>

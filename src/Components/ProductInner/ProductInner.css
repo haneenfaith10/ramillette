@@ -898,7 +898,7 @@
 .review-content {
   margin-top: 50px;
   padding: 20px 0;
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
 }
 
 .review-content-header h2 {

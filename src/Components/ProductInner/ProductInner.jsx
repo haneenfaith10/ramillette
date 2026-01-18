@@ -505,7 +505,7 @@ export default function ProductInner(Props) {
                         navigate(`/${selectedCountry.code}/checkout`)
                       }
                     >
-                      BUY NOW
+                      Go to Checkout
                     </button>
                   )}
                 </div>

@@ -390,6 +390,8 @@
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   flex-shrink: 0;
   align-self: flex-start;
+  overflow: visible;
+  max-height: none;
 }
 
 .checkout-address-order-summary h3 {
@@ -403,6 +405,8 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  overflow: visible;
+  max-height: none;
 }
 
 .checkout-address-order-summery-cart-item {
@@ -413,6 +417,12 @@
   margin: 0.5rem 0;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid #ccc;
+  transition: opacity 0.3s ease;
+  opacity: 1;
+}
+
+.checkout-address-order-summery-cart-item.hidden {
+  display: none;
 }
 
 .checkout-address-order-summery-cart-item img {
@@ -426,6 +436,18 @@
   display: flex;
   flex-direction: column;
   padding: 0 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-item-final-total {
+  font-weight: 600;
+  font-size: 14px;
+  color: #000;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: auto;
+  text-align: right;
 }
 
 .checkout-address-order-summery-cart-item-details .cart-item-product-name {
@@ -437,6 +459,37 @@
 .checkout-address-order-summery-cart-item-details .cart-item-product-price,
 .checkout-address-order-summery-cart-item-details .cart-item-product-total-price {
   font-size: 14px;
+}
+
+.checkout-show-more-arrow {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+  /* padding: 8px; */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .checkout-show-more-arrow {
+    display: flex;
+  }
+}
+
+.checkout-arrow-icon {
+  font-size: 24px;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.checkout-show-more-arrow:hover .checkout-arrow-icon {
+  color: var(--secondary-color);
+  transform: scale(1.1);
+}
+
+.checkout-show-more-arrow:active {
+  transform: scale(0.95);
 }
 
 .checkout-address-order-summery-total {
@@ -496,6 +549,8 @@
     top: 0;
     order: -1;
     padding: 1.75rem;
+    overflow: visible;
+    max-height: none;
   }
 }
 
@@ -588,6 +643,8 @@
     order: -1;
     padding: 1.25rem;
     margin-bottom: 0;
+    overflow: visible;
+    max-height: none;
   }
 
   .checkout-address-order-summary h3 {
@@ -596,61 +653,37 @@
   }
 
   .checkout-address-order-summery-cart {
-    max-height: 200px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-right: 0.75rem;
-    margin-right: -0.5rem;
-    scrollbar-width: auto;
-    scrollbar-color: var(--secondary-color) #f3f4f6;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+    margin-right: 0;
     position: relative;
-  }
-
-  /* Always visible scrollbar - more prominent */
-  .checkout-address-order-summery-cart::-webkit-scrollbar {
-    width: 10px;
-    -webkit-appearance: none;
-  }
-
-  .checkout-address-order-summery-cart::-webkit-scrollbar-track {
-    background: #f3f4f6;
-    border-radius: 10px;
-    margin: 8px 0;
-    border: 1px solid #e5e7eb;
-  }
-
-  .checkout-address-order-summery-cart::-webkit-scrollbar-thumb {
-    background-color: var(--secondary-color);
-    border-radius: 10px;
-    border: 2px solid #f3f4f6;
-    min-height: 30px;
-  }
-
-  .checkout-address-order-summery-cart::-webkit-scrollbar-thumb:hover {
-    background-color: #d4b356;
-  }
-
-  /* Visual indicator for scrollable content */
-  .checkout-address-order-summery-cart::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 20px;
-    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.8));
-    pointer-events: none;
-    border-radius: 0 0 12px 12px;
   }
 
   .checkout-address-order-summery-cart-item {
     padding-bottom: 0.75rem;
     margin: 0.4rem 0;
+    justify-content: space-between;
+    gap: 0.5rem;
   }
 
   .checkout-address-order-summery-cart-item img {
     width: 50px;
     height: 50px;
+    flex-shrink: 0;
+  }
+
+  .checkout-address-order-summery-cart-item-details {
+    flex: 1;
+    min-width: 0;
+    padding: 0 0.4rem;
+  }
+
+  .cart-item-final-total {
+    font-size: 13px;
+    margin-left: auto;
+    text-align: right;
+    flex-shrink: 0;
   }
 
   .checkout-address-order-summery-total {
@@ -715,8 +748,34 @@
     font-size: 13px;
   }
 
+  .checkout-address-order-summery-cart-item {
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .checkout-address-order-summery-cart-item img {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+  }
+
+  .checkout-address-order-summery-cart-item-details {
+    flex: 1;
+    min-width: 0;
+    padding: 0 0.3rem;
+  }
+
   .checkout-address-order-summery-cart-item p {
     font-size: 13px;
+  }
+
+  .cart-item-final-total {
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: auto;
+    text-align: right;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   .checkout-address-order-summery-total p {
@@ -764,48 +823,10 @@
   }
 
   .checkout-address-order-summery-cart {
-    max-height: 160px;
-    padding-right: 0.625rem;
-    scrollbar-width: auto;
-    scrollbar-color: var(--secondary-color) #f3f4f6;
+    max-height: none;
+    padding-right: 0;
     position: relative;
-  }
-
-  /* Always visible scrollbar */
-  .checkout-address-order-summery-cart::-webkit-scrollbar {
-    width: 9px;
-    -webkit-appearance: none;
-  }
-
-  .checkout-address-order-summery-cart::-webkit-scrollbar-track {
-    background: #f3f4f6;
-    border-radius: 8px;
-    margin: 6px 0;
-    border: 1px solid #e5e7eb;
-  }
-
-  .checkout-address-order-summery-cart::-webkit-scrollbar-thumb {
-    background-color: var(--secondary-color);
-    border-radius: 8px;
-    border: 2px solid #f3f4f6;
-    min-height: 25px;
-  }
-
-  .checkout-address-order-summery-cart::-webkit-scrollbar-thumb:hover {
-    background-color: #d4b356;
-  }
-
-  /* Visual indicator for scrollable content */
-  .checkout-address-order-summery-cart::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 18px;
-    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.85));
-    pointer-events: none;
-    border-radius: 0 0 12px 12px;
+    overflow: visible;
   }
 
   .checkout-address-order-summery-cart-item {

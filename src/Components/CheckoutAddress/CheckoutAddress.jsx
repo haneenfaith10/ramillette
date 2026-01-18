@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getAddresses } from "../../services/userApiServices";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight, MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import {
   setCheckoutAddress,
@@ -22,6 +22,23 @@ export function CheckoutSummeryCard({ cartItem }) {
   const selectedCountry = useSelector((state) => state.user.selectedCountry);
   const [tax, setTax] = useState("");
   const [taxName, setTaxName] = useState("");
+  const [showAllProducts, setShowAllProducts] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const DEFAULT_SHOW_COUNT = 2;
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+      // On larger screens, always show all products
+      if (window.innerWidth > 768) {
+        setShowAllProducts(true);
+      }
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     if (selectedCountry._id) {
@@ -71,103 +88,101 @@ export function CheckoutSummeryCard({ cartItem }) {
     return finalPrice;
   }
 
+  const cartItems = cartItem?.cart || [];
+  const hasMoreProducts = isMobile && cartItems.length > DEFAULT_SHOW_COUNT;
+  const displayedProducts = (showAllProducts || !isMobile)
+    ? cartItems 
+    : cartItems.slice(0, DEFAULT_SHOW_COUNT);
+
   return (
     <div className="checkout-address-order-summary">
       <h3>Order Summary</h3>
       <div className="checkout-address-order-summery-cart">
-        {cartItem?.cart?.length > 0 ? (
-          cartItem.cart.map((item) => {
-            const offer = item.selectedOffer;
-            const variantPrice = item.selectedVariant?.price || 0;
-            const discountedPrice = item.discountedPrice ?? variantPrice;
+        {cartItems.length > 0 ? (
+          <>
+            {displayedProducts.map((item, index) => {
+              const offer = item.selectedOffer;
+              const variantPrice = item.selectedVariant?.price || 0;
+              const discountedPrice = item.discountedPrice ?? variantPrice;
 
-            return (
-              <div
-                key={item?.productId?._id || item?.productId}
-                className="checkout-address-order-summery-cart-item"
-              >
-                <img
-                  src={`${import.meta.env.VITE_BASE_URL}/${
-                    item?.productImages?.[0]?.path
-                  }`}
-                  alt="cart product"
-                />
+              return (
+                <div
+                  key={item?.productId?._id || item?.productId}
+                  className="checkout-address-order-summery-cart-item"
+                >
+                  <img
+                    src={`${import.meta.env.VITE_BASE_URL}/${
+                      item?.productImages?.[0]?.path
+                    }`}
+                    alt="cart product"
+                  />
 
-                <div className="checkout-address-order-summery-cart-item-details">
-                  <p className="cart-item-product-name">
-                    {item?.productId?.productName || item?.productName}
-                  </p>
-                  <p style={{ fontSize: "14px", marginBottom: "2px" }}>
-                    Variant: {item.selectedVariant?.variantName}
-                  </p>
-
-                  {/* ✅ Offer / Discount Info */}
-                  {/* {offer ? (
-                    <p className="cart-item-offer-info">
-                      <strong>Offer Applied:</strong> {offer.title} (
-                      {offer.discountType === "percent"
-                        ? `${offer.discountValue}% OFF`
-                        : `${selectedCountry.priceLabel}${offer.discountValue} OFF`}
-                      )
+                  <div className="checkout-address-order-summery-cart-item-details">
+                    <p className="cart-item-product-name">
+                      {item?.productId?.productName || item?.productName}
                     </p>
-                  ) : item.productId?.productDiscount ? (
-                    <p className="cart-item-offer-info">
-                      Product Discount: {item.productId.productDiscount}% OFF
+                    <p style={{ fontSize: "14px", marginBottom: "2px" }}>
+                      Variant: {item.selectedVariant?.variantName}
                     </p>
-                  ) : null} */}
-                  {offer ? (
-                    <>
-                      {offer.offerType === "bogo" ? (
-                        <p className="cart-item-offer-info">
-                          <strong>BOGO Applied:</strong> Buy {offer.buyQuantity}{" "}
-                          Get {offer.discountValue}% OFF
-                        </p>
-                      ) : (
-                        <p className="cart-item-offer-info">
-                          <strong>Offer Applied:</strong> {offer.title} (
-                          {offer.discountType === "percent"
-                            ? `${offer.discountValue}% OFF`
-                            : `${selectedCountry.priceLabel}${offer.discountValue} OFF`}
-                          )
-                        </p>
-                      )}
-                    </>
-                  ) : item.productId?.productDiscount ? (
-                    <p className="cart-item-offer-info">
-                      Product Discount: {item.productId.productDiscount}% OFF
-                    </p>
-                  ) : null}
 
-                  {/* ✅ Discounted vs Original Price */}
-                  {/* <p className="cart-item-product-price">
+                    {offer ? (
+                      <>
+                        {offer.offerType === "bogo" ? (
+                          <p className="cart-item-offer-info">
+                            <strong>BOGO Applied:</strong> Buy {offer.buyQuantity}{" "}
+                            Get {offer.discountValue}% OFF
+                          </p>
+                        ) : (
+                          <p className="cart-item-offer-info">
+                            <strong>Offer Applied:</strong> {offer.title} (
+                            {offer.discountType === "percent"
+                              ? `${offer.discountValue}% OFF`
+                              : `${selectedCountry.priceLabel}${offer.discountValue} OFF`}
+                            )
+                          </p>
+                        )}
+                      </>
+                    ) : item.productId?.productDiscount ? (
+                      <p className="cart-item-offer-info">
+                        Product Discount: {item.productId.productDiscount}% OFF
+                      </p>
+                    ) : null}
+
+                    <p className="cart-item-product-price">
+                      {selectedCountry.priceLabel}
+                      {getEffectivePrice(item).toFixed(2)} × {item.qty}
+                    </p>
+                    {(offer || item.productId?.productDiscount > 0) && (
+                      <p className="cart-item-product-price-discount">
+                        <strike style={{ color: "red", fontSize: "12px" }}>
+                          {selectedCountry.priceLabel}
+                          {(variantPrice * item.qty).toFixed(2)}
+                        </strike>
+                      </p>
+                    )}
+                  </div>
+
+                  <p className="cart-item-final-total">
                     {selectedCountry.priceLabel}
-                    {discountedPrice.toFixed(2)} × {item.qty}
-                  </p> */}
-                  <p className="cart-item-product-price">
-                    {selectedCountry.priceLabel}
-                    {getEffectivePrice(item).toFixed(2)} × {item.qty}
+                    {(getEffectivePrice(item) * item.qty).toFixed(2)}
                   </p>
-                  {(offer || item.productId?.productDiscount > 0) && (
-                    <p className="cart-item-product-price-discount">
-                      <strike style={{ color: "red", fontSize: "12px" }}>
-                        {selectedCountry.priceLabel}
-                        {(variantPrice * item.qty).toFixed(2)}
-                      </strike>
-                    </p>
-                  )}
                 </div>
-
-                {/* <p className="cart-item-final-total">
-                  {selectedCountry.priceLabel}
-                  {(discountedPrice * item.qty).toFixed(2)}
-                </p> */}
-                <p className="cart-item-final-total">
-                  {selectedCountry.priceLabel}
-                  {(getEffectivePrice(item) * item.qty).toFixed(2)}
-                </p>
+              );
+            })}
+            
+            {hasMoreProducts && (
+              <div 
+                className="checkout-show-more-arrow"
+                onClick={() => setShowAllProducts(!showAllProducts)}
+              >
+                {showAllProducts ? (
+                  <MdKeyboardArrowUp className="checkout-arrow-icon" />
+                ) : (
+                  <MdKeyboardArrowDown className="checkout-arrow-icon" />
+                )}
               </div>
-            );
-          })
+            )}
+          </>
         ) : (
           <p>No items in cart.</p>
         )}

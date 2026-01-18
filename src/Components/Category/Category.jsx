@@ -13,13 +13,21 @@ export default function Category() {
     getActiveCategories(setCategory);
   }, []);
 
+  const handleCategoryClick = (categoryId) => {
+    navigate(`/${selectedCountry.code}/product-list?category=${categoryId}`);
+  };
+
   return (
     <div className="category-wrapper">
       <div className="category-cards">
         {category &&
           category.length > 0 &&
           category.map((category, index) => (
-            <div key={index} className="cate-cards">
+            <div 
+              key={index} 
+              className="cate-cards"
+              onClick={() => handleCategoryClick(category._id)}
+            >
               <div className="cate-cards-image">
                 <img
                   src={`${import.meta.env.VITE_BASE_URL}/${
@@ -32,11 +40,10 @@ export default function Category() {
                 <h3>{category.categoryName}</h3>
                 <button
                   className="secondry-btn"
-                  onClick={() =>
-                    navigate(
-                      `/${selectedCountry.code}/product-list?category=${category._id}`
-                    )
-                  }
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCategoryClick(category._id);
+                  }}
                 >
                   Shop Now
                 </button>

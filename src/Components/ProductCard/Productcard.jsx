@@ -77,7 +77,7 @@ export default function Productcard(Props) {
 
   function truncateProductName(name) {
     if (!name) return "";
-    const maxLength = 22;
+    const maxLength = 30;
     if (name.length > maxLength) {
       return `${name.substring(0, maxLength)}...`;
     }
@@ -141,7 +141,7 @@ export default function Productcard(Props) {
             className="secondry-btn buy-now"
             onClick={() => navigate(`/${selectedCountry.code}/checkout`)}
           >
-            Buy Now
+            Go to Checkout
           </button>
         ) : (
           <button className="secondry-btn" onClick={addProductToCart}>

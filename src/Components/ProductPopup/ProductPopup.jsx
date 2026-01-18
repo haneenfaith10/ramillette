@@ -167,7 +167,7 @@ const Popup = ({ isOpen, onClose, product, productPrice }) => {
                           }
                         }}
                       >
-                        Buy Now
+                        Go to Checkout
                       </button>
                     </div>
                     <div className="product-buy-btn">
