@@ -3,12 +3,12 @@
     height: 100%;
 }
 .policy-container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 40px auto;
   padding: 0 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
-  line-height: 1.7;
+  line-height: 1.8;
 }
 
 .policy-title {
@@ -16,12 +16,13 @@
   text-align: center;
   margin-bottom: 40px;
   color: #111;
+  font-weight: 600;
 }
 
 .policy-section {
   margin-bottom: 40px;
   background: #f9f9f9;
-  padding: 24px;
+  padding: 30px;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   transition: all 0.3s ease;
@@ -34,31 +35,121 @@
 
 .terms-section-title {
   font-size: 1.8rem;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   color: #444;
   border-left: 4px solid var(--secondary-color, #cc3366);
   padding-left: 12px;
+  font-weight: 600;
+}
+
+.terms-subsection-title {
+  font-size: 1.4rem;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  color: #555;
+  font-weight: 600;
 }
 
 .policy-section p {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   font-size: 1rem;
+  text-align: justify;
+}
+
+.policy-section p strong {
+  color: #222;
+  font-weight: 600;
+}
+
+.terms-list {
+  margin: 16px 0;
+  padding-left: 30px;
+  list-style-type: disc;
+}
+
+.terms-list li {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.terms-list li::marker {
+  color: var(--secondary-color, #cc3366);
+}
+
+@media (max-width: 768px) {
+  .policy-container {
+    padding: 0 16px;
+    margin: 30px auto;
+  }
+
+  .policy-title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+
+  .terms-section-title {
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+  }
+
+  .terms-subsection-title {
+    font-size: 1.2rem;
+    margin-top: 20px;
+  }
+
+  .policy-section {
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+
+  .policy-section p {
+    font-size: 0.95rem;
+    text-align: left;
+  }
+
+  .terms-list {
+    padding-left: 24px;
+  }
 }
 
 @media (max-width: 600px) {
   .policy-container {
     padding: 0 12px;
+    margin: 20px auto;
   }
 
   .policy-title {
-    font-size: 2rem;
+    font-size: 1.75rem;
+    margin-bottom: 24px;
   }
 
   .terms-section-title {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    margin-bottom: 14px;
+  }
+
+  .terms-subsection-title {
+    font-size: 1.1rem;
+    margin-top: 18px;
   }
 
   .policy-section {
     padding: 18px;
+    margin-bottom: 24px;
+  }
+
+  .policy-section p {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+
+  .terms-list {
+    padding-left: 20px;
+  }
+
+  .terms-list li {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
   }
 }

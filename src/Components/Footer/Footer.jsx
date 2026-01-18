@@ -153,7 +153,7 @@ export default function Footer() {
             </div>
 
             {/* Legal & Info Section */}
-            <div className="footer-section footer-legal">
+            {/* <div className="footer-section footer-legal">
               <h3 className="footer-section-title">Legal & Info</h3>
               <ul className="footer-links-list">
                 <li>
@@ -177,7 +177,7 @@ export default function Footer() {
                   </Link>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
 
           {/* Footer Bottom */}
