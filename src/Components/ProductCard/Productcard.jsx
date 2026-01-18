@@ -127,14 +127,14 @@ export default function Productcard(Props) {
             <h3>
               {truncateProductName(product?.productName)}
             </h3>
-            <p>
+          <p>
+            {selectedCountry.priceLabel}
+            {getDiscountedPrice(productPrice, product?.productDiscount)}
+            <span className="cutting-money">
               {selectedCountry.priceLabel}
-              {getDiscountedPrice(productPrice, product?.productDiscount)}
-              <span className="cutting-money">
-                {selectedCountry.priceLabel}
-                {productPrice || 0}.00
-              </span>
-            </p>
+              {productPrice || 0}.00
+            </span>
+          </p>
           </div>
           <div className="quick-btn">
             <Tooltip text="Quick View">
@@ -148,18 +148,18 @@ export default function Productcard(Props) {
           </div>
         </div>
         <div className="product-button-section">
-          {isInCart() ? (
-            <button
-              className="secondry-btn buy-now"
-              onClick={() => navigate(`/${selectedCountry.code}/checkout`)}
-            >
-              Buy Now
-            </button>
-          ) : (
-            <button className="secondry-btn" onClick={addProductToCart}>
-              ADD TO CART
-            </button>
-          )}
+        {isInCart() ? (
+          <button
+            className="secondry-btn buy-now"
+            onClick={() => navigate(`/${selectedCountry.code}/checkout`)}
+          >
+            Buy Now
+          </button>
+        ) : (
+          <button className="secondry-btn" onClick={addProductToCart}>
+            ADD TO CART
+          </button>
+        )}
         </div>
       </div>
       <Popup

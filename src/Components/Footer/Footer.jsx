@@ -14,6 +14,7 @@ import { getSocialMediaLinks } from "../../services/socialLinksApiService";
 export default function Footer() {
   const navigate = useNavigate();
   const selectedCountry = useSelector((state) => state.user.selectedCountry);
+  const { user } = useSelector((state) => state.user);
   const [socialLinks, setSocialLinks] = useState({});
 
   useEffect(() => {
@@ -21,74 +22,173 @@ export default function Footer() {
   }, []);
 
   return (
-    <div>
+    <div className="footer-wrapper">
       <div className="footer-wrap-sec">
         <div className="container">
-          <div className="footer-row">
-            <div className="footer-col1">
+          <div className="footer-main-content">
+            {/* Company Info Section */}
+            <div className="footer-section footer-company">
               <div className="footer-logo">
                 <img
                   src={footerlogo}
-                  alt="logo"
+                  alt="Ramillette Logo"
                   onClick={() => navigate(`/${selectedCountry.code}`)}
+                  style={{ cursor: "pointer" }}
                 />
               </div>
-              <div className="footer-header-social">
-                <div className="footer-social-icons">
+              <p className="footer-description">
+                Your trusted destination for premium fragrances. Discover luxury
+                scents that define elegance and sophistication.
+              </p>
+              <div className="footer-social-icons">
+                <a
+                  href={socialLinks?.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                >
                   <div className="footer-social">
-                    <a href={socialLinks?.facebook} target="_blank">
-                      <span className="social-icon">
-                        <img src={footfacebookhover} alt="" />
-                        <span className="hover-icon">
-                          <img src={footfacebook} alt="" />
-                        </span>
+                    <span className="social-icon">
+                      <img src={footfacebookhover} alt="Facebook" />
+                      <span className="hover-icon">
+                        <img src={footfacebook} alt="Facebook" />
                       </span>
-                    </a>
+                    </span>
                   </div>
+                </a>
+                <a
+                  href={socialLinks?.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                >
                   <div className="footer-social">
-                    <a href={socialLinks?.instagram} target="_blank">
-                      <span className="social-icon">
-                        <img src={footinstagramhover} alt="" />
-                        <span className="hover-icon">
-                          <img src={footinstagram} alt="" />
-                        </span>
+                    <span className="social-icon">
+                      <img src={footinstagramhover} alt="Instagram" />
+                      <span className="hover-icon">
+                        <img src={footinstagram} alt="Instagram" />
                       </span>
-                    </a>
+                    </span>
                   </div>
+                </a>
+                <a
+                  href={socialLinks?.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="YouTube"
+                >
                   <div className="footer-social">
-                    <a href={socialLinks?.youtube} target="_blank">
-                      <span className="social-icon">
-                        <img src={footyoutubehover} alt="" />
-                        <span className="hover-icon">
-                          <img src={footyoutube} alt="" />
-                        </span>
+                    <span className="social-icon">
+                      <img src={footyoutubehover} alt="YouTube" />
+                      <span className="hover-icon">
+                        <img src={footyoutube} alt="YouTube" />
                       </span>
-                    </a>
+                    </span>
                   </div>
-                </div>
+                </a>
               </div>
             </div>
-            <div className="footer-col2">
-              <div className="footer-menu">
-                <ul>
+
+            {/* Quick Links Section */}
+            <div className="footer-section footer-quick-links">
+              <h3 className="footer-section-title">Quick Links</h3>
+              <ul className="footer-links-list">
+                <li>
+                  <Link to={`/${selectedCountry.code}`}>Home</Link>
+                </li>
+                <li>
+                  <Link to={`/${selectedCountry.code}/product-list`}>
+                    All Products
+                  </Link>
+                </li>
+                <li>
+                  <Link to={`/${selectedCountry.code}/about`}>About Us</Link>
+                </li>
+                {user?.id && (
                   <li>
-                    <Link to={`/${selectedCountry.code}/terms-and-policies`}>
-                      Terms & policies
+                    <Link to={`/${selectedCountry.code}/profile/wishlist`}>
+                      My Wishlist
                     </Link>
                   </li>
-                  {/* <li>
-                  <a href="#">FAQ</a>
-                </li> */}
+                )}
+                {user?.id && (
                   <li>
-                    <Link to={`/${selectedCountry.code}/contact`}>
-                      Contact Us
+                    <Link to={`/${selectedCountry.code}/profile/orders`}>
+                      My Orders
                     </Link>
                   </li>
+                )}
+              </ul>
+            </div>
+
+            {/* Customer Service Section */}
+            <div className="footer-section footer-customer-service">
+              <h3 className="footer-section-title">Customer Service</h3>
+              <ul className="footer-links-list">
+                <li>
+                  <Link to={`/${selectedCountry.code}/contact`}>
+                    Contact Us
+                  </Link>
+                </li>
+                <li>
+                  <Link to={`/${selectedCountry.code}/terms-and-policies`}>
+                    Terms & Policies
+                  </Link>
+                </li>
+                {user?.id && (
                   <li>
-                    <Link to={`/${selectedCountry.code}/about`}>About Us</Link>
+                    <Link to={`/${selectedCountry.code}/profile/addresses`}>
+                      My Addresses
+                    </Link>
                   </li>
-                </ul>
-              </div>
+                )}
+                {user?.id && (
+                  <li>
+                    <Link to={`/${selectedCountry.code}/profile/details`}>
+                      My Account
+                    </Link>
+                  </li>
+                )}
+              </ul>
+            </div>
+
+            {/* Legal & Info Section */}
+            <div className="footer-section footer-legal">
+              <h3 className="footer-section-title">Legal & Info</h3>
+              <ul className="footer-links-list">
+                <li>
+                  <Link to={`/${selectedCountry.code}/terms-and-policies`}>
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link to={`/${selectedCountry.code}/terms-and-policies`}>
+                    Terms of Service
+                  </Link>
+                </li>
+                <li>
+                  <Link to={`/${selectedCountry.code}/terms-and-policies`}>
+                    Return Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link to={`/${selectedCountry.code}/terms-and-policies`}>
+                    Shipping Policy
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Footer Bottom */}
+          <div className="footer-bottom">
+            <div className="footer-copyright">
+              <p>
+                © {new Date().getFullYear()} Ramillette. All rights reserved.
+              </p>
+            </div>
+            <div className="footer-payment-info">
+              <p>Secure Payment • Fast Delivery • 24/7 Support</p>
             </div>
           </div>
         </div>

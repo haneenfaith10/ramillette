@@ -20,13 +20,23 @@ const Banner = () => {
   }, [selectedCountry?._id]);
 
   const settings = {
-    infinite: false,
-    speed: 500,
+    infinite: true,
+    speed: 800,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 4000,
     arrows: true,
+    dots: true,
+    fade: true,
+    cssEase: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    pauseOnHover: true,
+    pauseOnFocus: true,
+    pauseOnDotsHover: false,
+    swipe: true,
+    touchMove: true,
+    draggable: true,
+    adaptiveHeight: false,
   };
 
   return (

@@ -69,22 +69,22 @@ const TestimonialSlider = (Props) => {
                   </div>
                   <div className="testimonial-separator"></div>
                   <div className="testimonial-author-info">
-                    <img
-                      src={`${import.meta.env.VITE_BASE_URL}/${
-                        testimonial?.user?.userImage
-                      }`}
+                  <img
+                    src={`${import.meta.env.VITE_BASE_URL}/${
+                      testimonial?.user?.userImage
+                    }`}
                       alt={testimonial?.user?.firstName || "user"}
                       className="testimonial-avatar"
-                      onError={(e) => {
-                        e.currentTarget.src = UserAvatar;
-                      }}
-                    />
+                    onError={(e) => {
+                      e.currentTarget.src = UserAvatar;
+                    }}
+                  />
                     <div className="author-details">
                       <p className="author-name">
                         {testimonial?.user?.firstName || ""}{" "}
                         {testimonial?.user?.lastName || ""}
-                      </p>
-                    </div>
+            </p>
+          </div>
                   </div>
                 </div>
               </div>
