@@ -13,6 +13,8 @@ import {
   faInstagram,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
+import { useDispatch } from "react-redux";
+import { setAppLoading } from "../../redux/slices/userSlice";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 // import { sendContactForm } from "../../services/contactApiService"; // you should create this API
@@ -20,10 +22,17 @@ import * as Yup from "yup";
 export default function ContactPage() {
   const [contactDetails, setContactDetails] = useState();
   const [socialLinks, setSocialLinks] = useState({});
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getSettingsData(setContactDetails, setSocialLinks);
-  }, []);
+    (async () => {
+      try {
+        await getSettingsData(setContactDetails, setSocialLinks);
+      } finally {
+        dispatch(setAppLoading(false));
+      }
+    })();
+  }, [dispatch]);
 
   const formik = useFormik({
     initialValues: {
@@ -112,7 +121,11 @@ export default function ContactPage() {
                       value={formik.values.subject}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className={formik.values.subject === "" ? "placeholder-selected" : ""}
+                      className={
+                        formik.values.subject === ""
+                          ? "placeholder-selected"
+                          : ""
+                      }
                     >
                       <option value="">Subject</option>
                       <option value="General Inquiry">General Inquiry</option>

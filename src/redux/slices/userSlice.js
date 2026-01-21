@@ -16,6 +16,7 @@ const initialState = {
   },
   orderCount: 0,
   selectedCountry: {},
+  isAppLoading: true,
 };
 
 const userSlice = createSlice({
@@ -50,9 +51,9 @@ const userSlice = createSlice({
     setCheckoutCart: (state, action) => {
       // state.checkout.cart = action.payload;
       state.checkout.cart = action.payload.items;
-  state.checkout.subtotal = action.payload.subtotal;
-  state.checkout.finalTotal = action.payload.finalTotal;     // ⭐
-  state.checkout.newUserOffer = action.payload.newUserOffer; // ⭐
+      state.checkout.subtotal = action.payload.subtotal;
+      state.checkout.finalTotal = action.payload.finalTotal; // ⭐
+      state.checkout.newUserOffer = action.payload.newUserOffer; // ⭐
     },
     setCheckoutAddress: (state, action) => {
       state.checkout.address = action.payload;
@@ -83,7 +84,7 @@ const userSlice = createSlice({
       const existingCart = state.checkout.cart || [];
 
       state.checkout.cart = existingCart.map((item) =>
-        item.productId === productId ? { ...item, selectedOffer: offer } : item
+        item.productId === productId ? { ...item, selectedOffer: offer } : item,
       );
     },
     clearCheckoutOffers: (state) => {
@@ -93,6 +94,9 @@ const userSlice = createSlice({
           selectedOffer: null,
         }));
       }
+    },
+    setAppLoading: (state, action) => {
+      state.isAppLoading = action.payload;
     },
   },
 });
@@ -111,6 +115,7 @@ export const {
   setSelectedCountry,
   updateSubTotalAmount,
   setCheckoutOffer,
-  clearCheckoutOffers
+  clearCheckoutOffers,
+  setAppLoading,
 } = userSlice.actions;
 export default userSlice.reducer;

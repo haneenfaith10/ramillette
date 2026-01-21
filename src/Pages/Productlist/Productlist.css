@@ -175,7 +175,9 @@
 .sort-arrow-icon {
   font-size: 18px;
   color: #525252;
-  transition: transform 0.3s ease, color 0.2s ease;
+  transition:
+    transform 0.3s ease,
+    color 0.2s ease;
   flex-shrink: 0;
 }
 
@@ -300,6 +302,68 @@
   align-items: center;
   background-color: #f8f9fa;
   border-radius: 12px;
+}
+
+/* Skeleton Loader Styles */
+.skeleton-card {
+  pointer-events: none;
+  border-color: #f3f4f6 !important;
+}
+
+.skeleton-shimmer {
+  background: #f6f7f8;
+  background-image: linear-gradient(
+    to right,
+    #f6f7f8 0%,
+    #edeef1 20%,
+    #f6f7f8 40%,
+    #f6f7f8 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 800px 104px;
+  display: inline-block;
+  position: relative;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 100%;
+  background: #f3f4f6;
+}
+
+.skeleton-text {
+  height: 16px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.name-skeleton {
+  width: 80%;
+  margin-bottom: 8px;
+}
+
+.price-skeleton {
+  width: 40%;
+  margin-bottom: 12px;
+}
+
+.skeleton-button {
+  height: 40px;
+  width: 100%;
+  background: #f3f4f6;
+  border-radius: 8px;
+  margin-top: auto;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
 }
 
 /* MOBILE FILTER STYLES */

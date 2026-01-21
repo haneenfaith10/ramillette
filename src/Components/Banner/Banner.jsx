@@ -6,18 +6,19 @@ import "slick-carousel/slick/slick-theme.css";
 import { getBannersForUser } from "../../services/bannerServices";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Banner1 from "../../assets/images/banner1.jpg"
 
-const Banner = () => {
+const Banner = ({ bannersData }) => {
   const selectedCountry = useSelector((state) => state.user.selectedCountry);
-  const [banners, setBanners] = useState([]);
+  const [internalBanners, setInternalBanners] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (selectedCountry?._id) {
-      getBannersForUser(selectedCountry._id, setBanners);
+    if (!bannersData && selectedCountry?._id) {
+      getBannersForUser(selectedCountry._id, setInternalBanners);
     }
-  }, [selectedCountry?._id]);
+  }, [selectedCountry?._id, bannersData]);
+
+  const banners = bannersData || internalBanners;
 
   const settings = {
     infinite: true,
@@ -29,7 +30,7 @@ const Banner = () => {
     arrows: true,
     dots: true,
     fade: true,
-    cssEase: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    cssEase: "cubic-bezier(0.4, 0, 0.2, 1)",
     pauseOnHover: true,
     pauseOnFocus: true,
     pauseOnDotsHover: false,
@@ -39,48 +40,32 @@ const Banner = () => {
     adaptiveHeight: false,
   };
 
+  if (banners.length === 0) return null;
+
   return (
     <div className="banner-sec">
       <Slider {...settings}>
-        {banners.length > 0 ? (
-          banners.map((banner, index) => (
-            <div key={index}>
-              <div className="banner-image">
-                <img
-                  src={`${import.meta.env.VITE_BASE_URL}/${banner.imageUrl}`}
-                  alt="banner"
-                />
-                <div className="banner-content">
-                  <h1>{banner.content || "Experience Luxurious Perfume"}</h1>
-                  <button
-                    className="secondry-btn"
-                    onClick={() => navigate(`/${selectedCountry?.code}/product-list`)}
-                  >
-                    Shop Now
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div>
+        {banners.map((banner, index) => (
+          <div key={index}>
             <div className="banner-image">
               <img
-                src={Banner1}
-                alt="Default Banner"
+                src={`${import.meta.env.VITE_BASE_URL}/${banner.imageUrl}`}
+                alt="banner"
               />
               <div className="banner-content">
-                <h1>Experience Luxurious Perfume</h1>
+                <h1>{banner.content || "Experience Luxurious Perfume"}</h1>
                 <button
                   className="secondry-btn"
-                  onClick={() => navigate(`/${selectedCountry?.code}/product-list`)}
+                  onClick={() =>
+                    navigate(`/${selectedCountry?.code}/product-list`)
+                  }
                 >
                   Shop Now
                 </button>
               </div>
             </div>
           </div>
-        )}
+        ))}
       </Slider>
     </div>
   );

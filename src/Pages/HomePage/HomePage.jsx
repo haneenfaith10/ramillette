@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import TopHeader from "../../Components/TopHeader/TopHeader";
 import NavBar from "../../Components/NavBar/NavBar";
 import Banner from "../../Components/Banner/Banner";
@@ -11,33 +11,66 @@ import Testimonial from "../../Components/Testimonial/Testimonial";
 import Shipping from "../../Components/Shipping/Shipping";
 import Footer from "../../Components/Footer/Footer";
 import { getLatestProductsForUser } from "../../services/productApiServices";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getTestimonialData } from "../../services/testimonialApiServices";
+import { setAppLoading } from "../../redux/slices/userSlice";
+import { getBannersForUser } from "../../services/bannerServices";
+import { getBestSellerForUser } from "../../services/bestSellerApiService";
+import { getActiveCategories } from "../../services/categoryApiServices";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 export default function HomePage() {
   const [latestProducts, setLatestProducts] = useState([]);
+  const [banners, setBanners] = useState([]);
+  const [bestSellers, setBestSellers] = useState([]);
+  const [categories, setCategories] = useState([]);
   const selectedCountry = useSelector((state) => state.user.selectedCountry);
   const [reviews, setReviews] = useState([]);
-  // const userId = useSelector((state) => state.user.user.id);
+  const [localLoading, setLocalLoading] = useState(true);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (selectedCountry?._id) {
-      getLatestProductsForUser(8, setLatestProducts, selectedCountry?._id);
+      dispatch(setAppLoading(true));
     }
-  }, [selectedCountry?._id]);
+  }, [dispatch, selectedCountry?._id]);
 
   useEffect(() => {
-    getTestimonialData(setReviews);
-  }, []);
+    (async () => {
+      if (selectedCountry?._id) {
+        try {
+          await Promise.all([
+            getLatestProductsForUser(
+              8,
+              setLatestProducts,
+              selectedCountry?._id,
+            ),
+            getTestimonialData(setReviews),
+            getBannersForUser(selectedCountry._id, setBanners),
+            getBestSellerForUser(selectedCountry._id, setBestSellers),
+            getActiveCategories(setCategories),
+          ]);
+        } catch (error) {
+          console.error("Error fetching homepage data:", error);
+        } finally {
+          setLocalLoading(false);
+          dispatch(setAppLoading(false));
+        }
+      }
+    })();
+  }, [selectedCountry?._id, dispatch]);
+
+  if (localLoading || !selectedCountry?._id) {
+    return null;
+  }
 
   return (
     <main className="homepage">
       <TopHeader />
       <NavBar />
-      <Banner />
+      <Banner bannersData={banners} />
       <div className="product-sec">
         <div className="container">
           <h2>
@@ -103,10 +136,7 @@ export default function HomePage() {
               >
                 {latestProducts.slice(0, 4).map((product) => (
                   <div key={product._id}>
-                    <Productcard
-                      product={product}
-                      maxLength={27}
-                    />
+                    <Productcard product={product} maxLength={27} />
                   </div>
                 ))}
               </Slider>
@@ -121,7 +151,7 @@ export default function HomePage() {
           <h2>
             Discover <span>Our Bestsellers</span>
           </h2>
-          <Bestseller />
+          <Bestseller bestSellersData={bestSellers} />
         </div>
       </div>
       <div className="category-sec">
@@ -129,7 +159,7 @@ export default function HomePage() {
           <h2>
             Shop By <span> Category</span>
           </h2>
-          <Category />
+          <Category categoriesData={categories} />
         </div>
       </div>
       <div className="shippping-sec">

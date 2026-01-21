@@ -133,12 +133,9 @@ body {
   color: #000000;
   background: #ffffff;
   -webkit-text-size-adjust: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-font-smoothing: antialiased;
-  font-smoothing: antialiased;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 :root {
   --primary-color: #4c644c;
@@ -200,6 +197,7 @@ table {
 }
 * {
   -webkit-appearance: none;
+  appearance: none;
 }
 ::-webkit-input-placeholder {
   color: #000000;
@@ -311,11 +309,14 @@ table {
 .app-loader {
   width: 100vw;
   height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fff; /* optional: ensures consistent background */
-  animation: fadeUp 0.8s ease-out;
+  background-color: #fff;
+  z-index: 10000;
 }
 
 /* Fade-up animation */
