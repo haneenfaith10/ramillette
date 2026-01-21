@@ -54,7 +54,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="dashboard-container">
-      <h1>📊 Admin Dashboard Overview</h1>
+      <h1> Admin Dashboard Overview</h1>
 
       <div className="overview-grid">
         {[
@@ -82,7 +82,7 @@ export default function AdminDashboard() {
 
       <div className="sales-chart-section">
         <div className="sales-chart-header">
-          <h2>📈 Sales Overview</h2>
+          <h2> Sales Overview</h2>
           <div className="date-filters">
             <label>
               From:{" "}
@@ -140,10 +140,10 @@ export default function AdminDashboard() {
           )}
         </div>
       </div>
-      <div style={{ display: "flex", gap: "2rem" }}>
+      <div className="top_listcontainer" style={{ display: "flex", gap: "2rem" }}>
         {stats?.mostOrderedUsers?.length > 0 && (
           <div className="top-customers">
-            <h2>🏅 Top Customers</h2>
+            <h2> Top Customers</h2>
             <div className="user-table">
               <table>
                 <thead>
@@ -181,7 +181,7 @@ export default function AdminDashboard() {
         )}
         {stats?.mostSoldProducts?.length > 0 && (
           <div className="top-products">
-            <h2>🔥 Most Sold Products</h2>
+            <h2> Most Sold Products</h2>
             <div className="product-table">
               <table>
                 <thead>

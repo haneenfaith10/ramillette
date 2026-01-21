@@ -13,4 +13,5 @@
     height: 100vh;
     background-color: transparent;
     padding:1rem;
+    overflow-y: auto;
 }

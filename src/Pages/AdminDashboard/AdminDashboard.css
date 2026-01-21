@@ -131,6 +131,11 @@
   gap: 24px;
   margin-top: 40px;
 }
+
+.top_listcontainer {
+  flex-direction: column;
+}
+
 .top-customers {
   width: 100%;
 }
@@ -175,7 +180,7 @@
 .user-info,
 .product-info {
   display: flex;
-  align-items: center;
+  align-items: start;
   gap: 10px;
 }
 
