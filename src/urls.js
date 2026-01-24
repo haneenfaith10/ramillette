@@ -22,7 +22,8 @@ export const getUserCountrySpecificDataUrl =
   serverUrl + "/api/user/getUserCountrySpecificData";
 export const toggleUserStatusUrl = serverUrl + "/api/user/toggleUserStatus";
 export const getRelatedProductUrl = serverUrl + "/api/user/getRelatedProduct";
-export const permanentlyBlockUserUrl = serverUrl+"/api/user/permanentlyBlockUser"
+export const permanentlyBlockUserUrl =
+  serverUrl + "/api/user/permanentlyBlockUser";
 
 // Admin urls
 export const addProductUrl = serverUrl + "/api/admin/products/addProduct";
@@ -52,7 +53,8 @@ export const removeFromWishListUrl = serverUrl + "/api/user/removeFromWishlist";
 export const getUserWishlistUrl = serverUrl + "/api/user/getUserWishlist";
 export const getUserWishlistDetailsUrl =
   serverUrl + "/api/user/getUserWishlistDetails";
-  export const getUserWishlistDataUrl = serverUrl+"/api/user/getUserWishlistData"
+export const getUserWishlistDataUrl =
+  serverUrl + "/api/user/getUserWishlistData";
 
 // cart urls
 export const addToCartUrl = serverUrl + "/api/user/addToCart";
@@ -70,7 +72,8 @@ export const getActiveCategoriesUrl =
 export const getCategoryByIdUrl = serverUrl + "/api/category";
 export const editCategoryUrl = serverUrl + "/api/category/editCategory";
 export const deleteCategoryUrl = serverUrl + "/api/category/deleteCategory";
-export const toggleCategoryStatusUrl = serverUrl+"/api/category/toggleCategoryStatus"
+export const toggleCategoryStatusUrl =
+  serverUrl + "/api/category/toggleCategoryStatus";
 
 // brand urls
 export const crateNewBrandUrl = serverUrl + "/api/brand/postBrand";
@@ -112,7 +115,8 @@ export const toggleCountryStatusUrl = serverUrl + "/api/country/toggleStatus";
 export const getActiveCountriesUrl =
   serverUrl + "/api/country/getActiveCountries";
 export const setPrimaryCountryUrl = serverUrl + "/api/country/setPrimary";
-export const getCountryBasedProductsUrl = serverUrl+"/api/country/getCountryBasedProducts";
+export const getCountryBasedProductsUrl =
+  serverUrl + "/api/country/getCountryBasedProducts";
 
 // banner urls
 export const createBannerUrl = serverUrl + "/api/banner/crateBanner";
@@ -210,41 +214,59 @@ export const deleteCollectionAlertUrl =
 // offers urls
 export const createOfferUrl = serverUrl + "/api/offers/createOffer";
 export const deleteOfferUrl = serverUrl + "/api/offers/deleteOffer";
-export const fetchCommonOfferUrl = serverUrl+"/api/offers/fetchCommonOffer";
-export const editOfferUrl = serverUrl+"/api/offers/editOffer";
+export const fetchCommonOfferUrl = serverUrl + "/api/offers/fetchCommonOffer";
+export const editOfferUrl = serverUrl + "/api/offers/editOffer";
 // filter url
 export const filterOrderCancelledUserUrl =
   serverUrl + "/api/admin/filterOrderCancelledUser";
-export const createDiscountOfferUrl = serverUrl+"/api/offers/createDiscountOffer";
-export const createCategoryOfferUrl = serverUrl+"/api/offers/createCategoryOffer"; 
-export const createCouponOfferUrl = serverUrl+"/api/offers/createCouponOffer";
-export const createNewCustomerOfferUrl = serverUrl+"/api/offers/createNewCustomerOffer";
-export const createBoGoOfferUrl = serverUrl+"/api/offers/createBoGoOffer";
-export const getDiscountOffersUrl = serverUrl+"/api/offers/getDiscountOffers"
-export const deleteDiscountOfferUrl = serverUrl+"/api/offers/deleteDiscountOffer";
-export const toggleChangeDiscountOfferUrl = serverUrl+"/api/offers/toggleChangeDiscountOffer";
-export const editDiscountOfferUrl = serverUrl+"/api/offers/editDiscountOffer";
-export const getAllBogoOffersUrl = serverUrl+"/api/offers/getAllBogoOffers";
-export const deleteBogoOfferUrl = serverUrl+'/api/offers/deleteBogoOffer';
-export const toggleBogoOfferUrl = serverUrl+"/api/offers/toggleBogoOffer";
-export const updateBogoOfferUrl = serverUrl+"/api/offers/updateBogoOffer";
-export const getCategoryOffersUrl = serverUrl+"/api/offers/getCategoryOffers";
-export const toggleCategoryOfferUrl = serverUrl+"/api/offers/toggleCategoryOffer";
-export const updateCategoryOfferUrl = serverUrl+"/api/offers/updateCategoryOffer";
-export const deleteCategoryOfferUrl = serverUrl+"/api/offers/deleteCategoryOffer";
-export const getCouponOffersUrl = serverUrl+"/api/offers/getCouponOffers";
-export const toggleCouponOfferUrl = serverUrl+"/api/offers/toggleCouponOffer";
-export const updateCouponOfferUrl = serverUrl+"/api/offers/updateCouponOffer";
-export const deleteCouponOfferUrl = serverUrl+"/api/offers/deleteCouponOffer";
-export const getAllNewCustomerOffersUrl = serverUrl+"/api/offers/getAllNewCustomerOffers";
-export const toggleNewCustomerOfferUrl = serverUrl+"/api/offers/toggleNewCustomerOffer";
-export const editNewCustomerOfferUrl = serverUrl+"/api/offers/updateNewCustomerOffer";
-export const deleteNewCustomerOfferUrl = serverUrl+"/api/offers/deleteNewCustomerOffer";
-export const getCheckoutProductOffersUrl = serverUrl+'/api/offers/getCheckoutProductOffers'
+export const createDiscountOfferUrl =
+  serverUrl + "/api/offers/createDiscountOffer";
+export const createCategoryOfferUrl =
+  serverUrl + "/api/offers/createCategoryOffer";
+export const createCouponOfferUrl = serverUrl + "/api/offers/createCouponOffer";
+export const createNewCustomerOfferUrl =
+  serverUrl + "/api/offers/createNewCustomerOffer";
+export const createBoGoOfferUrl = serverUrl + "/api/offers/createBoGoOffer";
+export const getDiscountOffersUrl = serverUrl + "/api/offers/getDiscountOffers";
+export const deleteDiscountOfferUrl =
+  serverUrl + "/api/offers/deleteDiscountOffer";
+export const toggleChangeDiscountOfferUrl =
+  serverUrl + "/api/offers/toggleChangeDiscountOffer";
+export const editDiscountOfferUrl = serverUrl + "/api/offers/editDiscountOffer";
+export const getAllBogoOffersUrl = serverUrl + "/api/offers/getAllBogoOffers";
+export const deleteBogoOfferUrl = serverUrl + "/api/offers/deleteBogoOffer";
+export const toggleBogoOfferUrl = serverUrl + "/api/offers/toggleBogoOffer";
+export const updateBogoOfferUrl = serverUrl + "/api/offers/updateBogoOffer";
+export const getCategoryOffersUrl = serverUrl + "/api/offers/getCategoryOffers";
+export const toggleCategoryOfferUrl =
+  serverUrl + "/api/offers/toggleCategoryOffer";
+export const updateCategoryOfferUrl =
+  serverUrl + "/api/offers/updateCategoryOffer";
+export const deleteCategoryOfferUrl =
+  serverUrl + "/api/offers/deleteCategoryOffer";
+export const getCouponOffersUrl = serverUrl + "/api/offers/getCouponOffers";
+export const toggleCouponOfferUrl = serverUrl + "/api/offers/toggleCouponOffer";
+export const updateCouponOfferUrl = serverUrl + "/api/offers/updateCouponOffer";
+export const deleteCouponOfferUrl = serverUrl + "/api/offers/deleteCouponOffer";
+export const getAllNewCustomerOffersUrl =
+  serverUrl + "/api/offers/getAllNewCustomerOffers";
+export const toggleNewCustomerOfferUrl =
+  serverUrl + "/api/offers/toggleNewCustomerOffer";
+export const editNewCustomerOfferUrl =
+  serverUrl + "/api/offers/updateNewCustomerOffer";
+export const deleteNewCustomerOfferUrl =
+  serverUrl + "/api/offers/deleteNewCustomerOffer";
+export const getCheckoutProductOffersUrl =
+  serverUrl + "/api/offers/getCheckoutProductOffers";
 
 // testimonial urls
-export const makeTestimonialUrl = serverUrl+'/api/testimonial/promoteToTestimonials'
-export const getTestimonialDataUrl = serverUrl+"/api/testimonial/getTestimonialData";
-export const getAllProductsForAdminUrl = serverUrl+"/api/admin/products/getAllProductsForAdmin";
-export const getCheckoutProductDetails = serverUrl+"/api/admin/products/getCheckoutDetails";
-export const verifyCouponUrl = serverUrl+"/api/offers/verify-coupon"
+export const makeTestimonialUrl =
+  serverUrl + "/api/testimonial/promoteToTestimonials";
+export const getTestimonialDataUrl =
+  serverUrl + "/api/testimonial/getTestimonialData";
+export const getAllProductsForAdminUrl =
+  serverUrl + "/api/admin/products/getAllProductsForAdmin";
+export const getCheckoutProductDetails =
+  serverUrl + "/api/admin/products/getCheckoutDetails";
+export const verifyCouponUrl = serverUrl + "/api/offers/verify-coupon";
+export const notifyMeUrl = serverUrl + "/api/user/notify-me";

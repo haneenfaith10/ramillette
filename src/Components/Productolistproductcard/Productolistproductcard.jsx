@@ -8,9 +8,13 @@ import {
 } from "../../services/wishlistApiServices";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCart, updateUserWishList } from "../../redux/slices/userSlice";
-import { addToCart } from "../../services/userApiServices";
+import {
+  addToCart,
+  notifyMeAboutProduct,
+} from "../../services/userApiServices";
 import { useState, useEffect, useMemo } from "react";
 import { getDiscountedPrice } from "../../utils/calculation";
+import { successToast } from "../Notification/NotificationMessage";
 
 export default function Productolistproductcard(Props) {
   const { product } = Props;
@@ -34,7 +38,7 @@ export default function Productolistproductcard(Props) {
       const response = await addToWishlist(
         product?._id,
         user.id,
-        selectedCountry._id
+        selectedCountry._id,
       );
       if (response) {
         dispatch(updateUserWishList({ user: response?.wishlist?.products }));
@@ -50,7 +54,7 @@ export default function Productolistproductcard(Props) {
       const response = await removeFromWishlist(
         product._id,
         user.id,
-        selectedCountry._id
+        selectedCountry._id,
       );
       if (response) {
         dispatch(updateUserWishList({ user: response?.wishlist?.products }));
@@ -65,8 +69,8 @@ export default function Productolistproductcard(Props) {
 
     return new Set(
       user.wishlist.map((item) =>
-        typeof item.product === "string" ? item.product : item.product?._id
-      )
+        typeof item.product === "string" ? item.product : item.product?._id,
+      ),
     );
   }, [user?.wishlist]);
 
@@ -81,9 +85,41 @@ export default function Productolistproductcard(Props) {
       return;
     }
     const response = await addToCart(product?._id, 1, selectedCountry._id);
+
     if (response) {
       dispatch(updateCart({ cart: response }));
     }
+  }
+
+  const variants =
+    product.filteredVariants?.length > 0
+      ? product.filteredVariants
+      : product.countryVariants?.[selectedCountry?._id] || [];
+
+  const isOutOfStock = useMemo(() => {
+    if (product?.status === false || product?.isDelete === true) return true;
+    if (variants.length === 0) return true;
+    return variants.every((v) => Number(v.stock || 0) <= 0);
+  }, [variants, product?.status, product?.isDelete]);
+
+  async function handleNotifyMe() {
+    if (!isUserLoggedIn) {
+      navigate("/login");
+      return;
+    }
+
+    const data = {
+      productId: product?._id,
+      userEmail: user?.email,
+      countryId: selectedCountry?._id,
+    };
+
+    if (!data.userEmail) {
+      navigate("/login");
+      return;
+    }
+
+    await notifyMeAboutProduct(data);
   }
 
   function isInCart() {
@@ -95,11 +131,6 @@ export default function Productolistproductcard(Props) {
       return idInCart === product._id;
     });
   }
-
-  const variants =
-    product.filteredVariants?.length > 0
-      ? product.filteredVariants
-      : product.countryVariants?.[selectedCountry._id] || [];
 
   if (variants.length === 0) return null;
 
@@ -113,13 +144,11 @@ export default function Productolistproductcard(Props) {
   return (
     <div className="product-list-card">
       <div className="image-wrapper">
-        {isBestseller && (
-          <div className="bestseller-badge">Bestseller</div>
-        )}
-        <Link to={`/${selectedCountry.code}/product-inner/${product._id}`}>
+        {isBestseller && <div className="bestseller-badge">Bestseller</div>}
+        <Link to={`/${selectedCountry?.code}/product-inner/${product._id}`}>
           {product?.productImages && product.productImages.length > 0 && (
             <img
-              src={`${import.meta.env.VITE_BASE_URL}/${product.productImages[0].path || product.productImages[0]}`}
+              src={`${import.meta.env.VITE_BASE_URL}/${product.productImages[0]?.path || product.productImages[0]}`}
               alt={product?.productName || "Product"}
               className="product-image"
             />
@@ -146,18 +175,16 @@ export default function Productolistproductcard(Props) {
         <p className="product-name">{product?.productName || ""}</p>
         <div className="product-price">
           <span className="price">
-            {selectedCountry.priceLabel}
+            {selectedCountry?.priceLabel}
             {discountedPrice.toLocaleString()}
           </span>
           {discountPercent > 0 && (
             <>
               <span className="original-price">
-                {selectedCountry.priceLabel}
+                {selectedCountry?.priceLabel}
                 {basePrice.toLocaleString()}
               </span>
-              <span className="discount">
-                ({discountPercent}% OFF)
-              </span>
+              <span className="discount">({discountPercent}% OFF)</span>
             </>
           )}
         </div>
@@ -165,9 +192,16 @@ export default function Productolistproductcard(Props) {
           {isInCart() ? (
             <button
               className="secondry-btn buy-now-btn"
-              onClick={() => navigate(`/${selectedCountry.code}/checkout`)}
+              onClick={() => navigate(`/${selectedCountry?.code}/checkout`)}
             >
               Go to Checkout
+            </button>
+          ) : isOutOfStock ? (
+            <button
+              className="secondry-btn buy-now-btn"
+              onClick={handleNotifyMe}
+            >
+              NOTIFY ME
             </button>
           ) : (
             <button className="secondry-btn" onClick={addProductToCart}>

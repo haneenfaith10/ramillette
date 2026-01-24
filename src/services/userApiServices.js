@@ -17,6 +17,7 @@ import {
   getUserWishlistDetailsUrl,
   isProductAvailableUrl,
   loginUserUrl,
+  notifyMeUrl,
   permanentlyBlockUserUrl,
   registerUserUrl,
   removeCartItemUrl,
@@ -83,7 +84,7 @@ export async function addToCart(
   quantity,
   countryId,
   isShow = true,
-  userToken
+  userToken,
 ) {
   try {
     if (!countryId) {
@@ -97,7 +98,7 @@ export async function addToCart(
           Authorization: `Bearer ${localStorage.getItem("remilletteTkn")}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     if (response?.status === 200 && response?.data?.isSuccess) {
       if (isShow) {
@@ -125,7 +126,7 @@ export async function removeCartItem(id, countryId, isShow = true, token) {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     if (response.status === 200 && response?.data?.isSuccess) {
       if (isShow) {
@@ -145,7 +146,7 @@ export async function updateCartItemQuantity(
   productId,
   action = "increment",
   countryId,
-  selectedVariants = {}
+  selectedVariants = {},
 ) {
   try {
     const response = await axios.put(
@@ -155,7 +156,7 @@ export async function updateCartItemQuantity(
         headers: {
           Authorization: `Bearer ${localStorage.getItem("remilletteTkn")}`,
         },
-      }
+      },
     );
 
     if (response?.status === 200 && response?.data?.isSuccess) {
@@ -191,7 +192,7 @@ export async function updateUserProfile(
   formData,
   userId,
   setUserData,
-  setSubmitting
+  setSubmitting,
 ) {
   try {
     const response = await axios.post(updateUserProfileUrl, formData, {
@@ -224,7 +225,7 @@ export async function getUserWishlistDetails(userId, countryId, token) {
           Authorization: `Bearer ${token}`,
           userId,
         },
-      }
+      },
     );
     if (response.status === 200 && response?.data?.isSuccess) {
       return response?.data?.wishlist;
@@ -249,7 +250,7 @@ export async function addAddress(data, userId, setSubmitting, resetForm) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("remilletteTkn")}`,
         },
-      }
+      },
     );
     if (response.status === 200 && response?.data?.isSuccess) {
       resetForm();
@@ -289,7 +290,7 @@ export async function editAddress(
   userId,
   addressId,
   setSubmitting,
-  resetForm
+  resetForm,
 ) {
   try {
     const response = await axios.put(
@@ -300,7 +301,7 @@ export async function editAddress(
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("remilletteTkn")}`,
         },
-      }
+      },
     );
     if (response?.status === 200 && response?.data?.isSuccess) {
       resetForm();
@@ -339,7 +340,7 @@ export async function addToCartWithQuantity(
   productId,
   quantity,
   countryId,
-  isShowMessage = true
+  isShowMessage = true,
 ) {
   try {
     if (!countryId) {
@@ -356,7 +357,7 @@ export async function addToCartWithQuantity(
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     if (response?.status === 200 && response?.data?.isSuccess) {
       if (isShowMessage) {
@@ -379,7 +380,7 @@ export async function changeCartQuantity(productId, quantity, countryId) {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
 
     if (response.status === 200 && response?.data?.isSuccess) {
@@ -469,7 +470,7 @@ export async function isProductAvailable(
   productId,
   quantity,
   variantId,
-  setProductAvailableError
+  setProductAvailableError,
 ) {
   try {
     const response = await axios.get(isProductAvailableUrl, {
@@ -509,7 +510,7 @@ export async function getUserSubCart(countryId, userId) {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     if (response.status === 200 && response.data.isSuccess) {
       return response.data.data;
@@ -548,7 +549,7 @@ export async function getUserCountrySpecificData(countryId, token) {
     }
     const response = await axios.get(
       `${getUserCountrySpecificDataUrl}?countryId=${countryId}`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token}` } },
     );
 
     if (response.status === 200 && response.data.isSuccess) {
@@ -557,7 +558,7 @@ export async function getUserCountrySpecificData(countryId, token) {
   } catch (error) {
     console.log(
       error,
-      "error while getting user cart, wishlist and order details based on country"
+      "error while getting user cart, wishlist and order details based on country",
     );
     throw error;
   }
@@ -573,7 +574,7 @@ export async function toggleUserStatus(userId, token) {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     if (response.status === 200 && response.data.isSuccess) {
       return response.data;
@@ -594,7 +595,7 @@ export async function permanentlyBlockUser(id, setChanged, token) {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     if (response.status === 200 && response.data.isSuccess) {
       setChanged((prev) => !prev);
@@ -615,10 +616,31 @@ export async function getCartData(countryId, userId) {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
   } catch (error) {
     console.log("Error while getting cart data", error);
+    throw error;
+  }
+}
+
+// function to request notification for out of stock product
+export async function notifyMeAboutProduct(data) {
+  try {
+    const response = await axios.post(notifyMeUrl, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response?.status === 200 || response?.status === 201) {
+      if (response?.data?.isSuccess) {
+        successToast(response?.data?.message);
+        return response?.data;
+      }
+    }
+  } catch (error) {
+    console.log("Error in notifyMeAboutProduct:", error);
+    errorToast(error?.response?.data?.message || "Something went wrong!");
     throw error;
   }
 }
