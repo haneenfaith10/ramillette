@@ -1,11 +1,11 @@
 .product-list-card {
   border: 1px solid #e5e7eb;
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
   background: #fff;
   display: flex;
   flex-direction: column;
-  font-family: 'Gilroy', 'Segoe UI', sans-serif;
+  font-family: "Gilroy", "Segoe UI", sans-serif;
   height: 100%;
   width: 100%;
   box-sizing: border-box;
@@ -15,49 +15,62 @@
 .product-list-card .image-wrapper {
   position: relative;
   width: 100%;
-  height: 288px;
-  min-height: 288px;
-  max-height: 288px;
-  background: #fff;
-  border-radius: 16px 16px 0 0;
+  height: 180px;
+  background: #fafafa;
+  border-radius: 12px 12px 0 0;
   overflow: hidden;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Link inside image wrapper - MUST be constrained to wrapper size */
+.product-list-card .image-wrapper a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
 }
 
 .product-list-card .product-image {
-  width: 100%;
-  height: 288px;
-  min-height: 288px;
-  max-height: 288px;
-  object-fit: cover;
-  object-position: center;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+  object-position: center !important;
   display: block;
 }
 
 /* Bestseller Badge */
 .product-list-card .bestseller-badge {
   position: absolute;
-  left: 8px;
-  top: 8px;
-  padding: 4px 10px;
+  left: 6px;
+  top: 6px;
+  padding: 3px 8px;
   background: #facc15;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 600;
   color: #292524;
   z-index: 2;
-  font-family: 'Gilroy', 'Segoe UI', sans-serif;
+  font-family: "Gilroy", "Segoe UI", sans-serif;
 }
 
 .product-list-card .wishlist-btn {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 24px;
-  height: 24px;
-  background: transparent;
+  top: 6px;
+  right: 6px;
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.9);
   border: none;
-  border-radius: 0;
+  border-radius: 50%;
   padding: 0;
   cursor: pointer;
   display: flex;
@@ -68,13 +81,13 @@
 }
 
 .product-list-card .wishlist-btn:hover {
-  background: transparent;
-  opacity: 0.8;
+  background: #fff;
+  transform: scale(1.1);
 }
 
 .product-list-card .wishlist-btn svg {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
 }
 
 .product-list-card .wishlist-btn svg[color="red"] {
@@ -82,14 +95,16 @@
 }
 
 .product-list-card .product-details {
-  padding: 14px;
+  padding: 10px;
   background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
   flex: 1;
   min-height: 0;
+  margin-bottom: 0 !important;
+  border: none !important;
 }
 
 .product-list-card .product-details > div:last-child {
@@ -98,59 +113,59 @@
 }
 
 .product-list-card .product-name {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 500;
   color: #292524;
   margin: 0;
   text-align: center;
   width: 100%;
-  line-height: 1.4;
+  line-height: 1.3;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: 'Gilroy', 'Segoe UI', sans-serif;
-  min-height: 22.4px; /* 1 line * 16px * 1.4 line-height */
-  max-height: 22.4px;
+  font-family: "Gilroy", "Segoe UI", sans-serif;
 }
 
 .product-list-card .product-size {
-  font-size: 1rem;
+  font-size: 0.85rem;
   color: #777;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
 }
 
 .product-list-card .product-price {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 18px;
+  flex-wrap: wrap;
+  gap: 6px;
   margin: 0;
   width: 100%;
-  min-height: 28px;
+  min-height: 20px;
   flex-shrink: 0;
 }
 
 .product-list-card .price {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 700;
   color: #292524;
-  font-family: 'Gilroy', 'Segoe UI', sans-serif;
+  font-family: "Gilroy", "Segoe UI", sans-serif;
 }
 
 .product-list-card .original-price {
-  font-size: 16px;
+  font-size: 11px;
   font-weight: 400;
   color: #a1a1aa;
   text-decoration: line-through;
-  font-family: 'Gilroy', 'Segoe UI', sans-serif;
+  font-family: "Gilroy", "Segoe UI", sans-serif;
   margin: 0;
 }
 
 .product-list-card .discount {
-  color: #59BF59;
-  font-size: 16px;
-  font-weight: 500;
-  font-family: 'Gilroy', 'Segoe UI', sans-serif;
+  color: #59bf59;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: "Gilroy", "Segoe UI", sans-serif;
+  white-space: nowrap;
 }
 
 /* Rating */
@@ -158,19 +173,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  font-size: 16px;
+  gap: 3px;
+  font-size: 12px;
   font-weight: 600;
   color: #292524;
-  font-family: 'Gilroy', 'Segoe UI', sans-serif;
-  min-height: 24px;
+  font-family: "Gilroy", "Segoe UI", sans-serif;
+  min-height: 20px;
   flex-shrink: 0;
 }
 
 .product-list-card .wishlist-action {
   border: 1px solid #ccc;
-  padding: 6px 12px;
-  font-size: 13px;
+  padding: 5px 10px;
+  font-size: 12px;
   border-radius: 4px;
   background: #fff;
   cursor: pointer;
@@ -181,10 +196,10 @@
   width: 100%;
   max-width: 100%;
   text-align: center;
-  padding: 12px 20px;
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
 }
 
 .product-details .buy-now-btn {
@@ -192,283 +207,253 @@
   width: 100%;
   max-width: 100%;
   text-align: center;
-  padding: 12px 20px;
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
 }
 .product-list-card .image-wrapper .slick-dots li button {
   padding: 0;
 }
 .product-list-card .image-wrapper .slick-dots li button:before {
-  font-size: 6px;
+  font-size: 5px;
   color: var(--secondary-color);
 }
 
-/* TABLET (769px - 991px) - 2 COLUMNS */
-@media (max-width: 991px) and (min-width: 769px) {
+/* TABLET (769px - 1023px) - 2 COLUMNS */
+@media (max-width: 1023px) and (min-width: 769px) {
   .product-list-card .image-wrapper {
-    height: 200px;
-    min-height: 200px;
-    max-height: 200px;
-  }
-  
-  .product-list-card .product-image {
-    width: 100%;
-    height: 200px;
-    min-height: 200px;
-    max-height: 200px;
-    object-fit: contain;
-    object-position: center;
+    height: 160px;
   }
 
   .product-list-card .product-name {
-    font-size: 0.9rem;
+    font-size: 12px;
   }
 
-  .product-list-card .product-price {
-    font-size: 0.9rem;
+  .product-list-card .price {
+    font-size: 12px;
   }
 
-  .product-details {
-    padding: 12px;
+  .product-list-card .original-price {
+    font-size: 10px;
+  }
+
+  .product-list-card .discount {
+    font-size: 9px;
+  }
+
+  .product-list-card .product-details {
+    padding: 8px;
+    gap: 5px;
+  }
+
+  .product-details .secondry-btn,
+  .product-details .buy-now-btn {
+    padding: 7px 10px;
+    font-size: 10px;
   }
 }
 
-/* MOBILE LARGE (481px - 768px) - SINGLE COLUMN */
-@media (max-width: 768px) and (min-width: 481px) {
+/* MOBILE (≤768px) - 2 COLUMNS */
+@media (max-width: 768px) {
   .product-list-card {
-    padding: 0;
+    border-radius: 10px;
   }
 
   .product-list-card .image-wrapper {
-    height: 180px;
-    min-height: 180px;
-    max-height: 180px;
-  }
-  
-  .product-list-card .product-image {
-    width: 100%;
-    height: 180px;
-    min-height: 180px;
-    max-height: 180px;
-    object-fit: contain;
-    object-position: center;
-  }
-
-  .product-list-card .product-name {
-    font-size: 0.95rem;
-    line-height: 1.4;
-    margin-bottom: 8px;
-    white-space: normal;
-    overflow: visible;
-    text-overflow: unset;
-    display: block;
-    min-height: auto;
-    max-height: none;
-  }
-
-  .product-list-card .product-price {
-    font-size: 0.9rem;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-
-  .product-list-card .product-price .price {
-    font-size: 0.95rem;
-  }
-
-  .product-list-card .product-price .original-price {
-    font-size: 0.85rem;
-  }
-
-  .product-details {
-    padding: 14px;
-    gap: 10px;
-  }
-
-  .product-details .secondry-btn {
-    padding: 10px 16px !important;
-    font-size: 0.85rem;
-    margin-top: 8px;
-    width: 100%;
-  }
-
-  .product-list-card .product-details > div:last-child {
-    margin-top: auto;
-  }
-
-  .product-list-card .wishlist-btn {
-    padding: 10px;
-    width: 44px;
-    height: 44px;
-    top: 8px;
-    right: 8px;
-  }
-
-  .product-list-card .wishlist-btn svg {
-    width: 22px;
-    height: 22px;
-  }
-
-  .product-list-card .bestseller-badge {
-    font-size: 0.75rem;
-    padding: 4px 10px;
-    left: 8px;
-    top: 8px;
-  }
-}
-
-/* MOBILE MEDIUM (376px - 480px) */
-@media (max-width: 480px) and (min-width: 376px) {
-  .product-list-card .image-wrapper {
-    height: 160px;
-    min-height: 160px;
-    max-height: 160px;
-  }
-  
-  .product-list-card .product-image {
-    width: 100%;
-    height: 160px;
-    min-height: 160px;
-    max-height: 160px;
-    object-fit: contain;
-    object-position: center;
-  }
-
-  .product-list-card .product-name {
-    font-size: 0.9rem;
-  }
-
-  .product-list-card .product-price {
-    font-size: 0.85rem;
-    gap: 6px;
-  }
-
-  .product-details {
-    padding: 12px;
-    gap: 8px;
-  }
-
-  .product-details .secondry-btn {
-    padding: 10px 14px !important;
-    font-size: 0.8rem;
-  }
-}
-
-/* MOBILE SMALL (≤375px) */
-@media (max-width: 375px) {
-  .product-list-card .image-wrapper {
-    height: 160px;
-    min-height: 160px;
-    max-height: 160px;
-  }
-  
-  .product-list-card .product-image {
-    width: 100%;
-    height: 160px;
-    min-height: 160px;
-    max-height: 160px;
-    object-fit: contain;
-    object-position: center;
-  }
-
-  .product-list-card .product-name {
-    font-size: 0.9rem;
-    line-height: 1.4;
-  }
-
-  .product-list-card .product-price {
-    font-size: 0.85rem;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .product-list-card .product-price .price {
-    font-size: 0.9rem;
-  }
-
-  .product-list-card .product-price .original-price {
-    font-size: 0.8rem;
-  }
-
-  .product-details {
-    padding: 12px;
-    gap: 8px;
-  }
-
-  .product-details .secondry-btn {
-    padding: 10px 14px !important;
-    font-size: 0.8rem;
-  }
-
-  .product-list-card .wishlist-btn {
-    padding: 10px;
-    width: 44px;
-    height: 44px;
-    top: 8px;
-    right: 8px;
-  }
-
-  .product-list-card .wishlist-btn svg {
-    width: 22px;
-    height: 22px;
-  }
-
-  .product-list-card .bestseller-badge {
-    font-size: 0.7rem;
-    padding: 3px 8px;
-  }
-}
-
-/* EXTRA SMALL MOBILE (≤320px) */
-@media (max-width: 320px) {
-  .product-list-card .image-wrapper {
-    height: 140px;
-    min-height: 140px;
-    max-height: 140px;
-  }
-  
-  .product-list-card .product-image {
-    width: 100%;
-    height: 140px;
-    min-height: 140px;
-    max-height: 140px;
-    object-fit: contain;
-    object-position: center;
-  }
-
-  .product-list-card .product-name {
-    font-size: 0.85rem;
-  }
-
-  .product-list-card .product-price {
-    font-size: 0.8rem;
-  }
-
-  .product-details {
-    padding: 10px;
-    gap: 6px;
-  }
-
-  .product-details .secondry-btn {
-    padding: 8px 12px !important;
-    font-size: 0.75rem;
-  }
-
-  .product-list-card .wishlist-btn {
-    width: 40px;
-    height: 40px;
+    height: 120px;
+    border-radius: 10px 10px 0 0;
     padding: 8px;
   }
 
+  .product-list-card .product-name {
+    font-size: 11px;
+  }
+
+  .product-list-card .product-price {
+    gap: 4px;
+  }
+
+  .product-list-card .price {
+    font-size: 11px;
+  }
+
+  .product-list-card .original-price {
+    font-size: 9px;
+  }
+
+  .product-list-card .discount {
+    font-size: 8px;
+  }
+
+  .product-list-card .product-details {
+    padding: 8px;
+    gap: 4px;
+  }
+
+  .product-details .secondry-btn,
+  .product-details .buy-now-btn {
+    padding: 6px 8px;
+    font-size: 9px;
+    border-radius: 5px;
+  }
+
+  .product-list-card .wishlist-btn {
+    width: 24px;
+    height: 24px;
+    top: 4px;
+    right: 4px;
+  }
+
   .product-list-card .wishlist-btn svg {
-    width: 20px;
-    height: 20px;
+    width: 12px;
+    height: 12px;
+  }
+
+  .product-list-card .bestseller-badge {
+    font-size: 8px;
+    padding: 2px 6px;
+    left: 4px;
+    top: 4px;
+    border-radius: 4px;
   }
 }
 
+/* MOBILE MEDIUM (376px - 480px) - 2 COLUMNS */
+@media (max-width: 480px) and (min-width: 376px) {
+  .product-list-card .image-wrapper {
+    height: 100px;
+    padding: 6px;
+  }
+
+  .product-list-card .product-name {
+    font-size: 10px;
+  }
+
+  .product-list-card .price {
+    font-size: 10px;
+  }
+
+  .product-list-card .original-price {
+    font-size: 8px;
+  }
+
+  .product-list-card .discount {
+    font-size: 7px;
+  }
+
+  .product-list-card .product-details {
+    padding: 6px;
+    gap: 4px;
+  }
+
+  .product-details .secondry-btn,
+  .product-details .buy-now-btn {
+    padding: 5px 6px;
+    font-size: 8px;
+  }
+}
+
+/* MOBILE SMALL (≤375px) - 2 COLUMNS */
+@media (max-width: 375px) {
+  .product-list-card .image-wrapper {
+    height: 90px;
+    padding: 5px;
+  }
+
+  .product-list-card .product-name {
+    font-size: 9px;
+  }
+
+  .product-list-card .product-price {
+    gap: 3px;
+  }
+
+  .product-list-card .price {
+    font-size: 9px;
+  }
+
+  .product-list-card .original-price {
+    font-size: 7px;
+  }
+
+  .product-list-card .discount {
+    font-size: 7px;
+  }
+
+  .product-list-card .product-details {
+    padding: 5px;
+    gap: 3px;
+  }
+
+  .product-details .secondry-btn,
+  .product-details .buy-now-btn {
+    padding: 5px 6px;
+    font-size: 8px;
+  }
+
+  .product-list-card .wishlist-btn {
+    width: 22px;
+    height: 22px;
+    top: 3px;
+    right: 3px;
+  }
+
+  .product-list-card .wishlist-btn svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  .product-list-card .bestseller-badge {
+    font-size: 7px;
+    padding: 2px 4px;
+  }
+}
+
+/* EXTRA SMALL MOBILE (≤320px) - 2 COLUMNS */
+@media (max-width: 320px) {
+  .product-list-card .image-wrapper {
+    height: 80px;
+    padding: 4px;
+  }
+
+  .product-list-card .product-name {
+    font-size: 8px;
+  }
+
+  .product-list-card .price {
+    font-size: 8px;
+  }
+
+  .product-list-card .original-price {
+    font-size: 6px;
+  }
+
+  .product-list-card .discount {
+    font-size: 6px;
+  }
+
+  .product-list-card .product-details {
+    padding: 4px;
+    gap: 2px;
+  }
+
+  .product-details .secondry-btn,
+  .product-details .buy-now-btn {
+    padding: 4px 5px;
+    font-size: 7px;
+  }
+
+  .product-list-card .wishlist-btn {
+    width: 20px;
+    height: 20px;
+  }
+
+  .product-list-card .wishlist-btn svg {
+    width: 9px;
+    height: 9px;
+  }
+}
 
 .buy-now-btn {
   border-color: black;
