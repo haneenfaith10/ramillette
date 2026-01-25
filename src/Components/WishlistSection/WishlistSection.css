@@ -75,6 +75,7 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  margin-top: 10px;
 }
 
 .wishlist-details h4 {
@@ -90,6 +91,7 @@
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
@@ -107,6 +109,7 @@
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 
@@ -140,29 +143,30 @@
 
 /* Remove Button */
 .remove-btn {
-  background-color: #fef2f2;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 34px;
+  height: 34px;
+  background-color: #fff;
   color: #dc2626;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  padding: 10px 16px;
-  font-size: 14px;
-  font-weight: 600;
+  border: 1px solid #e8e8e8;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: "Gilroy", "Segoe UI", sans-serif;
-  width: 100%;
-  margin-top: auto;
+  z-index: 5;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .remove-btn:hover {
-  background-color: #fee2e2;
-  border-color: #fca5a5;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.15);
+  background-color: #dc2626;
+  color: #fff;
+  border-color: #dc2626;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
 }
 
 .remove-btn svg {

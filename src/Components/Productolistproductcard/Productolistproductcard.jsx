@@ -132,9 +132,8 @@ export default function Productolistproductcard(Props) {
     });
   }
 
-  if (variants.length === 0) return null;
-
-  const basePrice = Math.min(...variants.map((v) => Number(v.price)));
+  const basePrice =
+    variants.length > 0 ? Math.min(...variants.map((v) => Number(v.price))) : 0;
   const discountPercent = Number(product.productDiscount || 0);
   const discountedPrice = getDiscountedPrice(basePrice, discountPercent);
 

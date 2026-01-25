@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addToCart,
   getUserSubCart,
+  notifyMeAboutProduct,
   removeCartItem,
   updateCartItemQuantity,
 } from "../../services/userApiServices";
@@ -149,7 +150,7 @@ export default function NavBar() {
       item?.productId?._id,
       selectedCountry?._id,
       false,
-      token
+      token,
     );
 
     if (response) {
@@ -160,7 +161,7 @@ export default function NavBar() {
   async function updateCartQuantity(
     productId,
     action,
-    countryId
+    countryId,
     // isShow = true
   ) {
     const response = await updateCartItemQuantity(productId, action, countryId);
@@ -184,12 +185,42 @@ export default function NavBar() {
       product?._id,
       1,
       selectedCountry._id,
-      false
+      false,
     );
     if (response) {
       dispatch(updateCart({ cart: response }));
     }
   }
+
+  async function handleNotifyMe(product) {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    const data = {
+      productId: product?._id,
+      userEmail: user?.email,
+      countryId: selectedCountry?._id,
+    };
+
+    if (!data.userEmail) {
+      navigate("/login");
+      return;
+    }
+
+    await notifyMeAboutProduct(data);
+  }
+
+  const checkIsOutOfStock = (product) => {
+    if (product?.status === false || product?.isDelete === true) return true;
+    const variants =
+      product?.countryVariants?.[selectedCountry?._id] ||
+      product?.countryVariants?.get?.(selectedCountry?._id) ||
+      [];
+    if (variants.length === 0) return true;
+    return variants.every((v) => Number(v.stock || 0) <= 0);
+  };
 
   // product search section
   useEffect(() => {
@@ -218,8 +249,8 @@ export default function NavBar() {
     if (!query.trim()) return;
     navigate(
       `/${selectedCountry.code}/product-list?query=${encodeURIComponent(
-        query
-      )}&countryId=${selectedCountry._id}`
+        query,
+      )}&countryId=${selectedCountry._id}`,
     );
     setQuery("");
   };
@@ -581,16 +612,22 @@ export default function NavBar() {
                     {selectedCountry.priceLabel}
                     {getDiscountedPrice(
                       getCountryPrice(p),
-                      p.productDiscount
+                      p.productDiscount,
                     ).toFixed(2)}
                     <span className="old-price">
                       {selectedCountry.priceLabel}
                       {getCountryPrice(p).toFixed(2)}
                     </span>
                   </p>
-                  <button onClick={() => addProductToCart(p)}>
-                    ADD TO CART →
-                  </button>
+                  {checkIsOutOfStock(p) ? (
+                    <button onClick={() => handleNotifyMe(p)}>
+                      NOTIFY ME →
+                    </button>
+                  ) : (
+                    <button onClick={() => addProductToCart(p)}>
+                      ADD TO CART →
+                    </button>
+                  )}
                 </div>
               </div>
             ))
@@ -609,66 +646,68 @@ export default function NavBar() {
           )}
         </div>
         <div className="cart-panel">
-        <div className="cart-inner">
-          <div className="cart-header">
-            <h2>CART</h2>
-            <p className="free-gift-text"></p>
-            <button onClick={() => setIsCartOpen(false)}>✖</button>
-          </div>
-          <div className="cart-items-list">
-            {user &&
-              user.cart &&
-              user.cart.items.map((item, index) => (
-                <div className="cart-item" key={index}>
-                  {item.productId && (
-                    <img
-                      src={`${import.meta.env.VITE_BASE_URL}/${
-                        item.productId.productImages[0].path
-                      }`}
-                      style={{ cursor: "pointer" }}
-                      alt={item.name}
-                      onClick={() => {
-                        navigate(
-                          `/${selectedCountry.code}/product-inner/${item.productId._id}`
-                        );
-                        setIsCartOpen(false);
-                      }}
-                    />
-                  )}
-                  <div className="item-details">
-                    <h4>{item.productId && item.productId.productName}</h4>
-                    <div className="quantity">
-                      <button
-                        onClick={() =>
-                          updateCartQuantity(
-                            item.productId._id,
-                            "decrement",
-                            selectedCountry?._id
-                          )
-                        }
-                      >
-                        -
-                      </button>
-                      <span>{item.qty}</span>
-                      <button
-                        onClick={() =>
-                          updateCartQuantity(
-                            item.productId._id,
-                            "increment",
-                            selectedCountry?._id
-                          )
-                        }
-                      >
-                        +
-                      </button>
+          <div className="cart-inner">
+            <div className="cart-header">
+              <h2>CART</h2>
+              <p className="free-gift-text"></p>
+              <button onClick={() => setIsCartOpen(false)}>✖</button>
+            </div>
+            <div className="cart-items-list">
+              {user &&
+                user.cart &&
+                user.cart.items.map((item, index) => (
+                  <div className="cart-item" key={index}>
+                    {item.productId && (
+                      <img
+                        src={`${import.meta.env.VITE_BASE_URL}/${
+                          item.productId.productImages[0].path
+                        }`}
+                        style={{ cursor: "pointer" }}
+                        alt={item.name}
+                        onClick={() => {
+                          navigate(
+                            `/${selectedCountry.code}/product-inner/${item.productId._id}`,
+                          );
+                          setIsCartOpen(false);
+                        }}
+                      />
+                    )}
+                    <div className="item-details">
+                      <h4>{item.productId && item.productId.productName}</h4>
+                      <div className="quantity">
+                        <button
+                          onClick={() =>
+                            updateCartQuantity(
+                              item.productId._id,
+                              "decrement",
+                              selectedCountry?._id,
+                            )
+                          }
+                        >
+                          -
+                        </button>
+                        <span>{item.qty}</span>
+                        <button
+                          onClick={() =>
+                            updateCartQuantity(
+                              item.productId._id,
+                              "increment",
+                              selectedCountry?._id,
+                            )
+                          }
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="item-price" style={{ display: "none" }}>
-                    {selectedCountry.priceLabel}
-                    {((item && item?.productId?.productPrice) || 0).toFixed(1)}
-                    /Item
-                  </div>
-                  {/* <div className="item-price">
+                    <div className="item-price" style={{ display: "none" }}>
+                      {selectedCountry.priceLabel}
+                      {((item && item?.productId?.productPrice) || 0).toFixed(
+                        1,
+                      )}
+                      /Item
+                    </div>
+                    {/* <div className="item-price">
                     {selectedCountry.priceLabel}
                     {calculateTotalPrice(
                       item?.productId?.countryPrices.find(
@@ -678,20 +717,20 @@ export default function NavBar() {
                       item.qty
                     ).toFixed(2)}
                   </div> */}
-                  <div className="item-price">
-                    {selectedCountry.priceLabel}
-                    {calculateTotalPrice(
-                      item?.productId?.countryVariants?.[
-                        selectedCountry._id
-                      ]?.[0]?.price || 0,
-                      item?.productId?.productDiscount || 0,
-                      item.qty
-                    ).toFixed(2)}
+                    <div className="item-price">
+                      {selectedCountry.priceLabel}
+                      {calculateTotalPrice(
+                        item?.productId?.countryVariants?.[
+                          selectedCountry._id
+                        ]?.[0]?.price || 0,
+                        item?.productId?.productDiscount || 0,
+                        item.qty,
+                      ).toFixed(2)}
+                    </div>
+                    <button onClick={() => removeItem(item)}>✖</button>
                   </div>
-                  <button onClick={() => removeItem(item)}>✖</button>
-                </div>
-              ))}
-          </div>
+                ))}
+            </div>
           </div>
           <div className="cart-footer">
             {user && user.cart && user.cart.items.length > 0 ? (
@@ -707,7 +746,7 @@ export default function NavBar() {
                   CHECKOUT — {selectedCountry.priceLabel}
                   {calculateCartSubtotal(
                     user.cart.items,
-                    selectedCountry?._id
+                    selectedCountry?._id,
                   ).toFixed(2)}
                 </button>
               </>
