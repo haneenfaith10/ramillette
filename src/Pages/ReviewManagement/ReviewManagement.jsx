@@ -55,78 +55,95 @@ function ReviewModal({ open, handleCloseModal, modalData }) {
     modalData;
 
   return (
-    <Modal open={open} onClose={handleCloseModal}>
+    <Modal open={open} onClose={handleCloseModal} sx={{ backdropFilter: 'blur(8px)' }}>
       <Box sx={modalStyle}>
-        <div style={{ padding: '32px' }}>
+        <div style={{ padding: '20px' }}>
           <div className="admin-review-modal-header">
-            <Typography variant="h5" fontWeight="bold">Review Details</Typography>
-            <IconButton onClick={handleCloseModal} size="small">
+            <div>
+              <Typography variant="h5" fontWeight="800" sx={{ color: '#1a1a1a' }}>Review Details</Typography>
+              <Typography variant="caption" sx={{ color: '#888', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                Order Summary & Feedback
+              </Typography>
+            </div>
+            <IconButton onClick={handleCloseModal} sx={{ backgroundColor: '#f5f5f5', '&:hover': { backgroundColor: '#eee' } }}>
               <IoClose />
             </IconButton>
           </div>
 
           <div className="admin-review-modal-content">
-            <div className="review-user-info">
-              <Avatar
-                src={`${import.meta.env.VITE_BASE_URL}/${user?.userImage}`}
-                alt={user?.firstName}
-                sx={{ width: 60, height: 60, boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}
-              />
-              <Box>
-                <Typography variant="h6" fontWeight="600">{user?.firstName} {user?.lastName}</Typography>
-                <Typography variant="body2" color="textSecondary">Customer Profile</Typography>
-              </Box>
-            </div>
-
-            <div className="review-product-info">
-              <img
-                src={`${import.meta.env.VITE_BASE_URL}/${productId?.productImages?.[0]?.path || productId?.productImages?.[0]}`}
-                alt="Product"
-                className="review-modal-product-img"
-              />
-              <Box>
-                <Typography variant="caption" color="textSecondary" textTransform="uppercase" fontWeight="bold">Reviewed Product</Typography>
-                <Typography variant="h6" fontWeight="bold">{productId?.productName}</Typography>
-              </Box>
-            </div>
-
-            <div className="review-meta-info">
-              <div>
-                <strong>Customer Feedback</strong>
-                <div className="review-content-box">{content}</div>
+            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+              <div className="review-user-info premium">
+                <Avatar
+                  src={`${import.meta.env.VITE_BASE_URL}/${user?.userImage}`}
+                  alt={user?.firstName}
+                  sx={{ width: 70, height: 70, border: '4px solid white', boxShadow: '0 8px 16px rgba(0,0,0,0.1)' }}
+                />
+                <Box>
+                  <Typography variant="subtitle2" sx={{ color: '#edc862', fontWeight: 'bold' }}>CUSTOMER</Typography>
+                  <Typography variant="h6" fontWeight="700">{user?.firstName} {user?.lastName}</Typography>
+                  <Typography variant="body2" sx={{ color: '#666' }}>Verified Buyer</Typography>
+                </Box>
               </div>
 
-              <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
+              <div className="review-product-info premium">
+                <img
+                  src={`${import.meta.env.VITE_BASE_URL}/${productId?.productImages?.[0]?.path || productId?.productImages?.[0]}`}
+                  alt="Product"
+                  className="review-modal-product-img"
+                />
                 <Box>
-                  <strong>Rating Given</strong>
-                  <Rating value={rating} precision={0.5} readOnly size="medium" />
+                  <Typography variant="subtitle2" sx={{ color: '#edc862', fontWeight: 'bold' }}>PRODUCT</Typography>
+                  <Typography variant="h6" fontWeight="700" sx={{ fontSize: '1rem', lineHeight: '1.2' }}>{productId?.productName}</Typography>
+                </Box>
+              </div>
+            </Box>
+
+            <div className="review-meta-info">
+              <div className="review-feedback-section">
+                <Typography variant="subtitle2" sx={{ mb: 1, color: '#333', fontWeight: '800', display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <span style={{ width: '4px', height: '16px', backgroundColor: '#edc862', borderRadius: '2px' }}></span>
+                  CUSTOMER FEEDBACK
+                </Typography>
+                <div className="review-content-box premium">
+                  <span style={{ fontSize: '2rem', color: '#edc862', lineHeight: '1', fontFamily: 'serif' }}>"</span>
+                  {content}
+                  <span style={{ fontSize: '2rem', color: '#edc862', lineHeight: '1', fontFamily: 'serif', marginLeft: '4px' }}>"</span>
+                </div>
+              </div>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: 'center', mt: 3, p: '20px', backgroundColor: 'rgba(237, 200, 98, 0.05)', borderRadius: '15px' }}>
+                <Box>
+                  <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#888', mb: 0.5, display: 'block' }}>RATING</Typography>
+                  <Rating value={rating} precision={0.5} readOnly size="large" />
                 </Box>
                 <Box sx={{ textAlign: 'right' }}>
-                  <strong>Origin</strong>
+                  <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#888', mb: 0.5, display: 'block' }}>PURCHASE ORIGIN</Typography>
                   {countryId && (
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 1 }}>
-                      <img src={`${import.meta.env.VITE_BASE_URL}${countryId.flagUrl}`} alt={countryId.name} style={{ width: "20px", borderRadius: '2px' }} />
-                      <Typography variant="body2">{countryId.name}</Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 1.5 }}>
+                      <img src={`${import.meta.env.VITE_BASE_URL}${countryId.flagUrl}`} alt={countryId.name} style={{ width: "24px", height: '24px', borderRadius: '50%', objectFit: 'cover' }} />
+                      <Typography variant="body1" fontWeight="600">{countryId.name}</Typography>
                     </Box>
                   )}
                 </Box>
               </Box>
 
-              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: 'center', mt: 2, pt: 2, borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-                <Box>
-                  <strong>Current Visibility</strong>
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: 'center', mt: 4 }}>
+                <Box display="flex" alignItems="center" gap={2}>
+                  <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#888' }}>VISIBILITY:</Typography>
                   <Chip
-                    label={status ? "Visible" : "Hidden"}
+                    label={status ? "PUBLIC" : "HIDDEN"}
                     sx={{
-                      backgroundColor: status ? "rgba(76, 175, 80, 0.1)" : "rgba(0,0,0,0.05)",
-                      color: status ? "#2e7d32" : "#666",
-                      fontWeight: "bold",
-                      height: '24px'
+                      backgroundColor: status ? "#4caf50" : "#9e9e9e",
+                      color: "white",
+                      fontWeight: "900",
+                      fontSize: '10px',
+                      height: '24px',
+                      letterSpacing: '1px'
                     }}
                   />
                 </Box>
-                <Typography variant="caption" color="textSecondary">
-                  Submitted on {new Date(createdAt).toLocaleDateString()}
+                <Typography variant="caption" sx={{ color: '#aaa', fontStyle: 'italic' }}>
+                  Posted on {new Date(createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
                 </Typography>
               </Box>
             </div>

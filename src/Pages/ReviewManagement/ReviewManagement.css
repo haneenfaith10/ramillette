@@ -67,66 +67,71 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  padding-bottom: 16px;
+  margin-bottom: 30px;
 }
 
 .admin-review-modal-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
 }
 
-.review-user-info {
+.review-user-info.premium,
+.review-product-info.premium {
   display: flex;
   align-items: center;
-  gap: 16px;
-  background: rgba(0, 0, 0, 0.02);
-  padding: 16px;
-  border-radius: 12px;
+  gap: 20px;
+  background: white;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease;
 }
 
-.review-product-info {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  background: rgba(237, 200, 98, 0.05);
-  padding: 16px;
-  border-radius: 12px;
+.review-user-info.premium:hover,
+.review-product-info.premium:hover {
+  transform: translateY(-5px);
 }
 
 .review-modal-product-img {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 14px;
+  border: 2px solid white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .review-meta-info {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 0 8px;
+  gap: 24px;
 }
 
-.review-meta-info strong {
-  color: #555;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  display: block;
-  margin-bottom: 4px;
+.review-content-box.premium {
+  background: #fff;
+  padding: 28px;
+  border-radius: 18px;
+  border-left: 5px solid #edc862;
+  line-height: 1.8;
+  color: #333;
+  font-size: 1.05rem;
+  font-style: italic;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.02);
+  position: relative;
+  overflow: hidden;
 }
 
-.review-content-box {
-  background: white;
-  padding: 16px;
-  border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  line-height: 1.6;
-  color: #444;
+.review-content-box.premium::after {
+  content: '”';
+  position: absolute;
+  bottom: -20px;
+  right: 15px;
+  font-size: 8rem;
+  color: rgba(237, 200, 98, 0.1);
+  font-family: serif;
+  line-height: 0;
 }
 
 .review-actions-cell {
@@ -166,4 +171,12 @@
 
 .css-1o6h1cp {
   justify-content: start !important;
+}
+
+.css-t0mvpq {
+  grid-template-columns: 0fr fr !important;
+}
+
+.css-16x3a39-MuiTypography-root {
+  margin-bottom: 5px !important;
 }
