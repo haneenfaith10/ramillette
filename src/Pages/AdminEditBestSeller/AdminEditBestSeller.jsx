@@ -5,25 +5,21 @@ import * as Yup from "yup";
 import AdminHeader from "../../Components/AdminHeader/AdminHeader";
 import { getActiveCountries } from "../../services/configApiService";
 import { getBestSellingProducts } from "../../services/adminApiServices";
-// import {
-//   getBestSellerById,
-//   updateBestSeller,
-// } from "../../services/bestSellerApiService";
 import "../AdminBestSeller/AdminBestSeller.css";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   getBestSellerById,
   updateBestSeller,
 } from "../../services/bestSellerApiService";
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 const CustomOption = (props) => {
   const { data, innerRef, innerProps } = props;
   return (
     <div ref={innerRef} {...innerProps} className="custom-option">
       <img
-        src={`${import.meta.env.VITE_BASE_URL}/${
-          data?.image?.path || data?.image
-        }`}
+        src={`${import.meta.env.VITE_BASE_URL}/${data?.image?.path || data?.image
+          }`}
         alt={data.label}
       />
       <div className="product-info">
@@ -154,35 +150,18 @@ export default function AdminEditBestSeller() {
     }
   };
 
-  if (!initialDataLoaded) return <div>Loading...</div>;
+  if (!initialDataLoaded) return <div className="loading-container">Loading Best Seller Data...</div>;
 
   return (
     <div className="best-seller-main-container">
       <AdminHeader title="Edit Best Seller" />
-      <div className="admin-best-seller-form">
-        <form onSubmit={formik.handleSubmit}>
-          {/* Video Upload */}
-          <div className="form-group">
-            <label>Upload Best Seller Video</label>
-            <input
-              type="file"
-              accept="video/*"
-              onChange={handleVideoUpload}
-              onBlur={formik.handleBlur}
-            />
-            {formik.errors.video && (
-              <div className="error">{formik.errors.video}</div>
-            )}
-            {videoUrl && (
-              <div className="video-preview">
-                <video src={videoUrl} width="100%" height="auto" controls />
-              </div>
-            )}
-          </div>
+
+      <div className="admin-best-seller-form-container">
+        <form className="admin-best-seller-form" onSubmit={formik.handleSubmit}>
 
           {/* Country Selection */}
-          <div className="form-group">
-            <label>Select Country</label>
+          <div className="admin-add-category-form-row">
+            <label>Update Target Countries</label>
             <Select
               name="country"
               options={countries}
@@ -191,6 +170,7 @@ export default function AdminEditBestSeller() {
               onChange={(option) => formik.setFieldValue("country", option)}
               onBlur={() => formik.setFieldTouched("country", true)}
               placeholder="Select countries"
+              classNamePrefix="react-select"
             />
             {formik.touched.country && formik.errors.country && (
               <div className="error">{formik.errors.country}</div>
@@ -198,8 +178,8 @@ export default function AdminEditBestSeller() {
           </div>
 
           {/* Product Selection */}
-          <div className="form-group">
-            <label>Select Product</label>
+          <div className="admin-add-category-form-row">
+            <label>Update Best Selling Product</label>
             <Select
               name="products"
               options={products}
@@ -210,11 +190,12 @@ export default function AdminEditBestSeller() {
               }
               onBlur={() => formik.setFieldTouched("products", true)}
               placeholder="Select a product"
+              classNamePrefix="react-select"
             />
             {formik.touched.products && formik.errors.products && (
               <div className="error">
-                {typeof formik.errors.products === 'string' 
-                  ? formik.errors.products 
+                {typeof formik.errors.products === 'string'
+                  ? formik.errors.products
                   : formik.values.products === null
                     ? 'Please select a product'
                     : Object.values(formik.errors.products)[0]}
@@ -222,13 +203,40 @@ export default function AdminEditBestSeller() {
             )}
           </div>
 
+          {/* Video Upload Area */}
+          <div className="admin-add-category-form-row">
+            <label>Update Promotion Video (Vertical 9:16)</label>
+            <div className="admin-best-seller-video-upload-wrapper">
+              <IoCloudUploadOutline className="upload-icon" />
+              <span className="upload-text">Click to change vertical video file</span>
+              <input
+                type="file"
+                accept="video/*"
+                onChange={handleVideoUpload}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+            {formik.errors.video && (
+              <div className="error">{formik.errors.video}</div>
+            )}
+          </div>
+
+          {/* Video Preview */}
+          {videoUrl && (
+            <div className="video-preview-wrapper">
+              <div className="video-card">
+                <video src={videoUrl} autoPlay muted loop controls />
+              </div>
+            </div>
+          )}
+
           {/* Submit */}
           <button
             type="submit"
             className="submit-btn"
             disabled={formik.isSubmitting}
           >
-            Update Best Seller
+            {formik.isSubmitting ? "Updating..." : "Update Best Seller Details"}
           </button>
         </form>
       </div>

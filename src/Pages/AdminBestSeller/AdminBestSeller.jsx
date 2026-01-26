@@ -8,6 +8,7 @@ import { getBestSellingProducts } from "../../services/adminApiServices";
 import { postBestSeller } from "../../services/bestSellerApiService";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 const CustomOption = (props) => {
   const { data, innerRef, innerProps } = props;
@@ -127,31 +128,13 @@ export default function AdminBestSeller() {
   return (
     <div className="best-seller-main-container">
       <AdminHeader title="Create Best Seller" />
-      <div className="admin-best-seller-form">
-        {/* <h2>Best Seller Configuration</h2> */}
-        <form onSubmit={formik.handleSubmit}>
-          {/* Video Upload */}
-          <div className="admin-best-seller-form-group">
-            <label>Upload Best Seller Video</label>
-            <input
-              type="file"
-              accept="video/*"
-              onChange={handleVideoUpload}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.video && formik.errors.video && (
-              <div className="error">{formik.errors.video}</div>
-            )}
-            {videoUrl && (
-              <div className="video-preview">
-                <video src={videoUrl} width="100%" height="auto" controls />
-              </div>
-            )}
-          </div>
+
+      <div className="admin-best-seller-form-container">
+        <form className="admin-best-seller-form" onSubmit={formik.handleSubmit}>
 
           {/* Country Selection */}
-          <div className="admin-best-seller-form-group">
-            <label>Select Country</label>
+          <div className="admin-add-category-form-row">
+            <label>Select Target Countries</label>
             <Select
               name="country"
               options={countries}
@@ -159,7 +142,8 @@ export default function AdminBestSeller() {
               isMulti
               onChange={(option) => formik.setFieldValue("country", option)}
               onBlur={() => formik.setFieldTouched("country", true)}
-              placeholder="Select a country"
+              placeholder="Select countries where this will be featured..."
+              classNamePrefix="react-select"
             />
             {formik.touched.country && formik.errors.country && (
               <div className="error">{formik.errors.country}</div>
@@ -167,8 +151,8 @@ export default function AdminBestSeller() {
           </div>
 
           {/* Product Selection */}
-          <div className="admin-best-seller-form-group">
-            <label>Select Products</label>
+          <div className="admin-add-category-form-row">
+            <label>Select Best Selling Product</label>
             <Select
               name="products"
               options={products.map((product) => ({
@@ -183,23 +167,48 @@ export default function AdminBestSeller() {
                 formik.setFieldValue("products", selectedOption)
               }
               onBlur={() => formik.setFieldTouched("products", true)}
-              placeholder="Select a product"
+              placeholder="Select a product to promote..."
+              classNamePrefix="react-select"
             />
             {formik.touched.products && formik.errors.products && (
               <div className="error">{formik.errors.products}</div>
             )}
           </div>
 
+          {/* Video Upload Area */}
+          <div className="admin-add-category-form-row">
+            <label>Upload Vertical Promotion Video (9:16)</label>
+            <div className="admin-best-seller-video-upload-wrapper">
+              <IoCloudUploadOutline className="upload-icon" />
+              <span className="upload-text">Select vertical video file</span>
+              <input
+                type="file"
+                accept="video/*"
+                onChange={handleVideoUpload}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+            {formik.touched.video && formik.errors.video && (
+              <div className="error">{formik.errors.video}</div>
+            )}
+          </div>
+
+          {/* Video Preview */}
+          {videoUrl && (
+            <div className="video-preview-wrapper">
+              <div className="video-card">
+                <video src={videoUrl} autoPlay muted loop controls />
+              </div>
+            </div>
+          )}
+
           {/* Submit */}
           <button
             type="submit"
             disabled={formik.isSubmitting}
             className="submit-btn"
-            style={{
-              marginTop: "2rem",
-            }}
           >
-            {formik.isSubmitting ? "Saving.." : "Save Best Seller"}
+            {formik.isSubmitting ? "Processing..." : "Create Best Seller"}
           </button>
         </form>
       </div>

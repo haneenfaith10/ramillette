@@ -1,4 +1,98 @@
-.admin-best-seller-list-main-container{
+.admin-best-seller-list-main-container {
     width: 100%;
-    height: 100%;
+    padding: 24px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.admin-banner-list-filters {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.admin-banner-list-section {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Customizing Material UI Table */
+.admin-banner-list-section .MuiTableContainer-root {
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+.admin-banner-list-section .MuiTableHead-root {
+    background-color: #edc862 !important;
+}
+
+.admin-banner-list-section .MuiTableCell-head {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    font-size: 13px !important;
+    letter-spacing: 0.8px;
+    border-bottom: none !important;
+    padding: 16px !important;
+}
+
+.admin-banner-list-section .MuiTableRow-root:hover {
+    background-color: rgba(237, 200, 98, 0.05) !important;
+}
+
+.admin-banner-list-section .MuiTableCell-body {
+    padding: 16px !important;
+    color: #333 !important;
+    font-size: 14px !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Actions */
+.admin-banner-action-btn {
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.admin-banner-action-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.edit-btn {
+    background-color: #edc862 !important;
+}
+
+.delete-btn {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.view-video-btn {
+    color: #edc862 !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    padding: 4px 12px !important;
+    border-radius: 20px !important;
+    border: 1px solid #edc862 !important;
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+.view-video-btn:hover {
+    background-color: rgba(237, 200, 98, 0.1) !important;
+}
+
+.admin-banner-list-section .MuiTableCell-head {
+    background-color: #edc862 !important;
 }

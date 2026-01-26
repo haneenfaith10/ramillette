@@ -16,7 +16,8 @@ import {
   DialogTitle,
   DialogContent,
   IconButton,
-  Button,
+  TextField,
+  Tooltip,
 } from "@mui/material";
 import AdminHeader from "../../Components/AdminHeader/AdminHeader";
 import {
@@ -28,6 +29,7 @@ import { MdOutlineEdit } from "react-icons/md";
 import { IoTrashOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import "./AdminBestSellerList.css";
 
 export default function AdminBestSellerList() {
   const [bestSellerData, setBestSellerData] = useState([]);
@@ -40,7 +42,7 @@ export default function AdminBestSellerList() {
 
   const adminToken = localStorage.getItem("remilletAdminTkn");
   useEffect(() => {
-    getAllBestSeller(setBestSellerData,adminToken);
+    getAllBestSeller(setBestSellerData, adminToken);
   }, [adminToken]);
 
   const handleChangePage = (event, newPage) => setPage(newPage);
@@ -89,48 +91,53 @@ export default function AdminBestSellerList() {
 
 
   return (
-    <Box className="admin-best-seller-list-main-container" p={2}>
-      <AdminHeader title="Best Seller" />
+    <Box className="admin-best-seller-list-main-container">
+      <AdminHeader title="Best Sellers" />
 
-      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-        <input
-          type="text"
-          placeholder="Search by product name..."
+      {/* Filters & Actions Row */}
+      <Box className="admin-banner-list-filters">
+        <TextField
+          label="Search by product name"
+          variant="outlined"
+          size="small"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ padding: "2px 8px", borderRadius: "4px", border: "1px solid #ccc", width: "250px" }}
+          sx={{ backgroundColor: "white", borderRadius: "10px", minWidth: 300, "& fieldset": { borderRadius: "10px" } }}
         />
-        <Box display="flex" gap={1}>
-          <Button
-            variant="contained"
-            sx={{ backgroundColor: "var(--secondary-color)" }}
-            onClick={() => navigate("/admin/create-best-seller")}
-          >
-            Create
-          </Button>
-        </Box>
+
+        <Box sx={{ flexGrow: 1 }} />
+
+        <button
+          className="admin-add-category-submit-btn-wrapper"
+          style={{ width: "auto", margin: 0, border: "none" }}
+          onClick={() => navigate("/admin/create-best-seller")}
+        >
+          <Box component="span" sx={{ px: 2, py: 1.2, backgroundColor: "#edc862", borderRadius: "10px", fontWeight: "bold", cursor: "pointer", display: "flex", alignItems: "center", gap: 1, color: "#333", boxShadow: "0 4px 12px rgba(237, 200, 98, 0.3)" }}>
+            Add New Best Seller
+          </Box>
+        </button>
       </Box>
 
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer sx={{ maxHeight: 600 }}>
+      <div className="admin-banner-list-section">
+        <TableContainer component={Paper}>
           <Table stickyHeader>
             <TableHead>
               <TableRow>
                 <TableCell>Product</TableCell>
                 <TableCell>Countries</TableCell>
-                <TableCell>Discount</TableCell>
-                <TableCell>Rating</TableCell>
-                <TableCell>Stock</TableCell>
-                <TableCell>Video</TableCell>
-                <TableCell>Actions</TableCell>
+                <TableCell align="center">Discount</TableCell>
+                <TableCell align="center">Rating</TableCell>
+                <TableCell align="center">Stock</TableCell>
+                <TableCell align="center">Video</TableCell>
+                <TableCell align="center">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {filteredData.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} align="center">
-                    <Typography variant="body1" color="textSecondary">
-                      No Best Seller data available.
+                  <TableCell colSpan={7} align="center" sx={{ py: 6 }}>
+                    <Typography variant="h6" color="textSecondary">
+                      No best seller data available.
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -140,16 +147,34 @@ export default function AdminBestSellerList() {
                   .map((item) => (
                     <TableRow hover key={item._id}>
                       <TableCell>
-                        <Box display="flex" alignItems="center">
+                        <Box display="flex" alignItems="center" gap={2}>
                           <Avatar
                             src={`${import.meta.env.VITE_BASE_URL}/${item.product?.productImages?.[0]}`}
                             alt={item.product?.productName}
-                            sx={{ mr: 1 }}
                             variant="rounded"
+                            sx={{
+                              width: 50,
+                              height: 50,
+                              borderRadius: "10px",
+                              boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+                              border: "1px solid rgba(0,0,0,0.05)"
+                            }}
                           />
-                          <Typography variant="body1">
-                            {item.product?.productName}
-                          </Typography>
+                          <Tooltip title={item.product?.productName || ""}>
+                            <Typography
+                              variant="body1"
+                              sx={{
+                                fontWeight: 600,
+                                color: "#444",
+                                maxWidth: 200,
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis"
+                              }}
+                            >
+                              {item.product?.productName}
+                            </Typography>
+                          </Tooltip>
                         </Box>
                       </TableCell>
                       <TableCell>
@@ -160,34 +185,57 @@ export default function AdminBestSellerList() {
                               label={c.name}
                               avatar={<Avatar src={c.flagUrl} alt={c.name} />}
                               size="small"
+                              sx={{
+                                backgroundColor: "rgba(237, 200, 98, 0.1)",
+                                fontWeight: 500,
+                                borderRadius: "6px",
+                                border: "none"
+                              }}
                             />
                           ))}
                         </Box>
                       </TableCell>
-                      <TableCell>{item.product?.productDiscount}%</TableCell>
-                      <TableCell>{item.product?.productRating || 0}</TableCell>
-                      <TableCell>{item.product?.productStock}</TableCell>
-                      <TableCell>
-                        <Typography
-                          variant="body2"
-                          color="primary"
-                          sx={{ cursor: "pointer", textDecoration: "underline" }}
+                      <TableCell align="center">
+                        <Chip
+                          label={`${item.product?.productDiscount || 0}%`}
+                          size="small"
+                          sx={{ backgroundColor: "#ffefef", color: "#d32f2f", fontWeight: "bold" }}
+                        />
+                      </TableCell>
+                      <TableCell align="center">
+                        <Box display="flex" alignItems="center" justifyContent="center" gap={0.5}>
+                          <Typography variant="body2" sx={{ fontWeight: 600 }}>{item.product?.productRating || 0}</Typography>
+                          <Typography variant="caption" sx={{ color: "#edc862" }}>★</Typography>
+                        </Box>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography variant="body2" sx={{ fontWeight: 500, color: (item.product?.productStock || 0) < 10 ? "#d32f2f" : "#666" }}>
+                          {item.product?.productStock || 0}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <button
+                          className="view-video-btn"
                           onClick={() => handleOpenVideo(item.video)}
                         >
                           View Video
-                        </Typography>
+                        </button>
                       </TableCell>
-                      <TableCell>
-                        <MdOutlineEdit
-                          size={18}
-                          style={{ cursor: "pointer", marginRight: "1rem" }}
-                          onClick={() => navigate(`/admin/edit-best-seller/${item._id}`)}
-                        />
-                        <IoTrashOutline
-                          size={18}
-                          style={{ cursor: "pointer", color: "red" }}
-                          onClick={() => deleteTheBestSeller(item._id)}
-                        />
+                      <TableCell align="center">
+                        <Box sx={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+                          <div
+                            className="admin-banner-action-btn edit-btn"
+                            onClick={() => navigate(`/admin/edit-best-seller/${item._id}`)}
+                          >
+                            <MdOutlineEdit size={20} color="white" />
+                          </div>
+                          <div
+                            className="admin-banner-action-btn delete-btn"
+                            onClick={() => deleteTheBestSeller(item._id)}
+                          >
+                            <IoTrashOutline size={20} color="white" />
+                          </div>
+                        </Box>
                       </TableCell>
                     </TableRow>
                   ))
@@ -204,11 +252,12 @@ export default function AdminBestSellerList() {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          sx={{ borderTop: "1px solid rgba(0,0,0,0.05)" }}
         />
-      </Paper>
+      </div>
 
       <Dialog open={openVideoModal} onClose={handleCloseVideo} maxWidth="sm">
-        <DialogTitle sx={{ display: "flex", justifyContent: "space-between" }}>
+        <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           Product Video
           <IconButton onClick={handleCloseVideo}>
             <IoClose />
@@ -216,7 +265,7 @@ export default function AdminBestSellerList() {
         </DialogTitle>
         <DialogContent>
           {selectedVideo && (
-            <video width="100%" height="auto" controls>
+            <video width="100%" height="auto" controls autoPlay>
               <source src={selectedVideo} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
