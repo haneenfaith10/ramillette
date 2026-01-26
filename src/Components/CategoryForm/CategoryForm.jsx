@@ -6,6 +6,8 @@ import {
   editProductCategory,
 } from "../../services/categoryApiServices";
 import { Navigate, useNavigate } from "react-router-dom";
+import { IoCloudUploadOutline } from "react-icons/io5";
+
 function CategoryForm({ mode, categoryData, categoryId }) {
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
@@ -89,28 +91,29 @@ function CategoryForm({ mode, categoryData, categoryId }) {
   }
   return (
     <form onSubmit={handleSubmit} className="admin-add-category-form">
-      {/* row 1 */}
+      {/* Category Name */}
       <div className="admin-add-category-form-row">
         <label htmlFor="categoryName">Category Name</label>
-        <div className="admin-add-category-input-wrapper">
-          <input
-            id="categoryName"
-            name="categoryName"
-            type="text"
-            placeholder="Enter Category Name"
-            value={values.categoryName}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-          {errors.categoryName && touched.categoryName && (
-            <p className="error-message">{errors.categoryName}</p>
-          )}
-        </div>
+        <input
+          id="categoryName"
+          name="categoryName"
+          type="text"
+          placeholder="e.g. Traditional Flowers"
+          value={values.categoryName}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+        {errors.categoryName && touched.categoryName && (
+          <p className="error-message">{errors.categoryName}</p>
+        )}
       </div>
-      {/* row 2 */}
+
+      {/* Category Image */}
       <div className="admin-add-category-form-row">
-        <label htmlFor="categoryImage">Category Image</label>
-        <div className="admin-add-category-input-wrapper">
+        <label>Category Image</label>
+        <div className="admin-add-category-file-input-wrapper">
+          <IoCloudUploadOutline className="upload-icon" />
+          <span className="upload-text">Click to upload or drag & drop</span>
           <input
             type="file"
             id="categoryImage"
@@ -120,19 +123,23 @@ function CategoryForm({ mode, categoryData, categoryId }) {
             ref={imageRef}
             onBlur={handleBlur}
           />
-          {errors.categoryImage && touched.categoryImage && (
-            <p className="error-message">{errors.categoryImage}</p>
-          )}
         </div>
+        {errors.categoryImage && touched.categoryImage && (
+          <p className="error-message">{errors.categoryImage}</p>
+        )}
       </div>
+
+      {/* Image Preview */}
       {imagePreview && (
         <div className="admin-add-category-image-preview-wrapper">
           <img src={imagePreview} alt="category-image-preview" />
         </div>
       )}
+
+      {/* Submit Button */}
       <div className="admin-add-category-submit-btn-wrapper">
         <button type="submit" disabled={isSubmitting}>
-          Save
+          {isSubmitting ? "Saving..." : mode === "ADD" ? "Create Category" : "Save Changes"}
         </button>
       </div>
     </form>

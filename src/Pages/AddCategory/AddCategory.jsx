@@ -8,7 +8,9 @@ export default function AddCategory() {
   return (
     <div className="admin-add-category-main-container">
       <AdminHeader title="Add Category" />
-      <CategoryForm mode={'ADD'} />
+      <div className="admin-add-category-form-container">
+        <CategoryForm mode={'ADD'} />
+      </div>
     </div>
   );
 }
