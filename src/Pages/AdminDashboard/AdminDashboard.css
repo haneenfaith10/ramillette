@@ -18,7 +18,7 @@
 /* Overview Grid */
 .overview-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
 
@@ -32,9 +32,9 @@
   transition: transform 0.2s;
 }
 
-.overview-card:hover {
+/* .overview-card:hover {
   transform: translateY(-2px);
-}
+} */
 
 .overview-card p {
   margin: 0 0 6px 0;
@@ -75,6 +75,15 @@
   flex-wrap: wrap;
 }
 
+.date-filters input {
+  height: 38px;
+  margin: 0;
+}
+
+.date-filters label {
+  margin: 0;
+}
+
 .date-filters label {
   font-size: 14px;
   color: #374151;
@@ -95,9 +104,11 @@
 
 .clear-button {
   padding: 8px 14px;
-  background-color: #f3f4f6;
-  border: 1px solid #d1d5db;
+  background-color: #edc862;
+  border: 1px solid #edc862;
+  color: white;
   border-radius: 6px;
+  padding: 10px 20px;
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -150,6 +161,10 @@
   margin-bottom: 16px;
 }
 
+.user-table {
+  border: 1px solid rgba(0, 0, 0, 0.26);
+}
+
 /* Tables */
 .user-table table,
 .product-table table {
@@ -166,8 +181,134 @@
 .product-table td {
   padding: 12px 16px;
   text-align: left;
-  border-bottom: 1px solid #e5e7eb;
+  
   font-size: 14px;
+  text-align: start;
+}
+
+.user-table thead th,
+.user-table thead th {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+
+}
+
+.user-table tbody tr,
+.user-table tbody tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.26);
+  
+}
+
+.user-table tbody tr td,
+.user-table tbody tr td {
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.user-table tbody tr td:last-child,
+.user-table tbody tr td:last-child {
+  border: none !important;
+}
+
+.user-table tbody tr:last-child,
+.user-table tbody tr:last-child {
+  border: none !important;
+}
+
+
+.user-table {
+  border: 1px solid rgba(0, 0, 0, 0.26);
+}
+
+.product-table {
+  border: 1px solid rgba(0, 0, 0, 0.26);
+}
+
+.css-12wuk6n-MuiPaper-root-MuiTableContainer-root {
+  border: 1px solid rgba(0, 0, 0, 0.26);
+}
+
+.product-info {
+  align-items: start;
+}
+
+.css-12wuk6n-MuiPaper-root-MuiTableContainer-root th , td {
+  border-bottom: none !important;
+  text-align: start;
+}
+
+.css-12wuk6n-MuiPaper-root-MuiTableContainer-root  td {
+  text-align: start;
+}
+
+.css-12wuk6n-MuiPaper-root-MuiTableContainer-root thead tr  {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.26);
+}
+
+.css-12wuk6n-MuiPaper-root-MuiTableContainer-root tbody tr  {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.26);
+}
+
+.css-12wuk6n-MuiPaper-root-MuiTableContainer-root  tbody tr td:last-child,
+.css-12wuk6n-MuiPaper-root-MuiTableContainer-root  tbody tr td:last-child {
+  border: none !important;
+}
+
+.css-12wuk6n-MuiPaper-root-MuiTableContainer-root  tbody tr:last-child,
+.css-12wuk6n-MuiPaper-root-MuiTableContainer-root  tbody tr:last-child {
+  border: none !important;
+}
+
+.css-d3lqr8-MuiTablePagination-root:last-child {
+  margin-top: 20px;
+}
+
+/* Tables */
+.user-table table,
+.product-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.user-table th,
+.user-table td,
+.product-table th,
+.product-table td {
+  padding: 12px 16px;
+  text-align: left;
+  
+  font-size: 14px;
+  text-align: start;
+}
+
+.product-table  thead th,
+.product-table  thead th {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+
+}
+
+.product-table  tbody tr,
+.product-table  tbody tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.26);
+  
+}
+
+.product-table  tbody tr td,
+.product-table  tbody tr td {
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.product-table  tbody tr td:last-child,
+.product-table  tbody tr td:last-child {
+  border: none !important;
+}
+
+.product-table  tbody tr:last-child,
+.product-table  tbody tr:last-child {
+  border: none !important;
 }
 
 .user-table th,

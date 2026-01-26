@@ -1,0 +1,155 @@
+/* Admin UI Theme (scoped via .admin-shell) */
+
+.admin-shell {
+  --admin-bg: #f6f7fb;
+  --admin-surface: #ffffff;
+  --admin-surface-2: #fbfbfd;
+  --admin-border: #e7e9f0;
+  --admin-text: #0f172a;
+  --admin-muted: #5b6476;
+  --admin-shadow-sm: 0 2px 10px rgba(15, 23, 42, 0.06);
+  --admin-shadow-md: 0 10px 30px rgba(15, 23, 42, 0.10);
+  --admin-radius-sm: 10px;
+  --admin-radius-md: 14px;
+  --admin-radius-lg: 18px;
+
+  /* Accent (ties into site theme but more “admin” friendly) */
+  --admin-accent: var(--secondary-color);
+  --admin-accent-ink: #2b2410;
+
+  /* Controls */
+  --admin-control-bg: #ffffff;
+  --admin-control-border: #d7dbe6;
+  --admin-control-focus: rgba(79, 70, 229, 0.18); /* matches dashboard chart color */
+
+  color: var(--admin-text);
+  background: var(--admin-bg);
+  font-family: "Albert Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial,
+    sans-serif;
+}
+
+.admin-shell * {
+  box-sizing: border-box;
+}
+
+/* Page spacing helper (most admin pages already have their own wrappers; this is a fallback) */
+.admin-page {
+  padding: 20px;
+}
+
+.admin-card {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius-md);
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.admin-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.admin-card-body {
+  padding: 16px 18px;
+}
+
+.admin-title {
+  font-size: 20px;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.admin-subtitle {
+  font-size: 13px;
+  color: var(--admin-muted);
+  margin: 4px 0 0 0;
+}
+
+/* Tables */
+.admin-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius-md);
+  overflow: hidden;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid var(--admin-border);
+  vertical-align: middle;
+}
+
+.admin-table th {
+  background: var(--admin-surface-2);
+  color: #334155;
+  font-weight: 650;
+}
+
+.admin-table tbody tr:hover td {
+  background: rgba(15, 23, 42, 0.02);
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Inputs / buttons */
+.admin-input {
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--admin-control-border);
+  border-radius: 10px;
+  background: var(--admin-control-bg);
+  font-size: 14px;
+  color: var(--admin-text);
+}
+
+.admin-input:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px var(--admin-control-focus);
+}
+
+.admin-btn {
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--admin-control-border);
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.05s ease, border-color 0.18s ease;
+}
+
+.admin-btn:hover {
+  background: #f2f4f9;
+}
+
+.admin-btn:active {
+  transform: translateY(1px);
+}
+
+.admin-btn.primary {
+  border-color: transparent;
+  background: #4f46e5;
+  color: #ffffff;
+}
+
+.admin-btn.primary:hover {
+  background: #4338ca;
+}
+
+

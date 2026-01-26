@@ -1,7 +1,14 @@
 .admin-page-sub-header{
-    background-color: var(--secondary-color);
-    margin-bottom: 2rem;
-    padding: 1rem; 
+    margin-bottom: 20px;
+    padding: 0; 
+
     font-size: 20px;
     font-weight: 600; 
+    text-transform: capitalize;
 }
+
+.admin-main-layout-content {
+    font-family: "Montserrat", sans-serif !important;
+  }
+  
+

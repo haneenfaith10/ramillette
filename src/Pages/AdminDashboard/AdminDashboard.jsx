@@ -131,7 +131,7 @@ export default function AdminDashboard() {
                 <Tooltip />
                 <Bar
                   dataKey="sales"
-                  fill="#4f46e5"
+                  fill="#edc862"
                   radius={[8, 8, 0, 0]}
                   barSize={40}
                 />
@@ -207,6 +207,7 @@ export default function AdminDashboard() {
                       </td>
                       <td>{product.totalSold}</td>
                       {/* <td>₹{product.price.toFixed(2)}</td> */}
+                      <td></td>
                     </tr>
                   ))}
                 </tbody>

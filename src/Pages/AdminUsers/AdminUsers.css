@@ -15,6 +15,17 @@
   height: fit-content;
 }
 
+.css-26mrt0-MuiButtonBase-root-MuiButton-root {
+  padding: 15px 30px; 
+  background-color: red !important;
+  box-shadow: none !important;
+  height: 40px;
+}
+
+.css-vtf7ax-MuiButtonBase-root-MuiButton-root {
+  height: 40px  !important;
+}
+
 .admin-table-user-status {
   padding: 0.3rem 0.5rem;
   border-radius: 9px;
