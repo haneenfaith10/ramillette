@@ -114,7 +114,7 @@ export default function AdminUsers() {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Block!",
-    }).then(async(result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
         const response = await permanentlyBlockUser(userId, setChanged, adminToken);
         if (response) {
@@ -131,94 +131,101 @@ export default function AdminUsers() {
 
   return (
     <div className="admin-users-list-main-container">
-      <AdminHeader title="users" />
+      <AdminHeader title="Users Management" />
       <div className="admin-users-list-table-section">
-        <div>
-          <FormControl
-            size="small"
-            style={{ width: "180px", marginRight: "16px" }}
-          >
-            <InputLabel>From</InputLabel>
-            <Select
-              value={fromStatus}
-              onChange={(e) => setFromStatus(e.target.value)}
-              label="From"
-            >
-              {statusSteps.slice(0, -1).map((status) => (
-                <MenuItem key={status} value={status}>
-                  {status}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        <div className="admin-users-controls-wrapper">
+          <div className="admin-users-filters">
+            <FormControl size="small" style={{ minWidth: "150px" }}>
+              <InputLabel>From Status</InputLabel>
+              <Select
+                value={fromStatus}
+                onChange={(e) => setFromStatus(e.target.value)}
+                label="From Status"
+              >
+                {statusSteps.slice(0, -1).map((status) => (
+                  <MenuItem key={status} value={status}>
+                    {status}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-          <FormControl
-            size="small"
-            style={{ width: "180px", marginRight: "16px" }}
-          >
-            <InputLabel>To</InputLabel>
-            <Select
-              value={"Cancelled"}
-              onChange={(e) => setToStatus(e.target.value)}
-              label="To"
-            >
-              <MenuItem value="Cancelled" defaultChecked>
-                Cancelled
-              </MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl
-            size="small"
-            style={{ width: "180px", marginRight: "16px" }}
-          >
+            <FormControl size="small" style={{ minWidth: "150px" }}>
+              <InputLabel>To Status</InputLabel>
+              <Select
+                value={toStatus}
+                onChange={(e) => setToStatus(e.target.value)}
+                label="To Status"
+              >
+                <MenuItem value="Cancelled">Cancelled</MenuItem>
+              </Select>
+            </FormControl>
+
             <Button
               variant="contained"
-              className="filter-btn"
               onClick={handleFilterUsers}
-              sx={{ backgroundColor: "var(--secondary-color)" }}
+              sx={{
+                backgroundColor: "var(--admin-accent-color)",
+                textTransform: 'none',
+                borderRadius: '8px',
+                px: 3,
+                '&:hover': { backgroundColor: '#d4b458' }
+              }}
             >
-              Filter
+              Apply Filter
             </Button>
-          </FormControl>
-          <FormControl
-            size="small"
-            style={{ width: "180px", marginRight: "16px" }}
-          >
+
             <Button
-              variant="contained"
-              className="filter-btn"
+              variant="outlined"
               onClick={() => {
                 setTableUsers(users);
+                setFromStatus("Order Placed");
               }}
-              sx={{ backgroundColor: "#ccc", width: "fit-content" }}
+              sx={{
+                borderColor: "var(--admin-accent-color)",
+                color: "var(--admin-accent-color)",
+                textTransform: 'none',
+                borderRadius: '8px',
+                px: 3,
+                '&:hover': { borderColor: 'var(--admin-accent-hover)', backgroundColor: 'var(--admin-accent-light)' }
+              }}
             >
-              Clear
+              Reset
             </Button>
-          </FormControl>
-        </div>
-        <div style={{ marginBottom: "16px", textAlign: "right" }}>
-          <TextField
-            label="Search users"
-            variant="outlined"
-            size="small"
-            onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
-            style={{ width: "250px" }}
-          />
+          </div>
+
+          <div className="admin-users-search">
+            <TextField
+              fullWidth
+              placeholder="Search by name or email..."
+              variant="outlined"
+              size="small"
+              onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+              InputProps={{
+                sx: {
+                  borderRadius: '8px',
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'var(--admin-accent-color)',
+                  }
+                }
+              }}
+            />
+          </div>
         </div>
 
         <TableContainer
+          className="admin-users-table-container"
           component={Paper}
-          sx={{ boxShadow: "0px 2px 10px #E0E0E0" }}
+          elevation={0}
         >
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table className="admin-users-table" sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow>
-                <TableCell>Sl No.</TableCell>
-                <TableCell align="center">Name</TableCell>
-                <TableCell align="center">Email</TableCell>
+                <TableCell width="80px" align="center">Sl No.</TableCell>
+                <TableCell>User Details</TableCell>
                 <TableCell align="center">Status</TableCell>
-                <TableCell align="center">Blocked</TableCell>
-                <TableCell align="center">Actions</TableCell>
+                <TableCell align="center">Blocking</TableCell>
+                <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -231,37 +238,28 @@ export default function AdminUsers() {
                 )
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((user, index) => (
-                  <TableRow
-                    key={user._id}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell align="center">{index + 1}</TableCell>
-                    <TableCell align="center">
-                      {`${user?.firstName} ${user?.lastName}`}
+                  <TableRow key={user._id}>
+                    <TableCell align="center" style={{ color: 'var(--admin-text-secondary)' }}>
+                      {page * rowsPerPage + index + 1}
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell>
                       <Box>
-                        {" "}
-                        {user?.email}
+                        <Box sx={{ fontWeight: 600, color: 'var(--admin-text-primary)' }}>
+                          {`${user?.firstName} ${user?.lastName}`}
+                        </Box>
+                        <Box sx={{ fontSize: '0.85rem', color: 'var(--admin-text-secondary)' }}>
+                          {user?.email}
+                        </Box>
                         {!user.status && (
-                          <p
-                            style={{
-                              color: "red",
-                              fontWeight: "bold",
-                              fontSize: "10px",
-                            }}
-                          >
-                            The user is inactive, so some functionalities are
-                            limited.
-                          </p>
+                          <div className="inactive-notice">
+                            User account is currently restricted
+                          </div>
                         )}
                       </Box>
                     </TableCell>
                     <TableCell align="center">
                       <button
-                        className={`admin-table-user-status ${
-                          user?.status ? "active" : "inactive"
-                        }`}
+                        className={`status-badge ${user?.status ? "active" : "inactive"}`}
                         onClick={() => changeUserStatus(user._id)}
                       >
                         {user?.status ? "Active" : "Inactive"}
@@ -269,20 +267,18 @@ export default function AdminUsers() {
                     </TableCell>
                     <TableCell align="center">
                       <button
-                        className={`admin-table-user-status ${
-                          !user?.isBlocked ? "active" : "inactive"
-                        }`}
+                        className={`block-badge ${user?.isBlocked ? "blocked" : "not-blocked"}`}
                         onClick={() => BlockUser(user._id)}
                       >
-                        {user?.isBlocked ? "Blocked" : "Not Blocked"}
+                        {user?.isBlocked ? "Blocked" : "Clear"}
                       </button>
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell align="right">
                       <button
-                        className="admin-table-user-view-btn"
+                        className="admin-view-btn"
                         onClick={() => navigate(`/admin/users/${user._id}`)}
                       >
-                        View
+                        View Profile
                       </button>
                     </TableCell>
                   </TableRow>
@@ -290,20 +286,25 @@ export default function AdminUsers() {
             </TableBody>
           </Table>
         </TableContainer>
+
         <TablePagination
           component="div"
           count={users.length}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
-          sx={{
-            border: "1px solid #E0E0E0",
-            background: "white",
-            boxShadow: "0px 2px 10px #E0E0E0",
-          }}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          sx={{
+            mt: 2,
+            border: "1px solid var(--admin-accent-light)",
+            borderRadius: "var(--admin-radius)",
+            backgroundColor: "white",
+            boxShadow: "var(--admin-shadow)",
+            '& .MuiTablePagination-selectIcon': { color: 'var(--admin-accent-color)' }
+          }}
         />
       </div>
     </div>
   );
 }
+

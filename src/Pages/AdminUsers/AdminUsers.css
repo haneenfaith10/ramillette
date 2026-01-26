@@ -1,54 +1,183 @@
+:root {
+  --admin-card-bg: #ffffff;
+  --admin-border-color: #f1f1f1;
+  --admin-text-primary: #3d3d3d;
+  --admin-text-secondary: #7a7a7a;
+  --admin-accent-color: #edc862;
+  --admin-accent-light: rgba(237, 200, 98, 0.1);
+  --admin-accent-hover: #d4b458;
+  --admin-success: #00b894;
+  --admin-danger: #d63031;
+  --admin-warning: #edc862;
+  --admin-shadow: 0 4px 15px rgba(237, 200, 98, 0.1);
+  --admin-radius: 12px;
+}
+
 .admin-users-list-main-container {
   width: 100%;
   height: 100%;
-  padding: 1rem;
-  overflow-y: scroll;
+  padding: 2rem;
+  background-color: #fffdf5;
+  /* Very light tint of the accent color */
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .admin-users-list-main-container::-webkit-scrollbar {
-  display: none;
+  width: 6px;
+}
+
+.admin-users-list-main-container::-webkit-scrollbar-thumb {
+  background-color: var(--admin-accent-color);
+  border-radius: 10px;
 }
 
 .admin-users-list-table-section {
-  width: 100%;
-  min-height: 90%;
-  height: fit-content;
+  max-width: 1400px;
+  margin: 0;
 }
 
-.css-26mrt0-MuiButtonBase-root-MuiButton-root {
-  padding: 15px 30px; 
-  background-color: red !important;
+/* Header & Filters Area */
+.admin-users-controls-wrapper {
+  background: var(--admin-card-bg);
+  padding: 1.5rem;
+  border-radius: var(--admin-radius);
+  box-shadow: var(--admin-shadow);
+  margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--admin-accent-light);
+}
+
+.admin-users-filters {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.admin-users-search {
+  flex-grow: 1;
+  max-width: 400px;
+}
+
+/* Table Enhancements */
+.admin-users-table-container {
+  background: var(--admin-card-bg);
+  border-radius: var(--admin-radius);
+  box-shadow: var(--admin-shadow);
+  overflow: hidden;
+  border: 1px solid var(--admin-accent-light);
+}
+
+.admin-users-table thead th {
+  background-color: #fffddc;
+  color: var(--admin-text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--admin-accent-light);
+}
+
+.admin-users-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.admin-users-table tbody tr:hover {
+  background-color: #fffcf0;
+}
+
+.admin-users-table td {
+  padding: 1rem;
+  color: var(--admin-text-primary);
+  font-size: 0.9rem;
+}
+
+/* Custom Status Badges */
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-badge.active {
+  background-color: rgba(0, 184, 148, 0.1);
+  color: var(--admin-success);
+}
+
+.status-badge.inactive {
+  background-color: rgba(214, 48, 49, 0.1);
+  color: var(--admin-danger);
+}
+
+.status-badge:hover {
+  transform: translateY(-1px);
+  filter: brightness(0.95);
+}
+
+.block-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.block-badge.not-blocked {
+  background-color: var(--admin-accent-light);
+  color: var(--admin-accent-color);
+}
+
+.block-badge.blocked {
+  background-color: rgba(214, 48, 49, 0.1);
+  color: var(--admin-danger);
+}
+
+.block-badge:hover {
+  transform: translateY(-1px);
+}
+
+.css-2tlvxe-MuiButtonBase-root-MuiButton-root {
   box-shadow: none !important;
-  height: 40px;
 }
 
-.css-vtf7ax-MuiButtonBase-root-MuiButton-root {
-  height: 40px  !important;
-}
 
-.admin-table-user-status {
-  padding: 0.3rem 0.5rem;
-  border-radius: 9px;
-  border: none;
+
+
+/* Action Buttons */
+.admin-view-btn {
   color: white;
-  cursor: pointer;
-}
-.admin-table-user-status.active {
-  background-color: rgb(2, 215, 2);
-}
-.admin-table-user-status.inactive {
-  background-color: rgb(227, 0, 0);
-}
-.admin-table-user-view-btn {
-  padding: 5px 10px;
-  background-color: #1976d2;
-  color: white;
-  border: none;
+  padding: 6px 12px;
   border-radius: 6px;
-  cursor: pointer;
   font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  background: var(--admin-accent-color);
 }
 
-.admin-table-user-view-btn:hover {
-  background-color: #1565c0;
+.admin-view-btn:hover {
+  background: var(--admin-accent-color);
+  color: white;
+  border-color: var(--admin-accent-color);
+}
+
+.inactive-notice {
+  color: var(--admin-danger);
+  font-size: 0.7rem;
+  margin-top: 4px;
+  font-weight: 500;
 }
