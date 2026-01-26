@@ -8,6 +8,7 @@ import "./AdminAddBanner.css";
 import { getActiveCountries } from "../../services/configApiService";
 import { getCroppedImg } from "../../utils/getCroppedImage";
 import { createBanner } from "../../services/bannerServices";
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 export default function AdminAddBanner() {
   const [countries, setCountries] = useState([]);
@@ -40,6 +41,7 @@ export default function AdminAddBanner() {
       content: "",
       selectedCountries: [],
     },
+    enableReinitialize: true,
     validationSchema: Yup.object({
       image: Yup.mixed().required("Image is required"),
       content: Yup.string().required("Content is required"),
@@ -47,7 +49,7 @@ export default function AdminAddBanner() {
         .min(1, "Select at least one country")
         .required("Country is required"),
     }),
-    onSubmit: async(values, { resetForm, setSubmitting }) => {
+    onSubmit: async (values, { resetForm, setSubmitting }) => {
       const formData = new FormData();
       formData.append("image", croppedImage);
       formData.append("content", values.content);
@@ -55,10 +57,10 @@ export default function AdminAddBanner() {
         formData.append("countryIds[]", id)
       );
 
-      const response = createBanner(formData,  setSubmitting)
-      if(response){
+      const response = await createBanner(formData, setSubmitting)
+      if (response) {
         resetForm()
-        imageRef.current = null;
+        if (imageRef.current) imageRef.current.value = "";
         setCroppedImage(null);
         setPreviewUrl(null);
         setImageSrc(null)
@@ -102,6 +104,7 @@ export default function AdminAddBanner() {
     setCrop({ x: 0, y: 0 });
     setZoom(1);
     formik.setFieldValue("image", null);
+    if (imageRef.current) imageRef.current.value = "";
     setCroppedImage(null);
     setPreviewUrl(null);
   };
@@ -109,105 +112,121 @@ export default function AdminAddBanner() {
   return (
     <div className="admin-add-banner-main-container">
       <AdminHeader title="Add Banner" />
-      <form className="banner-form" onSubmit={formik.handleSubmit}>
-        <label htmlFor="image">Banner Image</label>
-        <input
-          id="image"
-          name="image"
-          type="file"
-          accept="image/*"
-          ref={imageRef}
-          onChange={handleImageChange}
-        />
-        {formik.touched.image && formik.errors.image && (
-          <div className="error">{formik.errors.image}</div>
-        )}
-
-        {/* Cropper Interface */}
-        {showCropper && (
-          <div className="cropper-wrapper">
-            <div className="cropper-container">
-              <Cropper
-                image={imageSrc}
-                crop={crop}
-                zoom={zoom}
-                aspect={16 / 9}
-                onCropChange={setCrop}
-                onZoomChange={setZoom}
-                onCropComplete={onCropComplete}
+      <div className="admin-add-banner-form-container">
+        <form className="banner-form" onSubmit={formik.handleSubmit}>
+          {/* Banner Image */}
+          <div className="admin-add-category-form-row">
+            <label>Banner Image (16:9)</label>
+            <div className="admin-add-banner-file-input-wrapper">
+              <IoCloudUploadOutline className="upload-icon" />
+              <span className="upload-text">Click to upload banner image</span>
+              <input
+                id="image"
+                name="image"
+                type="file"
+                accept="image/*"
+                ref={imageRef}
+                onChange={handleImageChange}
               />
             </div>
-            <div className="crop-controls">
-              <label>
-                Zoom:
-                <input
-                  type="range"
-                  min={1}
-                  max={3}
-                  step={0.1}
-                  value={zoom}
-                  onChange={(e) => setZoom(Number(e.target.value))}
+            {formik.touched.image && formik.errors.image && (
+              <div className="error">{formik.errors.image}</div>
+            )}
+          </div>
+
+          {/* Cropper Interface */}
+          {showCropper && (
+            <div className="cropper-wrapper">
+              <div className="cropper-container">
+                <Cropper
+                  image={imageSrc}
+                  crop={crop}
+                  zoom={zoom}
+                  aspect={16 / 9}
+                  onCropChange={setCrop}
+                  onZoomChange={setZoom}
+                  onCropComplete={onCropComplete}
                 />
-              </label>
-              <div className="crop-buttons">
-                <button type="button" onClick={submitCroppedImage}>
-                  Submit Crop
-                </button>
-                <button type="button" onClick={cancelCrop}>
-                  Cancel
-                </button>
+              </div>
+              <div className="crop-controls">
+                <label>
+                  Zoom:
+                  <input
+                    type="range"
+                    min={1}
+                    max={3}
+                    step={0.1}
+                    value={zoom}
+                    onChange={(e) => setZoom(Number(e.target.value))}
+                  />
+                </label>
+                <div className="crop-buttons">
+                  <button type="button" onClick={submitCroppedImage}>
+                    Apply Crop
+                  </button>
+                  <button type="button" onClick={cancelCrop}>
+                    Cancel
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
-
-        {previewUrl && !showCropper && (
-          <div className="image-preview">
-            <img src={previewUrl} alt="Cropped Preview" />
-          </div>
-        )}
-
-        <label htmlFor="content">Banner Content</label>
-        <textarea
-          id="content"
-          name="content"
-          rows={4}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.content}
-        />
-        {formik.touched.content && formik.errors.content && (
-          <div className="error">{formik.errors.content}</div>
-        )}
-
-        <label htmlFor="selectedCountries">Select Countries</label>
-        <Select
-          id="selectedCountries"
-          name="selectedCountries"
-          styles={{color:"black"}}
-          options={countryOptions}
-          isMulti
-          value={countryOptions.filter((opt) =>
-            formik.values.selectedCountries.includes(opt.value)
-          )}
-          onChange={(selectedOptions) =>
-            formik.setFieldValue(
-              "selectedCountries",
-              selectedOptions.map((opt) => opt.value)
-            )
-          }
-          classNamePrefix="react-select"
-          placeholder="Select countries..."
-        />
-        {formik.touched.selectedCountries &&
-          formik.errors.selectedCountries && (
-            <p className="error-message">{formik.errors.selectedCountries}</p>
           )}
 
-        <button type="submit" disabled={!croppedImage || formik.isSubmitting}>
-          Add Banner
-        </button>
-      </form>
+          {/* Preview */}
+          {previewUrl && !showCropper && (
+            <div className="image-preview">
+              <img src={previewUrl} alt="Cropped Preview" />
+            </div>
+          )}
+
+          {/* Banner Content */}
+          <div className="admin-add-category-form-row">
+            <label htmlFor="content">Banner Content / Text</label>
+            <textarea
+              id="content"
+              name="content"
+              rows={3}
+              placeholder="Enter text to display on the banner..."
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.content}
+            />
+            {formik.touched.content && formik.errors.content && (
+              <div className="error">{formik.errors.content}</div>
+            )}
+          </div>
+
+          {/* Target Countries */}
+          <div className="admin-add-category-form-row">
+            <label htmlFor="selectedCountries">Target Countries</label>
+            <Select
+              id="selectedCountries"
+              name="selectedCountries"
+              options={countryOptions}
+              isMulti
+              value={countryOptions.filter((opt) =>
+                formik.values.selectedCountries.includes(opt.value)
+              )}
+              onChange={(selectedOptions) =>
+                formik.setFieldValue(
+                  "selectedCountries",
+                  selectedOptions.map((opt) => opt.value)
+                )
+              }
+              classNamePrefix="react-select"
+              placeholder="Select countries where this banner will appear..."
+            />
+            {formik.touched.selectedCountries &&
+              formik.errors.selectedCountries && (
+                <p className="error-message">{formik.errors.selectedCountries}</p>
+              )}
+          </div>
+
+          <button type="submit" disabled={!croppedImage || formik.isSubmitting}>
+            {formik.isSubmitting ? "Uploading..." : "Publish Banner"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

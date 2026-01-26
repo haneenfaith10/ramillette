@@ -109,31 +109,33 @@ export default function AdminBannerList() {
   }
 
   return (
-    <Box className="admin-banner-list-container" p={3}>
+    <Box className="admin-banner-list-container">
       <AdminHeader title="Banners" />
 
-      <Box display="flex" gap={2} mb={2}>
+      <Box className="admin-banner-list-filters">
         <FormControl size="small" sx={{ minWidth: 150 }}>
           <InputLabel>Status</InputLabel>
           <Select
             value={statusFilter}
             label="Status"
             onChange={(e) => setStatusFilter(e.target.value)}
+            sx={{ borderRadius: "10px", backgroundColor: "white" }}
           >
-            <MenuItem value="All">All</MenuItem>
+            <MenuItem value="All">All Status</MenuItem>
             <MenuItem value="Active">Active</MenuItem>
             <MenuItem value="Inactive">Inactive</MenuItem>
           </Select>
         </FormControl>
 
-        <FormControl size="small" sx={{ minWidth: 150 }}>
+        <FormControl size="small" sx={{ minWidth: 180 }}>
           <InputLabel>Country</InputLabel>
           <Select
             value={countryFilter}
             label="Country"
             onChange={(e) => setCountryFilter(e.target.value)}
+            sx={{ borderRadius: "10px", backgroundColor: "white" }}
           >
-            <MenuItem value="All">All</MenuItem>
+            <MenuItem value="All">All Countries</MenuItem>
             {countryList.map((name, idx) => (
               <MenuItem key={idx} value={name}>
                 {name}
@@ -141,47 +143,52 @@ export default function AdminBannerList() {
             ))}
           </Select>
         </FormControl>
+
+        <Box sx={{ flexGrow: 1 }} />
+
+        <button
+          className="admin-add-category-submit-btn-wrapper"
+          style={{ width: "auto", margin: 0 }}
+          onClick={() => navigate("/admin/addBanner")}
+        >
+          <Box component="span" sx={{ px: 2, py: 1, backgroundColor: "#edc862", borderRadius: "10px", fontWeight: "bold", cursor: "pointer", display: "flex", alignItems: "center", gap: 1 }}>
+            Add New Banner
+          </Box>
+        </button>
       </Box>
 
-      <Paper elevation={4} sx={{ borderRadius: 3 }}>
-        <TableContainer>
+      <div className="admin-banner-list-section">
+        <TableContainer component={Paper}>
           <Table>
-            <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+            <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: "bold" }}>Banner Image</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Content</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Countries</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Status</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Actions</TableCell>
+                <TableCell align="center">Banner Image</TableCell>
+                <TableCell>Content</TableCell>
+                <TableCell>Countries</TableCell>
+                <TableCell align="center">Status</TableCell>
+                <TableCell align="center">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {paginatedData.map((banner, index) => (
-                <TableRow
-                  key={index}
-                  hover
-                  sx={{
-                    transition: "0.2s",
-                    "&:hover": { backgroundColor: "#f0f7ff" },
-                  }}
-                >
-                  <TableCell>
+                <TableRow key={index} hover>
+                  <TableCell align="center">
                     <Avatar
                       variant="rounded"
-                      src={`${import.meta.env.VITE_BASE_URL}/${
-                        banner.imageUrl
-                      }`}
+                      src={`${import.meta.env.VITE_BASE_URL}/${banner.imageUrl}`}
                       alt="Banner"
                       sx={{
-                        width: 120,
+                        width: 140,
                         height: 70,
-                        borderRadius: 2,
-                        boxShadow: 2,
+                        borderRadius: "12px",
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                        margin: "0 auto",
+                        border: "1px solid rgba(0,0,0,0.05)"
                       }}
                     />
                   </TableCell>
                   <TableCell>
-                    <Tooltip title={banner.content}>
+                    <Tooltip title={banner.content} arrow>
                       <Typography
                         variant="body2"
                         sx={{
@@ -189,7 +196,9 @@ export default function AdminBannerList() {
                           WebkitLineClamp: 2,
                           WebkitBoxOrient: "vertical",
                           overflow: "hidden",
-                          maxWidth: 300,
+                          maxWidth: 280,
+                          fontWeight: 500,
+                          color: "#444"
                         }}
                       >
                         {banner.content}
@@ -198,54 +207,67 @@ export default function AdminBannerList() {
                   </TableCell>
                   <TableCell>
                     {banner.countries?.length > 0 ? (
-                      banner.countries.map((c, idx) => (
-                        <Chip
-                          key={idx}
-                          label={c.name}
-                          size="small"
-                          color="primary"
-                          variant="outlined"
-                          sx={{ mr: 0.5, mb: 0.5 }}
-                        />
-                      ))
+                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                        {banner.countries.map((c, idx) => (
+                          <Chip
+                            key={idx}
+                            label={c.name}
+                            size="small"
+                            sx={{
+                              backgroundColor: "rgba(237, 200, 98, 0.15)",
+                              color: "#8a6d13",
+                              fontWeight: 600,
+                              borderRadius: "6px",
+                              border: "none"
+                            }}
+                          />
+                        ))}
+                      </Box>
                     ) : (
-                      <Typography variant="body2" color="textSecondary">
-                        No countries
+                      <Typography variant="body2" color="textSecondary" sx={{ fontStyle: "italic" }}>
+                        Global / No countries
                       </Typography>
                     )}
                   </TableCell>
-                  <TableCell>
-                    <label className="switch">
-                      <input
-                        type="checkbox"
-                        checked={banner.isActive}
-                        onChange={() => ToggleStatus(banner._id)}
-                      />{" "}
-                      <span className="slider round"></span>
-                    </label>
+                  <TableCell align="center">
+                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1 }}>
+                      <span className={`status-badge ${banner.isActive ? "active" : "inactive"}`}>
+                        {banner.isActive ? "Active" : "Inactive"}
+                      </span>
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={banner.isActive}
+                          onChange={() => ToggleStatus(banner._id)}
+                        />{" "}
+                        <span className="slider round"></span>
+                      </label>
+                    </Box>
                   </TableCell>
-                  <TableCell>
-                    <Box sx={{ display: "flex", gap: 2 }}>
-                      <MdOutlineEdit
-                        size={18}
-                        style={{ cursor: "pointer" }}
-                        onClick={() =>
-                          navigate(`/admin/editBanner/${banner?._id}`)
-                        }
-                      />
-                      <IoTrashOutline
-                        size={18}
-                        style={{ cursor: "pointer", color: "red" }}
+                  <TableCell align="center">
+                    <Box sx={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+                      <div
+                        className="admin-banner-action-btn edit-btn"
+                        onClick={() => navigate(`/admin/editBanner/${banner?._id}`)}
+                      >
+                        <MdOutlineEdit size={20} color="white" />
+                      </div>
+                      <div
+                        className="admin-banner-action-btn delete-btn"
                         onClick={() => deleteBanner(banner._id)}
-                      />
+                      >
+                        <IoTrashOutline size={20} />
+                      </div>
                     </Box>
                   </TableCell>
                 </TableRow>
               ))}
               {paginatedData.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5} align="center">
-                    No banners found.
+                  <TableCell colSpan={5} align="center" sx={{ py: 6 }}>
+                    <Typography variant="h6" color="textSecondary">
+                      No matching banners found.
+                    </Typography>
                   </TableCell>
                 </TableRow>
               )}
@@ -261,8 +283,9 @@ export default function AdminBannerList() {
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           rowsPerPageOptions={[5, 10, 20]}
+          sx={{ borderTop: "1px solid rgba(0,0,0,0.05)" }}
         />
-      </Paper>
+      </div>
     </Box>
   );
 }
