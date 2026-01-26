@@ -140,7 +140,7 @@ export default function AdminDashboard() {
           )}
         </div>
       </div>
-      <div className="top_listcontainer" style={{ display: "flex", gap: "2rem" }}>
+      <div className="top_listcontainer">
         {stats?.mostOrderedUsers?.length > 0 && (
           <div className="top-customers">
             <h2> Top Customers</h2>
