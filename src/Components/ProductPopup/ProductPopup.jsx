@@ -3,10 +3,14 @@ import "./ProductPopup.css";
 import ProductSlider from "../Productslider/Productslider";
 import close from "../../assets/images/cancel.png";
 import stararting from "../../assets/images/rating.png";
-import { addToCart } from "../../services/userApiServices";
+import {
+  addToCart,
+  notifyMeAboutProduct,
+} from "../../services/userApiServices";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCart } from "../../redux/slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import { successToast } from "../Notification/NotificationMessage";
 
 const Popup = ({ isOpen, onClose, product, productPrice }) => {
   const dispatch = useDispatch();
@@ -59,11 +63,40 @@ const Popup = ({ isOpen, onClose, product, productPrice }) => {
       product?._id,
       1,
       selectedCountry._id,
-      true
+      true,
     );
     if (response) {
       dispatch(updateCart({ cart: response }));
     }
+  }
+
+  const isOutOfStock = (() => {
+    if (product?.status === false || product?.isDelete === true) return true;
+    const variants = product?.countryVariants?.[selectedCountry?._id] || [];
+    if (variants.length === 0) return true;
+    return variants.every((v) => Number(v.stock || 0) <= 0);
+  })();
+
+  const userEmail = useSelector((state) => state.user.user?.email);
+
+  async function handleNotifyMe() {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    const data = {
+      productId: product?._id,
+      userEmail: userEmail,
+      countryId: selectedCountry?._id,
+    };
+
+    if (!data.userEmail) {
+      navigate("/login");
+      return;
+    }
+
+    await notifyMeAboutProduct(data);
   }
 
   // function to calculate the actual price
@@ -107,19 +140,19 @@ const Popup = ({ isOpen, onClose, product, productPrice }) => {
                     </div>
                     <div className="product-rate">
                       <p className="saveprice">
-                        {selectedCountry.name &&
-                          selectedCountry.name.toLowerCase() === "india" &&
+                        {selectedCountry?.name &&
+                          selectedCountry?.name.toLowerCase() === "india" &&
                           "M.R.P:"}
                         <span>
-                          {selectedCountry.priceLabel}
+                          {selectedCountry?.priceLabel}
                           {productPrice ?? 0}.00
                         </span>
                       </p>
                       <p>
-                        {selectedCountry.priceLabel}
+                        {selectedCountry?.priceLabel}
                         {`${getDiscountedPrice(
                           productPrice,
-                          product?.productDiscount
+                          product?.productDiscount,
                         )} `}
                       </p>
                     </div>
@@ -157,10 +190,10 @@ const Popup = ({ isOpen, onClose, product, productPrice }) => {
                         onClick={() => {
                           if (token) {
                             navigate(
-                              `/${selectedCountry.code}/checkout-single`,
+                              `/${selectedCountry?.code}/checkout-single`,
                               {
                                 state: { product: { ...product, quantity } },
-                              }
+                              },
                             );
                           } else {
                             navigate("/login");
@@ -175,10 +208,14 @@ const Popup = ({ isOpen, onClose, product, productPrice }) => {
                         <button
                           className="buy-btn"
                           onClick={() =>
-                            navigate(`/${selectedCountry.code}/checkout`)
+                            navigate(`/${selectedCountry?.code}/checkout`)
                           }
                         >
                           Check out
+                        </button>
+                      ) : isOutOfStock ? (
+                        <button className="buy-btn" onClick={handleNotifyMe}>
+                          NOTIFY ME
                         </button>
                       ) : (
                         <button

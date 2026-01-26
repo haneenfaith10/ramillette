@@ -29,7 +29,7 @@ import PurchaseSingleItem from "../Pages/PurchaseSingleItem/PurchaseSingleItem";
 import PaymentSingleProduct from "../Pages/PaymentSingleProduct/PaymentSingleProduct";
 import NotFoundPage from "../Pages/404Page/NotFoundPage";
 import TermsAndPolicies from "../Pages/TermsAndPolicies/TermsAndPolicies";
-import Logo from "../assets/images/logo.png"
+import Logo from "../assets/images/logo.png";
 
 export default function UserRoute() {
   const navigate = useNavigate();
@@ -57,13 +57,6 @@ export default function UserRoute() {
   if (shouldRedirect) {
     // Block rendering while redirecting
     return null;
-  }
-  if (!selectedCountry?.code) {
-    return (
-      <div className="app-loader">
-        <img src={Logo} alt="Logo" />
-      </div>
-    );
   }
 
   return (

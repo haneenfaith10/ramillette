@@ -12,7 +12,7 @@ export default function CheckoutPage() {
 
   // Get all path segments
   const pathSegments = location.pathname.split("/").filter((x) => x);
-  
+
   // Extract country code (first segment) and remaining path
   const countryCode = pathSegments[0];
   const pathnames = pathSegments.slice(1); // Remove country code from pathnames
@@ -54,27 +54,29 @@ export default function CheckoutPage() {
       <Topheader />
       <NavBar />
       <div className="checkout-cart-header">
-        <div className="checkout-cart-header-top">
-          <Breadcrumbs
-            separator="›"
-            aria-label="breadcrumb"
-            sx={{ color: "#fff", fontWeight: 500, cursor: "default" }}
-          >
-            <Link
-              underline="hover"
-              color="inherit"
-              onClick={() => navigate(`/${countryCode}`)}
-              style={{ cursor: "pointer" }}
+        <div className="container">
+          <div className="checkout-cart-header-top">
+            <Breadcrumbs
+              separator="›"
+              aria-label="breadcrumb"
+              sx={{ color: "#fff", fontWeight: 500, cursor: "default" }}
             >
-              Home
-            </Link>
-            {breadcrumbs}
-          </Breadcrumbs>
-          <h1 className="checkout-page-title">{pageTitle}</h1>
+              <Link
+                underline="hover"
+                color="inherit"
+                onClick={() => navigate(`/${countryCode}`)}
+                style={{ cursor: "pointer" }}
+              >
+                Home
+              </Link>
+              {breadcrumbs}
+            </Breadcrumbs>
+            <h1 className="checkout-page-title">{pageTitle}</h1>
+          </div>
         </div>
       </div>
       <Outlet />
-      <Footer/>
+      <Footer />
     </div>
   );
 }

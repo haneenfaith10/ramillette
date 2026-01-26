@@ -202,7 +202,7 @@ export default function ProfileInfoSection() {
         </div>
         <div className="form-group">
           <label>
-            Email Address <span>*</span>
+            Email Address
           </label>
           <input
             id="email"

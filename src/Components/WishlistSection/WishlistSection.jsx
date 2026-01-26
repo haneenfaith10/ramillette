@@ -33,7 +33,7 @@ export default function WishlistSection() {
       const response = await removeFromWishlist(
         product._id,
         user.id,
-        selectedCountry._id
+        selectedCountry._id,
       );
       if (response) {
         dispatch(updateUserWishList({ user: response?.wishlist?.products }));
@@ -46,7 +46,7 @@ export default function WishlistSection() {
     (async () => {
       const wishlistData = await getUserWishlistData(
         user.id,
-        selectedCountry._id
+        selectedCountry._id,
       );
       const filteredProducts = wishlistData.filter((item) => {
         return item.product.status;
@@ -62,7 +62,7 @@ export default function WishlistSection() {
         <div className="wishlist-grid">
           {wishlist.map((product, index) => (
             <div className="wishlist-item" key={index}>
-              <div className="wishlist-left">
+              <div className="">
                 {product.product &&
                   product.product.productImages &&
                   Array.isArray(product.product.productImages) &&
@@ -75,7 +75,7 @@ export default function WishlistSection() {
                       className="wishlist-img"
                       onClick={() =>
                         navigate(
-                          `/${selectedCountry.code}/product-inner/${product.product._id}`
+                          `/${selectedCountry.code}/product-inner/${product.product._id}`,
                         )
                       }
                     />
@@ -85,7 +85,7 @@ export default function WishlistSection() {
                   <h4
                     onClick={() =>
                       navigate(
-                        `/${selectedCountry.code}/product-inner/${product.product._id}`
+                        `/${selectedCountry.code}/product-inner/${product.product._id}`,
                       )
                     }
                   >
@@ -93,8 +93,8 @@ export default function WishlistSection() {
                   </h4>
                   <p>
                     {product.product.productDescription
-                      ? product.product.productDescription.length > 150
-                        ? `${product.product.productDescription.slice(0, 150)}...`
+                      ? product.product.productDescription.length > 100
+                        ? `${product.product.productDescription.slice(0, 100)}...`
                         : product.product.productDescription
                       : "No description available"}
                   </p>
@@ -110,7 +110,7 @@ export default function WishlistSection() {
                           variantList.length > 0 ? variantList[0].price : 0;
                         const finalPrice = getDiscountedPrice(
                           basePrice,
-                          product.product.productDiscount
+                          product.product.productDiscount,
                         );
                         return finalPrice.toFixed(2);
                       })()}
@@ -121,9 +121,9 @@ export default function WishlistSection() {
               <button
                 className="remove-btn"
                 onClick={() => removeProductFromWishlist(product.product)}
+                title="Remove from Wishlist"
               >
                 <FaTrashAlt />
-                <span>Remove from Wishlist</span>
               </button>
             </div>
           ))}

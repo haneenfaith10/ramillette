@@ -12,7 +12,10 @@ import {
 } from "../../services/productApiServices";
 import { getUserWishlist } from "../../services/wishlistApiServices";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUserWishList } from "../../redux/slices/userSlice";
+import {
+  updateUserWishList,
+  setAppLoading,
+} from "../../redux/slices/userSlice";
 import { getAllReviews } from "../../services/ratingApiServices";
 import { useSearchParams } from "react-router-dom";
 import { getDiscountedPrice } from "../../utils/calculation";
@@ -36,6 +39,7 @@ export default function Productlist() {
   const [sortBy, setSortBy] = useState("recommended");
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const selectedCountry = useSelector((state) => state?.user?.selectedCountry);
   const query = searchParams.get("query");
   const countryId = searchParams.get("countryId");
@@ -93,7 +97,7 @@ export default function Productlist() {
           const discountPercent = Number(product.productDiscount || 0);
           const discountedPrice = getDiscountedPrice(
             basePrice,
-            discountPercent
+            discountPercent,
           );
           const variantNameMatch =
             !selectedVariant || variant.variantName === selectedVariant;
@@ -107,7 +111,7 @@ export default function Productlist() {
         const matchesCategory =
           safeCategory.length === 0 ||
           product.productCategory?.some((cat) =>
-            safeCategory.includes(cat._id)
+            safeCategory.includes(cat._id),
           );
         if (filteredVariants.length === 0 || !matchesCategory) return null;
         return { ...product, filteredVariants };
@@ -125,10 +129,10 @@ export default function Productlist() {
           const variantsB = b.filteredVariants || [];
           if (variantsA.length === 0 || variantsB.length === 0) return 0;
           const basePriceA = Math.min(
-            ...variantsA.map((v) => Number(v.price) || 0)
+            ...variantsA.map((v) => Number(v.price) || 0),
           );
           const basePriceB = Math.min(
-            ...variantsB.map((v) => Number(v.price) || 0)
+            ...variantsB.map((v) => Number(v.price) || 0),
           );
           const discountA = Number(a.productDiscount || 0);
           const discountB = Number(b.productDiscount || 0);
@@ -142,10 +146,10 @@ export default function Productlist() {
           const variantsB = b.filteredVariants || [];
           if (variantsA.length === 0 || variantsB.length === 0) return 0;
           const basePriceA = Math.min(
-            ...variantsA.map((v) => Number(v.price) || 0)
+            ...variantsA.map((v) => Number(v.price) || 0),
           );
           const basePriceB = Math.min(
-            ...variantsB.map((v) => Number(v.price) || 0)
+            ...variantsB.map((v) => Number(v.price) || 0),
           );
           const discountA = Number(a.productDiscount || 0);
           const discountB = Number(b.productDiscount || 0);
@@ -157,13 +161,13 @@ export default function Productlist() {
         return sorted.sort((a, b) =>
           a.productName
             ?.toLowerCase()
-            .localeCompare(b.productName?.toLowerCase() || "")
+            .localeCompare(b.productName?.toLowerCase() || ""),
         );
       case "nameDesc":
         return sorted.sort((a, b) =>
           b.productName
             ?.toLowerCase()
-            .localeCompare(a.productName?.toLowerCase() || "")
+            .localeCompare(a.productName?.toLowerCase() || ""),
         );
       default:
         return sorted;
@@ -197,12 +201,23 @@ export default function Productlist() {
   }, [discountedPriceRange]);
 
   useEffect(() => {
-    if (!query && !countryId) {
-      if (selectedCountry?._id)
-        getAllProductsForUser(setProducts, selectedCountry?._id);
-    } else {
-      getSearchResult(query, countryId, setProducts);
-    }
+    (async () => {
+      setIsLoading(true);
+      try {
+        if (!query && !countryId) {
+          if (selectedCountry?._id) {
+            await getAllProductsForUser(setProducts, selectedCountry?._id);
+          }
+        } else {
+          await getSearchResult(query, countryId, setProducts);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setIsLoading(false);
+        dispatch(setAppLoading(false));
+      }
+    })();
   }, [selectedCountry?._id, countryId, query]);
 
   const allVariants = useMemo(() => {
@@ -211,7 +226,7 @@ export default function Productlist() {
       const variants = product.countryVariants?.[selectedCountry._id] || [];
       variants.forEach(
         (variant) =>
-          variant?.variantName && variantsSet.add(variant.variantName)
+          variant?.variantName && variantsSet.add(variant.variantName),
       );
     });
     return Array.from(variantsSet);
@@ -405,9 +420,7 @@ export default function Productlist() {
                   <div className="sort-dropdown-wrapper">
                     <button
                       className="sort-dropdown-button"
-                      onClick={() =>
-                        setIsSortDropdownOpen(!isSortDropdownOpen)
-                      }
+                      onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
                       onBlur={() =>
                         setTimeout(() => setIsSortDropdownOpen(false), 200)
                       }
@@ -488,7 +501,28 @@ export default function Productlist() {
                 </div>
 
                 <div className="product-list-cards">
-                  {sortedProducts.length > 0 ? (
+                  {isLoading ? (
+                    // Render 6 skeleton cards while loading
+                    [...Array(6)].map((_, index) => (
+                      <div
+                        className={`product-list-post-card ${
+                          gridCount === "4" && "four-grid"
+                        } ${gridCount === "3" && "three-grid"}`}
+                        key={`skeleton-${index}`}
+                      >
+                        <div className="product-list-card skeleton-card">
+                          <div className="image-wrapper skeleton-shimmer">
+                            <div className="skeleton-image"></div>
+                          </div>
+                          <div className="product-details">
+                            <div className="skeleton-text skeleton-shimmer name-skeleton"></div>
+                            <div className="skeleton-text skeleton-shimmer price-skeleton"></div>
+                            <div className="skeleton-button skeleton-shimmer"></div>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : sortedProducts.length > 0 ? (
                     sortedProducts.map((product) => (
                       <div
                         className={`product-list-post-card ${

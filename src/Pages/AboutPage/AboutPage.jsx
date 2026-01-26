@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TopHeader from "../../Components/TopHeader/TopHeader";
 import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer";
@@ -7,10 +7,17 @@ import aboutImage from "../../assets/images/banner-2.jpg";
 import manufacturingVideo from "../../assets/images/secondry-banner.mp4";
 // import manufacturingVideo from "../../Assets/images/secondry-banner.mp4";
 import "./AboutPage.css";
+import { useDispatch } from "react-redux";
+import { setAppLoading } from "../../redux/slices/userSlice";
 
 export default function AboutPage() {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setAppLoading(false));
+  }, [dispatch]);
 
   const handlePlayPause = () => {
     if (videoRef.current) {

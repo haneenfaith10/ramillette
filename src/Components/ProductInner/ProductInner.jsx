@@ -4,6 +4,7 @@ import star from "../../assets/images/star.png";
 import {
   addToCartWithQuantity,
   updateCartItemQuantity,
+  notifyMeAboutProduct,
 } from "../../services/userApiServices";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCart, updateUserWishList } from "../../redux/slices/userSlice";
@@ -15,6 +16,7 @@ import * as Yup from "yup";
 import { FaHeart } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa6";
 import { IoShareOutline } from "react-icons/io5";
+import { errorToast, successToast } from "../Notification/NotificationMessage";
 import {
   addToWishlist,
   removeFromWishlist,
@@ -24,7 +26,14 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 // Accordion component
-const Accordion = ({ title, children, defaultOpen = false, isOpen, onToggle, id }) => {
+const Accordion = ({
+  title,
+  children,
+  defaultOpen = false,
+  isOpen,
+  onToggle,
+  id,
+}) => {
   const handleToggle = () => {
     if (onToggle) {
       onToggle(id);
@@ -135,7 +144,7 @@ export default function ProductInner(Props) {
         product?._id,
         1,
         selectedCountry._id,
-        false
+        false,
       );
       if (response) {
         dispatch(updateCart({ cart: response }));
@@ -183,7 +192,7 @@ export default function ProductInner(Props) {
         selectedCountry._id,
         setSubmitting,
         resetForm,
-        setChanged
+        setChanged,
       );
     },
   });
@@ -214,7 +223,7 @@ export default function ProductInner(Props) {
       const response = await addToWishlist(
         product?._id,
         user.id,
-        selectedCountry._id
+        selectedCountry._id,
       );
       if (response) {
         dispatch(updateUserWishList({ user: response?.wishlist?.products }));
@@ -230,7 +239,7 @@ export default function ProductInner(Props) {
       const response = await removeFromWishlist(
         product._id,
         user.id,
-        selectedCountry._id
+        selectedCountry._id,
       );
       if (response) {
         dispatch(updateUserWishList({ user: response?.wishlist?.products }));
@@ -267,7 +276,7 @@ export default function ProductInner(Props) {
     if (reviews && reviews.length > 0) {
       const sum = reviews.reduce(
         (acc, review) => acc + (review.rating || 0),
-        0
+        0,
       );
       return parseFloat((sum / reviews.length).toFixed(1));
     }
@@ -319,6 +328,41 @@ export default function ProductInner(Props) {
   };
 
   const availableVariants = product?.variants?.filter((v) => v.stock > 0) || [];
+
+  const isOutOfStock = useMemo(() => {
+    // If product is inactive or deleted, it should be treated as out of stock/notify required
+    if (product.status === false || product.isDelete === true) return true;
+
+    // If no variants defined for this country, count as out of stock
+    const variants = product?.variants || [];
+    if (variants.length === 0) return true;
+
+    // If all variants have 0 or less stock, count as out of stock
+    return variants.every((v) => Number(v.stock || 0) <= 0);
+  }, [product?.variants, product?.status, product?.isDelete]);
+
+  // Handle Notify Me
+  async function handleNotifyMe() {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    const data = {
+      productId: product?._id,
+      userEmail: user?.email,
+      countryId: selectedCountry?._id,
+    };
+
+    if (!data.userEmail) {
+      errorToast(
+        "Please ensure your email is verified to receive notifications.",
+      );
+      return;
+    }
+
+    await notifyMeAboutProduct(data);
+  }
 
   return (
     <div className="product-inner-page">
@@ -411,7 +455,10 @@ export default function ProductInner(Props) {
                   <div className="product-gallery-mobile-slider">
                     <Slider {...sliderSettings}>
                       {galleryImages.map((img, index) => (
-                        <div key={index} className="product-gallery-mobile-slide">
+                        <div
+                          key={index}
+                          className="product-gallery-mobile-slide"
+                        >
                           <div className="product-gallery-mobile-main">
                             {/* Wishlist and Share Icons */}
                             <div className="product-gallery-actions">
@@ -514,7 +561,7 @@ export default function ProductInner(Props) {
                     </span>
                   </div>
                 )}
-                {availableVariants.length > 0 && (
+                {!isOutOfStock && availableVariants.length > 0 && (
                   <div className="variant-section">
                     <p className="variant-note">
                       <strong>Note:</strong> You can select the variant during
@@ -546,7 +593,7 @@ export default function ProductInner(Props) {
                           updateCartQuantity(
                             product._id,
                             "decrement",
-                            selectedCountry?._id
+                            selectedCountry?._id,
                           )
                         }
                       >
@@ -558,7 +605,7 @@ export default function ProductInner(Props) {
                           updateCartQuantity(
                             product._id,
                             "increment",
-                            selectedCountry?._id
+                            selectedCountry?._id,
                           )
                         }
                       >
@@ -570,9 +617,21 @@ export default function ProductInner(Props) {
                     ""
                   )}
                   {!isInCart ? (
-                    <button className="add-to-cart" onClick={addProductToCart}>
-                      ADD TO CART
-                    </button>
+                    isOutOfStock ? (
+                      <button
+                        className="add-to-cart notify-me-btn"
+                        onClick={handleNotifyMe}
+                      >
+                        NOTIFY ME
+                      </button>
+                    ) : (
+                      <button
+                        className="add-to-cart"
+                        onClick={addProductToCart}
+                      >
+                        ADD TO CART
+                      </button>
+                    )
                   ) : (
                     <button
                       className="add-to-cart"
@@ -648,7 +707,7 @@ export default function ProductInner(Props) {
                       {validOffers.map((offer, index) => (
                         <div key={offer._id || index} className="offer-box">
                           {["category", "discount", "coupon"].includes(
-                            offer.offerType
+                            offer.offerType,
                           ) ? (
                             <strong>
                               {offer.discountType === "percent"
@@ -741,9 +800,9 @@ export default function ProductInner(Props) {
         </div>
         {/* Accordion Section */}
         <div className="product-details-accordion">
-          <Accordion 
+          <Accordion
             id="KEY BENEFITS"
-            title="KEY BENEFITS" 
+            title="KEY BENEFITS"
             isOpen={openAccordion === "KEY BENEFITS"}
             onToggle={handleAccordionToggle}
           >
@@ -756,7 +815,7 @@ export default function ProductInner(Props) {
             </ul>
           </Accordion>
 
-          <Accordion 
+          <Accordion
             id="HOW TO USE"
             title="HOW TO USE"
             isOpen={openAccordion === "HOW TO USE"}
@@ -771,7 +830,7 @@ export default function ProductInner(Props) {
             </ul>
           </Accordion>
 
-          <Accordion 
+          <Accordion
             id="FAQs"
             title="FAQs"
             isOpen={openAccordion === "FAQs"}
@@ -797,7 +856,7 @@ export default function ProductInner(Props) {
             )}
           </Accordion>
 
-          <Accordion 
+          <Accordion
             id="OTHER INFORMATION"
             title="OTHER INFORMATION"
             isOpen={openAccordion === "OTHER INFORMATION"}
@@ -806,7 +865,7 @@ export default function ProductInner(Props) {
             <p>{product?.productOtherInfo || "No other information"}</p>
           </Accordion>
 
-          <Accordion 
+          <Accordion
             id="ALL INGREDIENTS"
             title="ALL INGREDIENTS"
             isOpen={openAccordion === "ALL INGREDIENTS"}
@@ -852,7 +911,7 @@ export default function ProductInner(Props) {
               </button>
             </div>
           </Accordion> */}
-          <Accordion 
+          <Accordion
             id="REVIEW"
             title="REVIEW"
             isOpen={openAccordion === "REVIEW"}

@@ -4,14 +4,18 @@ import { getActiveCategories } from "../../services/categoryApiServices";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-export default function Category() {
-  const [category, setCategory] = useState([]);
+export default function Category({ categoriesData }) {
+  const [internalCategory, setInternalCategory] = useState([]);
   const selectedCountry = useSelector((state) => state.user.selectedCountry);
   const navigate = useNavigate();
 
   useEffect(() => {
-    getActiveCategories(setCategory);
-  }, []);
+    if (!categoriesData) {
+      getActiveCategories(setInternalCategory);
+    }
+  }, [categoriesData]);
+
+  const category = categoriesData || internalCategory;
 
   const handleCategoryClick = (categoryId) => {
     navigate(`/${selectedCountry.code}/product-list?category=${categoryId}`);
@@ -23,8 +27,8 @@ export default function Category() {
         {category &&
           category.length > 0 &&
           category.map((category, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="cate-cards"
               onClick={() => handleCategoryClick(category._id)}
             >

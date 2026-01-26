@@ -7,24 +7,26 @@ import { getBestSellerForUser } from "../../services/bestSellerApiService";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const Bestseller = () => {
+const Bestseller = ({ bestSellersData }) => {
   const selectedCountry = useSelector((state) => state.user.selectedCountry);
-  const [bestSellerData, setBestSellerData] = useState([]);
+  const [internalBestSellerData, setInternalBestSellerData] = useState([]);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [loadedVideos, setLoadedVideos] = useState(new Set());
   const sliderRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (selectedCountry._id) {
-      getBestSellerForUser(selectedCountry._id, setBestSellerData);
+    if (!bestSellersData && selectedCountry._id) {
+      getBestSellerForUser(selectedCountry._id, setInternalBestSellerData);
     }
-  }, [selectedCountry._id]);
+  }, [selectedCountry._id, bestSellersData]);
+
+  const bestSellerData = bestSellersData || internalBestSellerData;
 
   // Handle slide change and load videos lazily
   const handleAfterChange = (current) => {
     if (!bestSellerData || bestSellerData.length === 0) return;
-    
+
     setActiveSlideIndex(current);
     // Load current and adjacent videos
     const videosToLoad = [
@@ -32,7 +34,7 @@ const Bestseller = () => {
       (current + 1) % bestSellerData.length,
       (current - 1 + bestSellerData.length) % bestSellerData.length,
     ];
-    
+
     videosToLoad.forEach((index) => {
       if (!loadedVideos.has(index) && bestSellerData[index]) {
         setLoadedVideos((prev) => new Set([...prev, index]));
@@ -49,7 +51,7 @@ const Bestseller = () => {
 
   // Control video playback based on active slide
   useEffect(() => {
-    const videoElements = document.querySelectorAll('.best-sell-card video');
+    const videoElements = document.querySelectorAll(".best-sell-card video");
     videoElements.forEach((video, index) => {
       if (index === activeSlideIndex && loadedVideos.has(index)) {
         video.play().catch(() => {
@@ -70,8 +72,8 @@ const Bestseller = () => {
     autoplaySpeed: 3000,
     pauseOnHover: true,
     pauseOnFocus: true,
-    cssEase: 'cubic-bezier(0.4, 0, 0.2, 1)',
-    easing: 'ease-in-out',
+    cssEase: "cubic-bezier(0.4, 0, 0.2, 1)",
+    easing: "ease-in-out",
     afterChange: handleAfterChange,
     responsive: [
       {
@@ -113,7 +115,7 @@ const Bestseller = () => {
             const isActiveSlide = activeSlideIndex === index;
             const posterImage = item.product?.productImages?.[0]?.path
               ? `${import.meta.env.VITE_BASE_URL}/${item.product.productImages[0].path}`
-              : '';
+              : "";
 
             return (
               <div key={item._id}>
@@ -163,7 +165,7 @@ const Bestseller = () => {
                           loading="lazy"
                           onClick={() =>
                             navigate(
-                              `/${selectedCountry.code}/product-inner/${item.product?._id}`
+                              `/${selectedCountry.code}/product-inner/${item.product?._id}`,
                             )
                           }
                         />
@@ -172,7 +174,7 @@ const Bestseller = () => {
                         <h4
                           onClick={() =>
                             navigate(
-                              `/${selectedCountry.code}/product-inner/${item.product?._id}`
+                              `/${selectedCountry.code}/product-inner/${item.product?._id}`,
                             )
                           }
                         >
