@@ -5,128 +5,131 @@ import {
   getAllReviewsForAdmin,
   updateReviewStatus,
 } from "../../services/ratingApiServices";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-// import Rating from "@mui/material/Rating";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Menu,
+  MenuItem,
+  Modal,
+  Box,
+  Typography,
+  Avatar,
+  Rating,
+  Chip,
+  IconButton,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import { IoMdMore } from "react-icons/io";
-import Swal from "sweetalert2";
-import { Modal, Box, Typography, Avatar, Rating, Chip } from "@mui/material";
 import { FaRegEye } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
+import Swal from "sweetalert2";
 import { makeTestimonial } from "../../services/testimonialApiServices";
 
-const style = {
+const modalStyle = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "60%",
+  width: "90%",
+  maxWidth: "600px",
   bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 3,
-  borderRadius: "8px",
+  boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+  p: 0, // Padding handled inside content
+  borderRadius: "20px",
   maxHeight: "90vh",
   overflowY: "auto",
+  border: "none",
+  outline: "none",
 };
 
 function ReviewModal({ open, handleCloseModal, modalData }) {
-  if (Object.keys(modalData).length === 0) return null;
+  if (!modalData || Object.keys(modalData).length === 0) return null;
 
   const { user, productId, content, rating, createdAt, countryId, status } =
     modalData;
 
   return (
-    <Modal
-      open={open}
-      onClose={handleCloseModal}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
-      <Box sx={style}>
-        <div className="admin-review-modal-header">
-          <Typography variant="h6">Review Details</Typography>
-          <IoClose onClick={handleCloseModal} style={{ cursor: "pointer" }} />
-        </div>
-
-        <div className="admin-review-modal-content">
-          <div className="review-user-info">
-            <Avatar
-              src={`${import.meta.env.VITE_BASE_URL}/${user.userImage}`}
-              alt={user.firstName}
-              sx={{ width: 50, height: 50 }}
-            />
-            <Box sx={{ display: "flex", gap: "5px", alignItems: "center" }}>
-              <Typography>{user?.firstName}</Typography>
-              <Typography>{user?.lastName}</Typography>
-            </Box>
+    <Modal open={open} onClose={handleCloseModal}>
+      <Box sx={modalStyle}>
+        <div style={{ padding: '32px' }}>
+          <div className="admin-review-modal-header">
+            <Typography variant="h5" fontWeight="bold">Review Details</Typography>
+            <IconButton onClick={handleCloseModal} size="small">
+              <IoClose />
+            </IconButton>
           </div>
 
-          <div className="review-product-info">
-            <img
-              src={`${import.meta.env.VITE_BASE_URL}/${
-                productId && productId?.productImages?.[0]
-              }`}
-              alt="Product"
-              className="review-modal-product-img"
-            />
-            <Typography fontWeight="bold">
-              {productId && productId?.productName}
-            </Typography>
-          </div>
-
-          <div className="review-meta-info">
-            <Typography variant="body1" gutterBottom>
-              <strong>Review:</strong> {content}
-            </Typography>
-            <Typography sx={{ display: "flex", gap: "5px" }}>
-              <strong>Rating:</strong>{" "}
-              <Rating
-                name="read-only"
-                value={rating}
-                precision={0.5}
-                readOnly
+          <div className="admin-review-modal-content">
+            <div className="review-user-info">
+              <Avatar
+                src={`${import.meta.env.VITE_BASE_URL}/${user?.userImage}`}
+                alt={user?.firstName}
+                sx={{ width: 60, height: 60, boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}
               />
-            </Typography>
-            <Typography variant="body2" sx={{ mt: 1 }}>
-              <strong>Country:</strong>{" "}
-              {countryId && (
-                <>
-                  <img
-                    src={`${import.meta.env.VITE_BASE_URL}${countryId.flagUrl}`}
-                    alt={countryId.name}
-                    style={{
-                      width: "20px",
-                      aspectRatio: 1 / 1,
-                      marginRight: "6px",
-                      verticalAlign: "middle",
+              <Box>
+                <Typography variant="h6" fontWeight="600">{user?.firstName} {user?.lastName}</Typography>
+                <Typography variant="body2" color="textSecondary">Customer Profile</Typography>
+              </Box>
+            </div>
+
+            <div className="review-product-info">
+              <img
+                src={`${import.meta.env.VITE_BASE_URL}/${productId?.productImages?.[0]?.path || productId?.productImages?.[0]}`}
+                alt="Product"
+                className="review-modal-product-img"
+              />
+              <Box>
+                <Typography variant="caption" color="textSecondary" textTransform="uppercase" fontWeight="bold">Reviewed Product</Typography>
+                <Typography variant="h6" fontWeight="bold">{productId?.productName}</Typography>
+              </Box>
+            </div>
+
+            <div className="review-meta-info">
+              <div>
+                <strong>Customer Feedback</strong>
+                <div className="review-content-box">{content}</div>
+              </div>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
+                <Box>
+                  <strong>Rating Given</strong>
+                  <Rating value={rating} precision={0.5} readOnly size="medium" />
+                </Box>
+                <Box sx={{ textAlign: 'right' }}>
+                  <strong>Origin</strong>
+                  {countryId && (
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 1 }}>
+                      <img src={`${import.meta.env.VITE_BASE_URL}${countryId.flagUrl}`} alt={countryId.name} style={{ width: "20px", borderRadius: '2px' }} />
+                      <Typography variant="body2">{countryId.name}</Typography>
+                    </Box>
+                  )}
+                </Box>
+              </Box>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: 'center', mt: 2, pt: 2, borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+                <Box>
+                  <strong>Current Visibility</strong>
+                  <Chip
+                    label={status ? "Visible" : "Hidden"}
+                    sx={{
+                      backgroundColor: status ? "rgba(76, 175, 80, 0.1)" : "rgba(0,0,0,0.05)",
+                      color: status ? "#2e7d32" : "#666",
+                      fontWeight: "bold",
+                      height: '24px'
                     }}
                   />
-                  {countryId.name}
-                </>
-              )}
-            </Typography>
-            <div style={{ marginTop: "15px" }}>
-              <Typography variant="subtitle2" gutterBottom>
-                <strong>Status:</strong>
-              </Typography>
-              <Chip
-                label={status ? "Visible" : "Hidden"}
-                color={status ? "success" : "default"}
-                variant="outlined"
-                size="small"
-              />
+                </Box>
+                <Typography variant="caption" color="textSecondary">
+                  Submitted on {new Date(createdAt).toLocaleDateString()}
+                </Typography>
+              </Box>
             </div>
-            <Typography variant="body2">
-              <strong>Submitted on:</strong>{" "}
-              {new Date(createdAt).toLocaleString()}
-            </Typography>
           </div>
         </div>
       </Box>
@@ -136,11 +139,10 @@ function ReviewModal({ open, handleCloseModal, modalData }) {
 
 export default function ReviewManagement() {
   const [reviews, setReviews] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalData, setModalData] = useState({});
   const [openModal, setOpenModal] = useState(false);
-  const handleModalOpen = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
   const [selectedReview, setSelectedReview] = useState(null);
   const adminToken = localStorage.getItem("remilletAdminTkn");
   const [changed, setChanged] = useState(false);
@@ -157,10 +159,10 @@ export default function ReviewManagement() {
   function updateStatus(reviewId, status) {
     Swal.fire({
       title: "Are you sure?",
-      text: "You change the review visibility?",
+      text: "You want to change review visibility?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#edc862",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, change it!",
     }).then(async (result) => {
@@ -169,8 +171,8 @@ export default function ReviewManagement() {
         if (response) {
           setReviews(response);
           Swal.fire({
-            title: "Changed!",
-            text: "The review visibility has been changed.",
+            title: "Updated!",
+            text: "Visibility has been changed.",
             icon: "success",
           });
         }
@@ -185,150 +187,208 @@ export default function ReviewManagement() {
     }
   }
 
+  const filteredReviews = reviews.filter((review) =>
+    review.user?.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    review.productId?.productName?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <section className="admin-review-management-container">
-      <AdminHeader title="Reviews" />
+    <Box className="admin-review-management-container">
+      <AdminHeader title="Reviews Overview" />
+
       <ReviewModal
         open={openModal}
-        handleCloseModal={handleCloseModal}
+        handleCloseModal={() => setOpenModal(false)}
         modalData={modalData}
       />
-      <div>
+
+      <Box className="admin-banner-list-filters">
+        <TextField
+          label="Search by customer or product..."
+          variant="outlined"
+          size="small"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          sx={{ backgroundColor: "white", borderRadius: "10px", minWidth: 350, "& fieldset": { borderRadius: "10px" } }}
+        />
+      </Box>
+
+      <div className="admin-banner-list-section">
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
-                <TableCell align="center">Sl No.</TableCell>
-                <TableCell align="center">Customer</TableCell>
-                <TableCell align="center">Product</TableCell>
-                <TableCell align="center">Review</TableCell>
+                <TableCell align="center" style={{ width: '80px' }}>#</TableCell>
+                <TableCell>Customer</TableCell>
+                <TableCell>Product</TableCell>
+                <TableCell>Preview</TableCell>
                 <TableCell align="center">Rating</TableCell>
                 <TableCell align="center">Visibility</TableCell>
-                <TableCell align="center">In Testimonial</TableCell>
+                <TableCell align="center">Featured</TableCell>
                 <TableCell align="center">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {reviews.map((review, index) => (
-                <TableRow
-                  key={index}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell align="center">{index + 1}</TableCell>
-                  <TableCell align="center">{review.user.firstName}</TableCell>
-                  <TableCell align="center">
-                    <img
-                      className="admin-review-management-product-image"
-                      src={`${import.meta.env.VITE_BASE_URL}/${
-                        review.productId
-                          ? review.productId.productImages[0].path
-                          : ""
-                      }`}
-                      alt=""
-                    />
-                    <p>{review.productId && review.productId.productName}</p>
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      maxWidth: 200,
-                    }}
-                    align="center"
-                  >
-                    {review.content}
-                  </TableCell>
-                  <TableCell align="center">
-                    <Rating
-                      size="small"
-                      name="half-rating-read"
-                      value={review.rating}
-                      precision={0.5}
-                      readOnly
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    {review.status ? "Visible" : "Hidden"}
-                  </TableCell>
-                  <TableCell align="center">
-                    {review.isPromoted ? "Yes" : "No"}
-                  </TableCell>
-                  <TableCell align="center">
-                    <FaRegEye
-                      size={18}
-                      style={{ marginRight: "10px", cursor: "pointer" }}
-                      onClick={() => {
-                        setModalData(review);
-                        handleModalOpen();
-                      }}
-                    />
-                    <IoMdMore
-                      style={{ cursor: "pointer" }}
-                      onClick={(e) => handleClick(e, review)}
-                      size={20}
-                    />
-                    <Menu
-                      id={`review-menu-[${selectedReview?._id}]`}
-                      anchorEl={anchorEl}
-                      open={Boolean(anchorEl)}
-                      onClose={() => {
-                        setAnchorEl(null);
-                        setSelectedReview(null);
-                      }}
-                      PaperProps={{
-                        elevation: 2,
-                        sx: {
-                          boxShadow: "0px 1px 3px rgba(0,0,0,0.1)",
-                          "& .MuiMenuItem-root": {
-                            fontSize: "0.85rem",
-                          },
-                          minWidth: "5rem",
-                        },
-                      }}
-                    >
-                      {selectedReview?.status ? (
-                        <MenuItem
-                          onClick={() => {
-                            updateStatus(selectedReview._id, false);
-                            setAnchorEl(null);
-                            setSelectedReview(null);
-                          }}
-                        >
-                          Hide
-                        </MenuItem>
-                      ) : (
-                        <MenuItem
-                          onClick={() => {
-                            updateStatus(selectedReview._id, true);
-                            setAnchorEl(null);
-                            setSelectedReview(null);
-                          }}
-                        >
-                          Show
-                        </MenuItem>
-                      )}
-                      {selectedReview?.status && (
-                        <MenuItem
-                          onClick={() => {
-                            moveToTestimonial(selectedReview._id);
-                            setAnchorEl(null);
-                            setSelectedReview(null);
-                          }}
-                        >
-                          {selectedReview?.isPromoted
-                            ? "Remove from Testimonial"
-                            : " Promote to Testimonial"}
-                        </MenuItem>
-                      )}
-                    </Menu>
+              {filteredReviews.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={8} align="center" sx={{ py: 6 }}>
+                    <Typography variant="h6" color="textSecondary">
+                      No reviews matched your search.
+                    </Typography>
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                filteredReviews.map((review, index) => (
+                  <TableRow hover key={review._id}>
+                    <TableCell align="center">
+                      <Typography variant="body2" color="textSecondary">{index + 1}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Box display="flex" alignItems="center" gap={1.5}>
+                        <Avatar
+                          src={`${import.meta.env.VITE_BASE_URL}/${review.user?.userImage}`}
+                          alt={review.user?.firstName}
+                          sx={{ width: 32, height: 32 }}
+                        />
+                        <Typography variant="body2" fontWeight="600">{review.user?.firstName}</Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      <Box display="flex" alignItems="center" gap={1.5}>
+                        <img
+                          className="admin-review-management-product-image"
+                          src={`${import.meta.env.VITE_BASE_URL}/${review.productId?.productImages?.[0]?.path || review.productId?.productImages?.[0]}`}
+                          alt={review.productId?.productName}
+                        />
+                        <Tooltip title={review.productId?.productName || ""}>
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              fontWeight: 500,
+                              maxWidth: 150,
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis'
+                            }}
+                          >
+                            {review.productId?.productName}
+                          </Typography>
+                        </Tooltip>
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        sx={{
+                          maxWidth: 200,
+                          fontStyle: 'italic',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
+                        }}
+                      >
+                        "{review.content}"
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Rating
+                        size="small"
+                        value={review.rating}
+                        precision={0.5}
+                        readOnly
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Chip
+                        label={review.status ? "Visible" : "Hidden"}
+                        size="small"
+                        sx={{
+                          backgroundColor: review.status ? "rgba(76, 175, 80, 0.1)" : "rgba(0,0,0,0.05)",
+                          color: review.status ? "#2e7d32" : "#666",
+                          fontWeight: "bold"
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Chip
+                        label={review.isPromoted ? "Featured" : "No"}
+                        size="small"
+                        sx={{
+                          backgroundColor: review.isPromoted ? "rgba(237, 200, 98, 0.15)" : "transparent",
+                          color: review.isPromoted ? "#9c7c00" : "#999",
+                          border: review.isPromoted ? "none" : "1px solid #ddd",
+                          fontWeight: review.isPromoted ? "bold" : "normal"
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Box className="review-actions-cell">
+                        <Tooltip title="View Details">
+                          <div
+                            className="admin-banner-action-btn view-btn"
+                            onClick={() => {
+                              setModalData(review);
+                              setOpenModal(true);
+                            }}
+                          >
+                            <FaRegEye size={18} />
+                          </div>
+                        </Tooltip>
+                        <Tooltip title="More Actions">
+                          <div
+                            className="admin-banner-action-btn more-btn"
+                            onClick={(e) => handleClick(e, review)}
+                          >
+                            <IoMdMore size={20} />
+                          </div>
+                        </Tooltip>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </TableContainer>
       </div>
-    </section>
+
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={() => setAnchorEl(null)}
+        PaperProps={{
+          elevation: 4,
+          sx: {
+            borderRadius: '12px',
+            minWidth: 180,
+            mt: 1,
+            '& .MuiMenuItem-root': {
+              fontSize: '14px',
+              py: 1,
+              px: 2,
+              gap: 1.5,
+              fontWeight: 500
+            }
+          }
+        }}
+      >
+        <MenuItem onClick={() => {
+          updateStatus(selectedReview._id, !selectedReview.status);
+          setAnchorEl(null);
+        }}>
+          {selectedReview?.status ? "Hide Review" : "Show Review"}
+        </MenuItem>
+
+        {selectedReview?.status && (
+          <MenuItem onClick={() => {
+            moveToTestimonial(selectedReview._id);
+            setAnchorEl(null);
+          }}>
+            {selectedReview?.isPromoted ? "Remove from Featured" : "Promote to Featured"}
+          </MenuItem>
+        )}
+      </Menu>
+    </Box>
   );
 }
