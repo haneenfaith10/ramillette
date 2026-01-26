@@ -113,9 +113,9 @@
   background-color: #28a745;
 }
 
-.edit-btn:hover {
+/* .edit-btn:hover {
   background-color: #218838;
-}
+} */
 
 .delete-btn {
   background-color: #dc3545;
@@ -149,11 +149,13 @@
   width: 42px;
   height: 22px;
 }
+
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
+
 .slider {
   position: absolute;
   cursor: pointer;
@@ -165,6 +167,7 @@
   transition: 0.4s;
   border-radius: 34px;
 }
+
 .slider:before {
   position: absolute;
   content: "";
@@ -176,10 +179,12 @@
   transition: 0.4s;
   border-radius: 50%;
 }
-input:checked + .slider {
-  background-color: #4caf50;
+
+input:checked+.slider {
+  background-color: #edc862;
 }
-input:checked + .slider:before {
+
+input:checked+.slider:before {
   transform: translateX(20px);
 }
 
@@ -195,6 +200,7 @@ input:checked + .slider:before {
     width: 100%;
   }
 }
+
 .country-table td input[type="checkbox"] {
   width: 18px;
   height: 18px;

@@ -98,7 +98,7 @@ export default function AdminCategories() {
       <div className="admin-category-list-section">
         <TableContainer component={Paper}>
           <Table
-            sx={{ minWidth: 650, border: "1px solid #ccc" }}
+            sx={{ minWidth: 650 }}
             aria-label="category table"
           >
             <TableHead>
@@ -107,7 +107,7 @@ export default function AdminCategories() {
                 <TableCell align="center">Category</TableCell>
                 <TableCell align="center">Image</TableCell>
                 <TableCell align="center">Status</TableCell>
-                <TableCell align="center" sx={{ maxWidth: "50px" }}>
+                <TableCell align="center">
                   Change Status
                 </TableCell>
                 <TableCell align="center">Action</TableCell>
@@ -116,27 +116,27 @@ export default function AdminCategories() {
             <TableBody>
               {paginatedData.map((row, index) => (
                 <TableRow key={row._id}>
-                  <TableCell align="center" sx={{ padding: "0px" }}>
+                  <TableCell align="center">
                     {page * rowsPerPage + index + 1}
                   </TableCell>
-                  <TableCell sx={{ padding: "0px" }} align="center">
+                  <TableCell align="center">
                     {row.categoryName}
                   </TableCell>
-                  <TableCell sx={{ padding: "0px" }} align="center">
-                    <div className="admin-category-list-image">
+                  <TableCell align="center">
+                    <div className="admin-category-image-container">
                       <img
-                        src={`${import.meta.env.VITE_BASE_URL}/${
-                          row.categoryImage
-                        }`}
-                        alt=""
-                        style={{ height: "50px", objectFit: "contain" }}
+                        src={`${import.meta.env.VITE_BASE_URL}/${row.categoryImage
+                          }`}
+                        alt={row.categoryName}
                       />
                     </div>
                   </TableCell>
-                  <TableCell sx={{ padding: "0px" }} align="center">
-                    {row.status ? "Active" : "Inactive"}
+                  <TableCell align="center">
+                    <span className={`status-badge ${row.status ? "active" : "inactive"}`}>
+                      {row.status ? "Active" : "Inactive"}
+                    </span>
                   </TableCell>
-                  <TableCell sx={{ padding: "0px" }} align="center">
+                  <TableCell align="center">
                     <label className="switch">
                       <input
                         type="checkbox"
@@ -148,23 +148,19 @@ export default function AdminCategories() {
                       <span className="slider round"></span>
                     </label>
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      padding: "16px 0",
-                      display: "flex",
-                      gap: "1rem",
-                      justifyContent: "center",
-                    }}
-                    align="center"
-                  >
-                    <Link to={`/admin/edit-category/${row._id}`}>
-                      <MdOutlineEdit size={18} color="blue" />
-                    </Link>
-                    <IoTrashOutline
-                      size={18}
-                      style={{ cursor: "pointer", color: "red" }}
-                      onClick={() => deleteCategoryItem(row._id)}
-                    />
+                  <TableCell align="center">
+                    <div style={{ display: "flex", gap: "10px", justifyContent: "start" }}>
+                      <Link to={`/admin/edit-category/${row._id}`} className="admin-category-action-btn edit-btn">
+                        <MdOutlineEdit size={20} />
+                      </Link>
+                      <button
+                        className="admin-category-action-btn delete-btn"
+                        onClick={() => deleteCategoryItem(row._id)}
+                        style={{ border: "none", background: "none", cursor: "pointer" }}
+                      >
+                        <IoTrashOutline size={20} />
+                      </button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
