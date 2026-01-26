@@ -157,15 +157,14 @@
 
 .clear-button {
   padding: 10px 20px;
-  background: linear-gradient(135deg, var(--secondary-color, #edc862) 0%, rgba(237, 200, 98, 0.9) 100%);
+  background: linear-gradient(135deg, #cfa941 0%, rgb(231 194 93 / 90%) 100%);
   border: none;
-  color: #2b2410;
+  color: white;
   border-radius: 10px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(237, 200, 98, 0.3);
 }
 
 .clear-button:hover {
