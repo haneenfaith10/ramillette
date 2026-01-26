@@ -10,6 +10,8 @@ import {
   updateBadge,
 } from "../../services/badgeApiServices";
 import { useNavigate, useParams } from "react-router-dom";
+import AdminHeader from "../../Components/AdminHeader/AdminHeader";
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 export default function CreateProductBadge() {
   const [imageSrc, setImageSrc] = useState(null);
@@ -82,6 +84,8 @@ export default function CreateProductBadge() {
       const reader = new FileReader();
       reader.onload = () => setImageSrc(reader.result);
       reader.readAsDataURL(file);
+      // Reset cropped image when new file is selected
+      setCroppedImage(null);
       formik.setFieldValue("icon", file);
     } else {
       alert("Please select a valid image file (PNG, JPG, SVG)");
@@ -90,71 +94,96 @@ export default function CreateProductBadge() {
 
   return (
     <div className="badge-form-container">
-      <h2>{initialData ? "Edit" : "Create"} Product Feature Badge</h2>
-      <form onSubmit={formik.handleSubmit} className="badge-form">
-        <label>Badge Label</label>
-        <input
-          type="text"
-          name="label"
-          placeholder="e.g. Long Lasting"
-          value={formik.values.label}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        {formik.touched.label && formik.errors.label && (
-          <div className="error">{formik.errors.label}</div>
-        )}
+      <AdminHeader title={initialData ? "Edit Badge" : "Create Badge"} />
 
-        <label>Upload Icon (PNG, SVG, JPG)</label>
-        <input type="file" accept="image/*" onChange={handleFileChange} />
-        {formik.touched.icon && formik.errors.icon && (
-          <div className="error">{formik.errors.icon}</div>
-        )}
+      <div className="admin-badge-form-card">
+        <form onSubmit={formik.handleSubmit} className="badge-form">
+          <div className="admin-form-row">
+            <label>Badge Label</label>
+            <input
+              type="text"
+              name="label"
+              placeholder="e.g. Long Lasting"
+              value={formik.values.label}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.label && formik.errors.label && (
+              <div className="error">{formik.errors.label}</div>
+            )}
+          </div>
 
-        {imageSrc && !croppedImage && (
-          <>
-            <div className="crop-container">
-              <Cropper
-                image={imageSrc}
-                crop={crop}
-                zoom={zoom}
-                aspect={1}
-                onCropChange={setCrop}
-                onZoomChange={setZoom}
-                onCropComplete={onCropComplete}
+          <div className="admin-form-row">
+            <label>Badge Icon</label>
+            <div className="admin-badge-icon-upload-wrapper">
+              <IoCloudUploadOutline className="upload-icon" />
+              <span className="upload-text">Select icon (PNG, SVG, JPG)</span>
+              <input type="file" accept="image/*" onChange={handleFileChange} />
+            </div>
+            {formik.touched.icon && formik.errors.icon && (
+              <div className="error">{formik.errors.icon}</div>
+            )}
+          </div>
+
+          {imageSrc && !croppedImage && (
+            <div className="admin-form-row">
+              <label>Adjust Icon Area</label>
+              <div className="crop-container">
+                <Cropper
+                  image={imageSrc}
+                  crop={crop}
+                  zoom={zoom}
+                  aspect={1}
+                  onCropChange={setCrop}
+                  onZoomChange={setZoom}
+                  onCropComplete={onCropComplete}
+                />
+              </div>
+              <button
+                type="button"
+                className="crop-btn"
+                onClick={showCroppedImage}
+              >
+                Apply Crop
+              </button>
+            </div>
+          )}
+
+          {(croppedImage || (initialData && initialData.iconUrl)) && !imageSrc && (
+            <div className="preview-wrapper">
+              <p>Current Badge Icon</p>
+              <img
+                src={
+                  croppedImage ||
+                  `${import.meta.env.VITE_BASE_URL}${initialData.iconUrl}`
+                }
+                alt="Badge Icon Preview"
+                className="icon-preview"
               />
             </div>
-            <button
-              type="button"
-              className="crop-btn"
-              onClick={showCroppedImage}
-            >
-              Crop Image
-            </button>
-          </>
-        )}
+          )}
 
-        {(croppedImage || (initialData && initialData.iconUrl)) && (
-          <div className="preview-wrapper">
-            <p>Cropped Preview</p>
-            <img
-              src={
-                croppedImage ||
-                `${import.meta.env.VITE_BASE_URL}${initialData.iconUrl}`
-              }
-              alt="Cropped Icon"
-              className="icon-preview"
-            />
-          </div>
-        )}
-        <button
-          type="submit"
-          disabled={formik.isSubmitting}
-          className="submit-btn"
-        >
-          {initialData ? "Update Badge" : "Create Badge"}
-        </button>
-      </form>
+          {/* Also show preview when adjusting crop if needed, but the modal approach handles it better */}
+          {croppedImage && imageSrc && (
+            <div className="preview-wrapper">
+              <p>Preview of Adjusted Icon</p>
+              <img
+                src={croppedImage}
+                alt="Adjusted Preview"
+                className="icon-preview"
+              />
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={formik.isSubmitting}
+            className="submit-btn"
+          >
+            {formik.isSubmitting ? "Processing..." : (initialData ? "Update Badge" : "Create Badge")}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

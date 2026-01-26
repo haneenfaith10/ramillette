@@ -1,118 +1,87 @@
 .admin-badge-wrapper {
-  padding: 32px;
-  max-width: 1200px;
-  margin: auto;
-  background-color: #f4f6f8;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  width: 100%;
+  padding: 24px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
 }
 
-.admin-badge-header {
-  text-align: center;
-  margin-bottom: 32px;
-}
-
-.admin-badge-header h2 {
-  font-size: 32px;
-  color: #1f2937;
-  margin-bottom: 8px;
-}
-
-.admin-badge-header p {
-  font-size: 15px;
-  color: #6b7280;
-}
-
-.admin-badge-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 28px;
-}
-
-.badge-card {
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 16px;
-  padding: 24px 16px;
-  text-align: center;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
-  position: relative;
-  backdrop-filter: blur(6px);
-  border: 1.5px solid transparent;
+.admin-banner-list-filters {
   display: flex;
-  flex-direction: column;
-}
-
-.badge-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-  border: 1.5px solid #007bff50;
-}
-
-.badge-icon-wrapper {
-  width: 90px;
-  height: 90px;
-  margin: 0 auto 16px;
-  display: flex;
-  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
   align-items: center;
-  background: #f1f5f9;
-  border-radius: 50%;
-  transition: transform 0.3s ease;
 }
 
-.badge-card:hover .badge-icon-wrapper {
-  transform: scale(1.05);
+.admin-banner-list-section {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-.badge-icon {
+/* Customizing Material UI Table */
+.admin-banner-list-section .MuiTableContainer-root {
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.admin-banner-list-section .MuiTableHead-root {
+  background-color: #edc862 !important;
+}
+
+.admin-banner-list-section .MuiTableCell-head {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  font-size: 13px !important;
+  letter-spacing: 0.8px;
+  border-bottom: none !important;
+  padding: 16px !important;
+}
+
+.admin-banner-list-section .MuiTableRow-root:hover {
+  background-color: rgba(237, 200, 98, 0.05) !important;
+}
+
+.admin-banner-list-section .MuiTableCell-body {
+  padding: 16px !important;
+  color: #333 !important;
+  font-size: 14px !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Actions */
+.admin-banner-action-btn {
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.admin-banner-action-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.edit-btn {
+  background-color: #edc862 !important;
+}
+
+.delete-btn {
+  background-color: #dc3545 !important;
+  color: white !important;
+}
+
+.badge-icon-cell {
   width: 50px;
   height: 50px;
+  border-radius: 8px;
   object-fit: contain;
-}
-
-.badge-label {
-  font-weight: 600;
-  font-size: 15px;
-  color: #111827;
-  margin-top: 6px;
-  display: block;
-}
-
-.badge-actions {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  display: flex;
-  gap: 10px;
-}
-
-.action-icon {
-  cursor: pointer;
-  font-size: 18px;
-  opacity: 0.8;
-  transition: transform 0.2s, opacity 0.2s;
-}
-
-.action-icon:hover {
-  transform: scale(1.25);
-  opacity: 1;
-}
-
-.edit-icon {
-  color: #3b82f6;
-}
-
-.delete-icon {
-  color: #ef4444;
-}
-
-.no-badges {
-  grid-column: 1 / -1;
-  text-align: center;
-  color: #9ca3af;
-  font-size: 16px;
-}
-.badge-actions button {
-  border: none;
-  background-color: transparent;
+  background: #f1f5f9;
+  padding: 4px;
 }
