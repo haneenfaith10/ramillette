@@ -20,7 +20,42 @@ import { MdOutlineEdit, MdStarRate } from "react-icons/md";
 import { IoTrashOutline, IoClose } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { getActiveCountries } from "../../services/configApiService";
-import { Avatar, Box, Button, Chip } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  InputAdornment,
+  IconButton,
+  Typography,
+  createTheme,
+  ThemeProvider,
+} from "@mui/material";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#edc862",
+      contrastText: "#fff",
+    },
+  },
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#edc862",
+          },
+        },
+      },
+    },
+  },
+});
 
 export default function AdminProductList() {
   const navigate = useNavigate();
@@ -158,226 +193,246 @@ export default function AdminProductList() {
   }
 
   return (
-    <div className="admin-product-list-main-container">
-      <div className="admin-product-list-container">
+    <ThemeProvider theme={theme}>
+      <Box className="admin-product-list-main-container" sx={{ p: 3 }}>
         <AdminHeader title="Product List" />
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <div className="admin-product-list-controls">
-            <div className="search-input-wrapper">
-              <input
-                type="text"
+
+        <Paper elevation={0} sx={{ p: 2, mb: 3, border: '1px solid #eee', borderRadius: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 2
+            }}
+          >
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, flex: 1 }}>
+              <TextField
                 placeholder="Search products..."
+                variant="outlined"
+                size="small"
                 value={searchText}
                 onChange={(e) => {
                   setSearchText(e.target.value);
                   setPage(0);
                 }}
+                InputProps={{
+                  endAdornment: searchText && (
+                    <InputAdornment position="end">
+                      <IconButton
+                        size="small"
+                        onClick={() => {
+                          setSearchText("");
+                          setDebouncedSearch("");
+                          setPage(0);
+                        }}
+                      >
+                        <IoClose />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{ minWidth: 250 }}
               />
-              {searchText && (
-                <IoClose
-                  // className="admin-product-list-search-clear"
+
+              <FormControl size="small" sx={{ minWidth: 150 }}>
+                <InputLabel>Status</InputLabel>
+                <Select
+                  value={statusFilter}
+                  label="Status"
+                  onChange={(e) => {
+                    setStatusFilter(e.target.value);
+                    setPage(0);
+                  }}
+                >
+                  <MenuItem value="">All Status</MenuItem>
+                  <MenuItem value="active">Active</MenuItem>
+                  <MenuItem value="inactive">Inactive</MenuItem>
+                </Select>
+              </FormControl>
+
+              <FormControl size="small" sx={{ minWidth: 180 }}>
+                <InputLabel>Country</InputLabel>
+                <Select
+                  value={countryFilter}
+                  label="Country"
+                  onChange={(e) => {
+                    setCountryFilter(e.target.value);
+                    setPage(0);
+                  }}
+                >
+                  <MenuItem value="">All Countries</MenuItem>
+                  {countries?.map((country, index) => (
+                    <MenuItem key={index} value={country.name}>
+                      {country.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <FormControl size="small" sx={{ minWidth: 150 }}>
+                <InputLabel>Sort By Price</InputLabel>
+                <Select
+                  value={priceSort}
+                  label="Sort By Price"
+                  onChange={(e) => {
+                    setPriceSort(e.target.value);
+                    setPage(0);
+                  }}
+                >
+                  <MenuItem value="">None</MenuItem>
+                  <MenuItem value="lowToHigh">Low to High</MenuItem>
+                  <MenuItem value="highToLow">High to Low</MenuItem>
+                </Select>
+              </FormControl>
+
+              {(searchText || statusFilter || countryFilter || priceSort) && (
+                <Button
+                  variant="text"
+                  color="error"
                   onClick={() => {
                     setSearchText("");
                     setDebouncedSearch("");
+                    setStatusFilter("");
+                    setCountryFilter("");
+                    setPriceSort("");
                     setPage(0);
                   }}
-                  style={{ cursor: "pointer" }}
-                />
+                  startIcon={<IoClose />}
+                >
+                  Clear All
+                </Button>
               )}
-            </div>
-            <select
-              value={statusFilter}
-              onChange={(e) => {
-                setStatusFilter(e.target.value);
-                setPage(0);
+            </Box>
+
+            <Button
+              variant="contained"
+              onClick={() => navigate("/admin/add-new-product")}
+              sx={{
+                backgroundColor: "#edc862",
+                color: "#fff",
+                '&:hover': {
+                  backgroundColor: "#dcb44e"
+                },
+                textTransform: 'none',
+                px: 3
               }}
             >
-              <option value="">All Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-            <select
-              value={countryFilter}
-              onChange={(e) => {
-                setCountryFilter(e.target.value);
-                setPage(0);
-              }}
-            >
-              <option value="">All Countries</option>
-              {countries &&
-                countries.length > 0 &&
-                countries.map((country, index) => (
-                  <option key={index} value={country.name}>
-                    {country.name}
-                  </option>
-                ))}
-            </select>
-            <select
-              value={priceSort}
-              onChange={(e) => {
-                setPriceSort(e.target.value);
-                setPage(0);
-              }}
-            >
-              <option value="">Price Sort</option>
-              <option value="lowToHigh">Low to High</option>
-              <option value="highToLow">High to Low</option>
-            </select>
-            {searchText && (
-              <IoClose
-                className="admin-product-list-search-clear"
-                onClick={() => {
-                  setSearchText("");
-                  setDebouncedSearch("");
-                  setPage(0);
-                }}
-              />
-            )}
-            <button
-              className="admin-product-list-clear-btn"
-              onClick={() => {
-                setSearchText("");
-                setDebouncedSearch("");
-                setStatusFilter("");
-                setCountryFilter("");
-                // setMinPriceFilter("");
-                // setMaxPriceFilter("");
-                setPage(0);
-              }}
-              // style={{
-              //   padding: "6px 12px",
-              //   backgroundColor: "#e53935",
-              //   color: "#fff",
-              //   border: "none",
-              //   borderRadius: "4px",
-              //   cursor: "pointer",
-              // }}
-            >
-              Clear Filter
-            </button>
-          </div>
-          <Button
-            type="primary"
-            variant="contained"
-            onClick={() => navigate("/admin/add-new-product")}
-            sx={{ backgroundColor: "var(--secondary-color)" }}
-          >
-            Create Product
-          </Button>
-        </Box>
+              Create Product
+            </Button>
+          </Box>
+        </Paper>
 
         {products.length > 0 ? (
-          <div>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
+          <Paper elevation={0} sx={{ border: "1px solid #eee", borderRadius: 2, overflow: 'hidden' }}>
+            <TableContainer>
+              <Table sx={{ minWidth: 650 }}>
+                <TableHead sx={{ backgroundColor: '#f8f9fa' }}>
                   <TableRow>
-                    <TableCell>Sl No.</TableCell>
-                    <TableCell align="center">Name</TableCell>
-                    <TableCell align="center">Countries</TableCell>
-
-                    <TableCell align="center">Discount</TableCell>
-                    <TableCell align="center">Image</TableCell>
-                    <TableCell align="center">Rating</TableCell>
-                    <TableCell align="center">Status</TableCell>
-                    <TableCell align="center">Actions</TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>Sl No.</TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>Product Name</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 600 }}>Countries</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 600 }}>Discount</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 600 }}>Image</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 600 }}>Rating</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 600 }}>Status</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 600 }}>Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {products.map((product, index) => (
-                    <TableRow key={product._id}>
+                    <TableRow
+                      key={product._id}
+                      hover
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
                       <TableCell>{page * rowsPerPage + index + 1}</TableCell>
-                      <TableCell align="center">
-                        {product.productName}
+                      <TableCell sx={{ fontWeight: 500 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                          {product.productName}
+                        </Typography>
                       </TableCell>
                       <TableCell align="center">
-                        {/* {(() => {
-                          const matched = product.countryPrices.find(
-                            (item) => item.country?.name === adminCountry
-                          );
-                          const fallback = product.countryPrices?.[0];
-                          const price =
-                            matched?.price ?? fallback?.price ?? "N/A";
-                          const currency =
-                            matched?.country?.currency ??
-                            fallback?.country?.currency ??
-                            "";
-                          return `${price} ${currency}`;
-                        })()} */}
-                        <Box display="flex" flexWrap="wrap" gap={0.5}>
-                          {product &&
-                            product.countries &&
-                            product.countries.length > 0 &&
-                            product.countries.map((country, index) => (
-                              <Chip
-                                key={index}
-                                label={country.name}
-                                avatar={
-                                  <Avatar
-                                    src={country.flagUrl}
-                                    alt={country.name}
-                                  />
-                                }
-                                size="small"
-                              />
-                            ))}
+                        <Box display="flex" flexWrap="wrap" justifyContent="center" gap={0.5}>
+                          {product.countries?.map((country, idx) => (
+                            <Chip
+                              key={idx}
+                              label={country.name}
+                              avatar={<Avatar src={country.flagUrl} alt={country.name} />}
+                              size="small"
+                              variant="outlined"
+                            />
+                          ))}
                         </Box>
                       </TableCell>
                       <TableCell align="center">
-                        {product.productDiscount}%
-                      </TableCell>
-                      <TableCell align="center">
-                        <img
-                          src={`${import.meta.env.VITE_BASE_URL}/${
-                            product.productImages?.[0].path ||
-                            product.productImages?.[0]
-                          }`}
-                          alt="product"
-                          className="admin-product-list-image"
+                        <Chip
+                          label={`${product.productDiscount}%`}
+                          size="small"
+                          color="secondary"
+                          variant="soft"
+                          sx={{ fontWeight: 600, bgcolor: 'rgba(156, 39, 176, 0.1)', color: 'secondary.main' }}
                         />
                       </TableCell>
                       <TableCell align="center">
-                        {product.productRating}
-                        <MdStarRate color="gold" />
+                        <Avatar
+                          src={`${import.meta.env.VITE_BASE_URL}/${product.productImages?.[0]?.path || product.productImages?.[0]}`}
+                          variant="rounded"
+                          sx={{ width: 45, height: 45, mx: 'auto', border: '1px solid #eee' }}
+                        />
                       </TableCell>
                       <TableCell align="center">
-                        <button
+                        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0.5 }}>
+                          <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                            {product.productRating}
+                          </Typography>
+                          <MdStarRate color="#faaf00" size={18} />
+                        </Box>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Chip
+                          label={product.status ? "Active" : "Inactive"}
+                          color={product.status ? "success" : "error"}
+                          size="small"
                           onClick={() => changeStatus(product._id)}
-                          className={
-                            product.status
-                              ? "product-active-btn"
-                              : "product-inactive-btn"
-                          }
-                        >
-                          {product.status ? "Active" : "Inactive"}
-                        </button>
+                          sx={{
+                            width: 80,
+                            fontWeight: 500,
+                            cursor: 'pointer',
+                            '&:hover': { opacity: 0.8 }
+                          }}
+                        />
                       </TableCell>
                       <TableCell align="center">
-                        <div className="admin-product-list-action-icons-container">
-                          <FaRegEye
-                            size={18}
-                            onClick={() =>
-                              navigate(`/admin/product-preview/${product._id}`)
-                            }
-                          />
-                          <Link
+                        <Box sx={{ display: "flex", justifyContent: "center", gap: 1 }}>
+                          <IconButton
+                            size="small"
+                            onClick={() => navigate(`/admin/product-preview/${product._id}`)}
+                            title="View"
+                            sx={{ color: '#edc862' }}
+                          >
+                            <FaRegEye size={18} />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            component={Link}
                             to={`/admin/edit-product/${product._id}`}
                             state={{ product }}
+                            title="Edit"
+                            sx={{ color: '#edc862' }}
                           >
-                            <MdOutlineEdit size={16} color="blue" />
-                          </Link>
-                          <IoTrashOutline
-                            color="red"
-                            size={16}
+                            <MdOutlineEdit size={18} />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            color="error"
                             onClick={() => deleteProductItem(product._id)}
-                          />
-                        </div>
+                            title="Delete"
+                          >
+                            <IoTrashOutline size={18} />
+                          </IconButton>
+                        </Box>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -391,15 +446,15 @@ export default function AdminProductList() {
               onPageChange={handleChangePage}
               rowsPerPage={rowsPerPage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-              sx={{ border: ".5px solid #ccc", borderRadius: "0 0 8px 8px" }}
+              sx={{ borderTop: "1px solid #eee" }}
             />
-          </div>
+          </Paper>
         ) : (
-          <div className="product-empty-container">
-            <p>No product available</p>
-          </div>
+          <Paper variant="outlined" sx={{ py: 10, textAlign: 'center', bgcolor: '#fafafa', borderRadius: 2 }}>
+            <Typography color="textSecondary">No product available</Typography>
+          </Paper>
         )}
-      </div>
-    </div>
+      </Box>
+    </ThemeProvider>
   );
 }
