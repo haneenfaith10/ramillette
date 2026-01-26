@@ -4,21 +4,39 @@
   padding: 1rem;
   overflow-y: scroll;
 }
+
 .admin-add-product-main-container::-webkit-scrollbar {
   display: none;
 }
+
 .admin-add-product-container {
   width: 100%;
   height: 100%;
 }
+
 .admin-add-product-form {
   width: 100%;
   height: fit-content;
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
   margin-bottom: 2rem;
 }
+
+/* Span full width for specific elements */
+/* .admin-add-product-form-group.full-width,
+.variant-section,
+.badge-selector-container,
+.admin-add-product-images-preview-container {
+  grid-column: 1 / -1;
+} */
+
+@media (max-width: 768px) {
+  .admin-add-product-form {
+    grid-template-columns: 1fr;
+  }
+}
+
 .admin-add-product-form-group {
   width: 100%;
   height: fit-content;
@@ -26,12 +44,15 @@
   flex-direction: column;
   gap: 0.3rem;
 }
+
 .admin-add-product-form-group label {
   font-size: 14px;
 }
+
 .admin-add-product-input-wrapper {
   width: 100%;
 }
+
 .admin-add-product-input {
   padding: 0.5rem 0.5rem;
   border-radius: 5px;
@@ -39,7 +60,8 @@
   border: 1px solid #ccc;
   font-size: 14px;
 }
-.admin-add-product-form-group > .admin-add-product-input-wrapper > textarea {
+
+.admin-add-product-form-group>.admin-add-product-input-wrapper>textarea {
   padding: 0.5rem 0.5rem;
   border-radius: 5px;
   resize: none;
@@ -47,22 +69,29 @@
   border: 1px solid #ccc;
 }
 
+
+
+
 .admin-add-product-submit-btn {
+  grid-column: 1 / -1;
   width: 100%;
   height: 3rem;
-  background-color: #f0c14b;
+  background-color: var(--secondary-color);
   border-radius: 5px;
-  border: 1px solid #a88734;
+  border: 1px solid var(--secondary-color);
 
   font-size: 1.2rem;
   cursor: pointer;
+  font-weight: 600;
   color: white;
-}
-.admin-add-product-submit-btn:hover {
-  background-color: #fcf4e0;
   transition: all 0.3s ease-in-out;
-  color: #f0c14b;
 }
+
+.admin-add-product-submit-btn:hover {
+  background-color: transparent;
+  color: var(--secondary-color);
+}
+
 .admin-add-product-images-preview-container {
   width: 100%;
   height: fit-content;
@@ -81,15 +110,18 @@
   cursor: pointer;
   font-size: 14px;
 }
+
 .admin-toggle-orientation-btn:hover {
   background-color: #555;
 }
+
 .admin-add-product-images-preview-section {
   width: 100%;
   height: fit-content;
   display: flex;
   gap: 0.5rem;
 }
+
 .admin-add-product-images-preview {
   width: 8rem;
   aspect-ratio: 1/1;
@@ -98,12 +130,14 @@
   position: relative;
   padding: 10px;
 }
-.admin-add-product-images-preview > img {
+
+.admin-add-product-images-preview>img {
   width: 100%;
   height: 100%;
   border-radius: 12px;
   object-fit: cover;
 }
+
 .admin-add-product-image-delete-btn {
   position: absolute;
   top: -0.5rem;
@@ -118,32 +152,51 @@
   align-items: center;
   cursor: pointer;
 }
+
 .admin-add-product-input-custom-file {
   width: 100%;
-  height: 3rem;
+  height: 200px;
   position: relative;
   overflow: hidden;
-  border-radius: 5px;
+  border-radius: 10px;
+  border: 2px dashed #ccc;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.admin-add-product-input-custom-file:hover {
+  border-color: var(--secondary-color);
+  background-color: #fffdf5;
 }
 
 .admin-add-product-input-custom-file-btn {
   width: 100%;
   height: 100%;
-  background-color: #f0c14b;
-  border: 1px solid #a88734;
+  background-color: transparent;
+  border: none;
   font-size: 1rem;
-  /* font-weight: bold; */
-  color: white;
+  color: #555;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   border-radius: 5px;
-  gap: 0.5rem;
+  gap: 1rem;
 }
-.admin-add-product-input-custom-file-btn > svg {
-  font-size: 24px;
+
+.admin-add-product-input-custom-file-btn>svg {
+  font-size: 48px;
+  color: var(--secondary-color);
+  transition: transform 0.3s ease;
 }
+
+/* .admin-add-product-input-custom-file:hover .admin-add-product-input-custom-file-btn>svg {
+  transform: scale(1.1);
+} */
+
+
+
 .custom-file-input {
   position: absolute;
   top: 0;
@@ -154,25 +207,30 @@
   width: 100%;
   height: 100%;
 }
+
 .admin-add-product-faq-container {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
+
 .admin-add-product-faq-container label {
   font-weight: 500;
 }
+
 .admin-add-product-faq-container button {
   padding: 0.2rem 0.8rem;
   border: 1px solid #ccc;
   border-radius: 5px;
   cursor: pointer;
 }
+
 .admin-add-product-faq-section {
   display: flex;
   gap: 1rem;
   align-items: center;
 }
+
 .admin-add-product-faq-section-item {
   width: 100%;
 }
@@ -199,6 +257,7 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
 input[type="checkbox"] {
   width: 20px;
   height: 20px;
@@ -212,11 +271,13 @@ input[type="checkbox"] {
   outline: none;
   transition: background 0.2s, border 0.2s;
 }
+
 input[type="checkbox"]:checked {
   background-color: #4caf50;
   border-color: #388e3c;
   position: relative;
 }
+
 input[type="checkbox"]:checked::after {
   content: "";
   display: block;
@@ -229,12 +290,15 @@ input[type="checkbox"]:checked::after {
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
+
 .admin-add-product-input-wrapper select {
   outline: none;
 }
+
 .admin-add-product-form-group label sub {
   font-size: 11px;
 }
+
 .badge-selector-container {
   width: 100%;
   margin: 20px 0;
@@ -443,9 +507,11 @@ label {
   width: 100%;
   max-width: 300px;
 }
+
 .variant-row input::placeholder {
   color: gray;
 }
+
 @media screen and (max-width: 600px) {
   .variant-row {
     flex-direction: column;
@@ -456,4 +522,40 @@ label {
   .variant-row button {
     width: 100%;
   }
+}
+
+
+.admin-add-product-input {
+  height: 38px;
+}
+
+
+.image_upload_container {
+  grid-column: 1 / -1;
+}
+
+.badge-selector-container {
+  grid-column: 1 / -1;
+}
+
+.product_infowrapper {
+  grid-column: 1 / -1;
+}
+
+.ingredientswrapper {
+  grid-column: 1 / -1;
+}
+
+.faq_wrapper {
+  grid-column: 1 / -1;
+}
+
+.admin-add-product-faq-container button {
+  background-color: #edc862;
+  color: white;
+  border: none;
+}
+
+.admin-add-product-faq-container {
+  margin-bottom: 15px;
 }

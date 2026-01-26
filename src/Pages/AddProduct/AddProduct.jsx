@@ -71,9 +71,9 @@ const SortableImage = ({
         <input
           type="checkbox"
           checked={imageOrientations[index] === "portrait"}
-          // onChange={e =>
-          //   handleOrientationChange(index, e.target.checked ? "portrait" : "landscape")
-          // }
+        // onChange={e =>
+        //   handleOrientationChange(index, e.target.checked ? "portrait" : "landscape")
+        // }
         />
         Portrait
       </label>
@@ -304,7 +304,7 @@ export default function AddProduct() {
     countryVariants: Yup.object().test(
       "all-countries-have-variants",
       "Each country must have complete variant information",
-      function(value) {
+      function (value) {
         const { selectedCountries } = this.parent;
         if (!selectedCountries || !value) {
           return this.createError({
@@ -314,7 +314,7 @@ export default function AddProduct() {
 
         for (const countryId of selectedCountries) {
           const variants = value[countryId];
-          
+
           // Check if variants exist for this country
           if (!variants || variants.length === 0) {
             return this.createError({
@@ -329,7 +329,7 @@ export default function AddProduct() {
                 message: "Variant name is required"
               });
             }
-            
+
             if (!variant.price || isNaN(Number(variant.price)) || Number(variant.price) < 0) {
               return this.createError({
                 message: "Valid price is required for each variant"
@@ -659,8 +659,8 @@ export default function AddProduct() {
                   <p className="error-message">
                     {(() => {
                       const countryVariants = values.countryVariants[countryId] || [];
-                      const isCountryValid = countryVariants.length > 0 && 
-                        countryVariants.every(variant => 
+                      const isCountryValid = countryVariants.length > 0 &&
+                        countryVariants.every(variant =>
                           variant.variantName?.trim() &&
                           !isNaN(Number(variant.price)) &&
                           Number(variant.price) >= 0 &&
@@ -735,36 +735,8 @@ export default function AddProduct() {
               )}
             </div>
           </div>
-          <div className="admin-add-product-form-group">
-            <label htmlFor="product-description">Product Description</label>
-            <div className="admin-add-product-input-wrapper">
-              <textarea
-                id="productDescription"
-                name="productDescription"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.productDescription}
-              ></textarea>
-              {errors?.productDescription && touched.productDescription && (
-                <p className="error-message">{errors?.productDescription}</p>
-              )}
-            </div>
-          </div>
-          <div className="admin-add-product-form-group">
-            <label htmlFor="product-description">Benefits</label>
-            <div className="admin-add-product-input-wrapper">
-              <textarea
-                id="productBenefits"
-                name="productBenefits"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.productBenefits}
-              ></textarea>
-              {errors?.productBenefits && touched.productBenefits && (
-                <p className="error-message">{errors?.productBenefits}</p>
-              )}
-            </div>
-          </div>
+
+
           <div className="admin-add-product-form-group">
             <label htmlFor="product-price">Product Rating (optional)</label>
             <div className="admin-add-product-input-wrapper">
@@ -783,7 +755,8 @@ export default function AddProduct() {
               )}
             </div>
           </div>
-          <div className="admin-add-product-form-group">
+
+          <div className="admin-add-product-form-group full-width">
             <label htmlFor="product-description">Product Use Case</label>
             <div className="admin-add-product-input-wrapper">
               <textarea
@@ -798,7 +771,22 @@ export default function AddProduct() {
               )}
             </div>
           </div>
-          <div className="admin-add-product-form-group">
+          <div className="admin-add-product-form-group full-width">
+            <label htmlFor="product-description">Product Description</label>
+            <div className="admin-add-product-input-wrapper">
+              <textarea
+                id="productDescription"
+                name="productDescription"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.productDescription}
+              ></textarea>
+              {errors?.productDescription && touched.productDescription && (
+                <p className="error-message">{errors?.productDescription}</p>
+              )}
+            </div>
+          </div>
+          <div className="admin-add-product-form-group full-width image_upload_container">
             <label htmlFor="product-price">Product Images</label>
             <div className="admin-add-product-input-wrapper">
               <div className="admin-add-product-input-custom-file">
@@ -871,11 +859,28 @@ export default function AddProduct() {
               </DndContext>
             </div>
           )}
-          <BadgeSelector
+          <BadgeSelector className="full-width"
             selectedBadges={selectedBadges}
             setSelectedBadges={setSelectedBadges}
           />
-          <div className="admin-add-product-form-group">
+          <div className="admin-add-product-form-group full-width product_infowrapper">
+            <label htmlFor="product-description">
+              Product Other Information
+            </label>
+            <div className="admin-add-product-input-wrapper">
+              <textarea
+                id="productOtherInfo"
+                name="productOtherInfo"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.productOtherInfo}
+              ></textarea>
+              {errors?.productOtherInfo && touched.productOtherInfo && (
+                <p className="error-message">{errors?.productOtherInfo}</p>
+              )}
+            </div>
+          </div>
+          <div className="admin-add-product-form-group full-width ingredientswrapper">
             <label htmlFor="product-description">Product Ingredients</label>
             <div className="admin-add-product-input-wrapper">
               <textarea
@@ -890,7 +895,8 @@ export default function AddProduct() {
               )}
             </div>
           </div>
-          <div className="admin-add-product-form-group">
+
+          <div className="admin-add-product-form-group full-width faq_wrapper">
             <div className="admin-add-product-faq-container">
               <label htmlFor="product-description">Product FAQ</label>
               <button
@@ -972,23 +978,7 @@ export default function AddProduct() {
               <p className="error-message">{errors.productFAQ}</p>
             )}
           </div>
-          <div className="admin-add-product-form-group">
-            <label htmlFor="product-description">
-              Product Other Information
-            </label>
-            <div className="admin-add-product-input-wrapper">
-              <textarea
-                id="productOtherInfo"
-                name="productOtherInfo"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.productOtherInfo}
-              ></textarea>
-              {errors?.productOtherInfo && touched.productOtherInfo && (
-                <p className="error-message">{errors?.productOtherInfo}</p>
-              )}
-            </div>
-          </div>
+
           <button type="submit" className="admin-add-product-submit-btn">
             Add Product
           </button>
