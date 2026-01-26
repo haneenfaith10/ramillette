@@ -6,14 +6,15 @@ import "./AddVideoBanners.css";
 import {
   getVideoBannerById,
   updateVideoBanner,
-  //   updateVideoBanner,
 } from "../../services/bannerVideoApiServices";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 export default function EditVideoBanner() {
   const [videoPreviewUrl, setVideoPreviewUrl] = useState(null);
   const imageRef = useRef(null);
   const { bannerId } = useParams();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -35,10 +36,11 @@ export default function EditVideoBanner() {
       if (values.video) {
         formData.append("videoFile", values.video);
       }
-      const response = updateVideoBanner(bannerId, formData, setSubmitting);
+      const response = await updateVideoBanner(bannerId, formData, setSubmitting);
       if (response) {
         resetForm();
-        setVideoPreviewUrl();
+        setVideoPreviewUrl(null);
+        navigate("/admin/videoBanners");
       }
     },
   });
@@ -74,56 +76,68 @@ export default function EditVideoBanner() {
 
   return (
     <div className="admin-add-video-banner-container">
-      <AdminHeader title="Edit video banner" />
+      <AdminHeader title="Edit Video Banner" />
 
-      <form className="video-banner-form" onSubmit={formik.handleSubmit}>
-        <div className="form-group">
-          <label>Banner Content</label>
-          <input
-            type="text"
-            name="content"
-            value={formik.values.content}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            placeholder="Enter banner content"
-          />
-          {formik.touched.content && formik.errors.content && (
-            <p className="error-text">{formik.errors.content}</p>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label>Upload New Video (optional)</label>
-          <input
-            type="file"
-            name="video"
-            accept="video/*"
-            ref={imageRef}
-            onChange={handleVideoChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.video && formik.errors.video && (
-            <p className="error-text">{formik.errors.video}</p>
-          )}
-        </div>
-        {videoPreviewUrl && (
-          <video key={videoPreviewUrl} width="320" controls>
-            <source
-              src={videoPreviewUrl}
-              type={formik.values.video?.type || "video/mp4"}
+      <div className="admin-add-video-banner-form-container">
+        <form className="video-banner-form" onSubmit={formik.handleSubmit}>
+          {/* Banner Content */}
+          <div className="admin-add-category-form-row">
+            <label>Banner Content / Text</label>
+            <input
+              type="text"
+              name="content"
+              value={formik.values.content}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              placeholder="Enter banner content"
             />
-            Your browser does not support the video tag.
-          </video>
-        )}
+            {formik.touched.content && formik.errors.content && (
+              <p className="error-text">{formik.errors.content}</p>
+            )}
+          </div>
 
-        <button
-          type="submit"
-          disabled={formik.isSubmitting}
-          className="admin-submit-btn"
-        >
-          Update
-        </button>
-      </form>
+          {/* Video Upload Area */}
+          <div className="admin-add-category-form-row">
+            <label>Upload New Video (optional)</label>
+            <div className="admin-add-video-banner-file-input-wrapper">
+              <IoCloudUploadOutline className="upload-icon" />
+              <span className="upload-text">Click to change video file</span>
+              <input
+                type="file"
+                name="video"
+                accept="video/*"
+                ref={imageRef}
+                onChange={handleVideoChange}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+            {formik.touched.video && formik.errors.video && (
+              <p className="error-text">{formik.errors.video}</p>
+            )}
+          </div>
+
+          {/* Video Preview */}
+          {videoPreviewUrl && (
+            <div className="video-preview-wrapper">
+              <video key={videoPreviewUrl} autoPlay muted loop controls>
+                <source
+                  src={videoPreviewUrl}
+                  type={formik.values.video?.type || "video/mp4"}
+                />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={formik.isSubmitting}
+            className="admin-submit-btn"
+          >
+            {formik.isSubmitting ? "Updating..." : "Save Changes"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import AdminHeader from "../../Components/AdminHeader/AdminHeader";
 import "./AddVideoBanners.css";
 import { createVideoBanner } from "../../services/bannerVideoApiServices";
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 export default function AddVideoBanners() {
   const [videoPreviewUrl, setVideoPreviewUrl] = useState(null);
@@ -53,7 +54,7 @@ export default function AddVideoBanners() {
       if (response) {
         resetForm();
         setVideoPreviewUrl(null);
-        imageRef.current = null;
+        if (imageRef.current) imageRef.current.value = "";
       }
     },
   });
@@ -66,54 +67,65 @@ export default function AddVideoBanners() {
 
   return (
     <div className="admin-add-video-banner-container">
-      <AdminHeader title="Create video banner" />
+      <AdminHeader title="Create Video Banner" />
 
-      <form className="video-banner-form" onSubmit={formik.handleSubmit}>
-        <div className="form-group">
-          <label>Banner Content</label>
-          <input
-            type="text"
-            name="content"
-            value={formik.values.content}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            placeholder="Enter banner content"
-          />
-          {formik.touched.content && formik.errors.content && (
-            <p className="error-text">{formik.errors.content}</p>
+      <div className="admin-add-video-banner-form-container">
+        <form className="video-banner-form" onSubmit={formik.handleSubmit}>
+          {/* Banner Content */}
+          <div className="admin-add-category-form-row">
+            <label>Banner Content / Text</label>
+            <input
+              type="text"
+              name="content"
+              value={formik.values.content}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              placeholder="e.g. Special Holiday Collection"
+            />
+            {formik.touched.content && formik.errors.content && (
+              <p className="error-text">{formik.errors.content}</p>
+            )}
+          </div>
+
+          {/* Video Upload Area */}
+          <div className="admin-add-category-form-row">
+            <label>Upload Video (16:9 aspect ratio)</label>
+            <div className="admin-add-video-banner-file-input-wrapper">
+              <IoCloudUploadOutline className="upload-icon" />
+              <span className="upload-text">Click to upload video file</span>
+              <input
+                type="file"
+                name="video"
+                accept="video/*"
+                ref={imageRef}
+                onChange={handleVideoChange}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+            {formik.touched.video && formik.errors.video && (
+              <p className="error-text">{formik.errors.video}</p>
+            )}
+          </div>
+
+          {/* Video Preview */}
+          {videoPreviewUrl && (
+            <div className="video-preview-wrapper">
+              <video key={videoPreviewUrl} autoPlay muted loop controls>
+                <source src={videoPreviewUrl} />
+                Your browser does not support the video tag.
+              </video>
+            </div>
           )}
-        </div>
 
-        <div className="form-group">
-          <label>Upload Video (16:9 aspect ratio)</label>
-          <input
-            type="file"
-            name="video"
-            accept="video/*"
-            ref={imageRef}
-            onChange={handleVideoChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.video && formik.errors.video && (
-            <p className="error-text">{formik.errors.video}</p>
-          )}
-        </div>
-
-        {videoPreviewUrl && (
-          <video width="320" autoPlay controls>
-            <source src={videoPreviewUrl} />
-            Your browser does not support the video tag.
-          </video>
-        )}
-
-        <button
-          type="submit"
-          disabled={formik.isSubmitting}
-          className="admin-submit-btn"
-        >
-          Submit
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={formik.isSubmitting}
+            className="admin-submit-btn"
+          >
+            {formik.isSubmitting ? "Creating..." : "Publish Video Banner"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
