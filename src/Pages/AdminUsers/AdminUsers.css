@@ -121,7 +121,7 @@
 }
 
 .status-badge:hover {
-  transform: translateY(-1px);
+  /* transform: translateY(-1px); */
   filter: brightness(0.95);
 }
 
