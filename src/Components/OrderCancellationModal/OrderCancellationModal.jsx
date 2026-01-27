@@ -13,10 +13,23 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "50%",
+  maxWidth: "600px",
   bgcolor: "background.paper",
-  borderRadius: "12px",
-  boxShadow: 24,
+  borderRadius: "16px",
+  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
   p: 4,
+  border: "2px solid rgba(239, 68, 68, 0.2)",
+  animation: "slideUp 0.3s ease-out",
+  "@keyframes slideUp": {
+    from: {
+      transform: "translate(-50%, -45%)",
+      opacity: 0,
+    },
+    to: {
+      transform: "translate(-50%, -50%)",
+      opacity: 1,
+    },
+  },
 };
 
 export default function OrderCancellationModal({
@@ -68,33 +81,80 @@ export default function OrderCancellationModal({
           onChange={(e) => setReason(e.target.value)}
           placeholder="Type your reason here..."
           sx={{
+            mb: 3,
             "& .MuiOutlinedInput-root": {
+              borderRadius: "12px",
               "& fieldset": {
-                borderColor: "black",
+                borderColor: "#f5e6c8",
+                borderWidth: 2,
               },
               "&:hover fieldset": {
-                borderColor: "black",
+                borderColor: "#edc862",
               },
               "&.Mui-focused fieldset": {
-                borderColor: "black",
+                borderColor: "#edc862",
+                boxShadow: "0 0 0 4px rgba(237, 200, 98, 0.1)",
               },
             },
             "& .MuiInputLabel-root": {
-              color: "black",
+              color: "#64748b",
             },
             "& .MuiInputLabel-root.Mui-focused": {
-              color: "black",
+              color: "#edc862",
             },
           }}
         />
 
         <Box
-          sx={{ display: "flex", justifyContent: "flex-end", mt: 3, gap: 2 }}
+          sx={{ 
+            display: "flex", 
+            justifyContent: "flex-end", 
+            mt: 3, 
+            gap: 2,
+            pt: 3,
+            borderTop: "2px solid #f1f5f9",
+          }}
         >
-          <Button variant="outlined" onClick={handleClose}>
+          <Button 
+            variant="outlined" 
+            onClick={handleClose}
+            sx={{
+              borderRadius: "12px",
+              textTransform: "uppercase",
+              letterSpacing: "0.5px",
+              fontWeight: 600,
+              padding: "10px 24px",
+              borderColor: "#e5e7eb",
+              color: "#475569",
+              "&:hover": {
+                borderColor: "#d1d5db",
+                background: "#f9fafb",
+                transform: "translateY(-2px)",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+              },
+            }}
+          >
             Close
           </Button>
-          <Button variant="contained" color="error" onClick={handleCancelOrder}>
+          <Button 
+            variant="contained" 
+            onClick={handleCancelOrder}
+            sx={{
+              background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+              color: "white",
+              borderRadius: "12px",
+              textTransform: "uppercase",
+              letterSpacing: "0.5px",
+              fontWeight: 600,
+              padding: "10px 24px",
+              boxShadow: "0 4px 15px rgba(245, 87, 108, 0.3)",
+              "&:hover": {
+                background: "linear-gradient(135deg, #f5576c 0%, #f093fb 100%)",
+                transform: "translateY(-2px)",
+                boxShadow: "0 6px 20px rgba(245, 87, 108, 0.4)",
+              },
+            }}
+          >
             Cancel Order
           </Button>
         </Box>

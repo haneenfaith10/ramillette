@@ -267,7 +267,7 @@ export default function OrderDetailsPage() {
       {/* Invoice area (used for view + pdf) */}
       <div ref={modalRef} className="order-modal-wrapper">
         <div className="invoice-header" style={{ textAlign: "center" }}>
-          <h1>🧾 Invoice</h1>
+          <h1>Invoice</h1>
           <p>Thank you for your purchase!</p>
         </div>
 

@@ -326,7 +326,7 @@ export default function AdminOrderPage() {
       <div className="admin-order-filters">
         <input
           type="text"
-          placeholder="Search by name, email, or ID"
+          placeholder=" Search by name, email, or ID"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="admin-order-search-input"
@@ -348,7 +348,6 @@ export default function AdminOrderPage() {
           <option value="Returned">Returned</option>
           <option value="Packed">Packed</option>
           <option value="Shipped">Shipped</option>
-          <option value="Returned">Returned</option>
           <option value="Refund processing">Refund processing</option>
           <option value="Refunded">Refunded</option>
         </select>
@@ -361,7 +360,7 @@ export default function AdminOrderPage() {
           className="download-excel-btn"
           disabled={!sortedOrders.length}
         >
-          Download Excel
+           Download Excel
         </button>
 
         <button
@@ -369,7 +368,7 @@ export default function AdminOrderPage() {
           className="download-pdf-btn"
           disabled={!sortedOrders.length}
         >
-          Download PDF
+           Download PDF
         </button>
       </div>
       {selectedOrders.length > 0 && (
@@ -386,13 +385,17 @@ export default function AdminOrderPage() {
       <div className="admin-orders-table-container">
         <TableContainer
           component={Paper}
-          sx={{ boxShadow: "0px 2px 10px #E0E0E0" }}
+          sx={{ 
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+            borderRadius: "16px",
+            overflow: "hidden"
+          }}
         >
           <Table
             sx={{
               minWidth: 650,
               "& td, & th": {
-                fontSize: "12px",
+                fontSize: "13px",
               },
             }}
             aria-label="orders table"
@@ -482,14 +485,34 @@ export default function AdminOrderPage() {
             <TableBody>
               {sortedOrders.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} align="center" sx={{ py: 5 }}>
-                    <div style={{ textAlign: "center", color: "#888" }}>
+                  <TableCell colSpan={8} align="center" sx={{ py: 8 }}>
+                    <div style={{ textAlign: "center", color: "#64748b" }}>
                       <img
                         src={EmptyData}
                         alt="No Orders"
-                        style={{ width: 80, marginBottom: 16 }}
+                        style={{ 
+                          width: 120, 
+                          marginBottom: 20,
+                          opacity: 0.8,
+                          filter: "drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1))"
+                        }}
                       />
-                      <div style={{ fontSize: 18 }}>No orders found</div>
+                      <div style={{ 
+                        fontSize: 20, 
+                        fontWeight: 600,
+                        marginBottom: 8,
+                        color: "#334155"
+                      }}>
+                        No orders found
+                      </div>
+                      <div style={{ 
+                        fontSize: 14, 
+                        color: "#94a3b8"
+                      }}>
+                        {searchQuery || statusFilter 
+                          ? "Try adjusting your filters" 
+                          : "No orders available at the moment"}
+                      </div>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -578,37 +601,58 @@ export default function AdminOrderPage() {
                       <button
                         className="admin-table-order-status"
                         style={{
-                          backgroundColor: statusColors[order.status] || "#ccc",
+                          backgroundColor: statusColors[order.status] || "#94a3b8",
                           color: "#fff",
-                          padding: "4px 8px",
-                          borderRadius: "4px",
+                          padding: "6px 14px",
+                          borderRadius: "12px",
                           border: "none",
-                          fontSize: "12px",
+                          fontSize: "11px",
+                          fontWeight: 600,
+                          letterSpacing: "0.5px",
+                          textTransform: "uppercase",
+                          boxShadow: `0 2px 8px ${statusColors[order.status] ? `${statusColors[order.status]}40` : "rgba(148, 163, 184, 0.4)"}`,
+                          transition: "all 0.3s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = "translateY(-2px)";
+                          e.currentTarget.style.boxShadow = `0 4px 12px ${statusColors[order.status] ? `${statusColors[order.status]}60` : "rgba(148, 163, 184, 0.6)"}`;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = "translateY(0)";
+                          e.currentTarget.style.boxShadow = `0 2px 8px ${statusColors[order.status] ? `${statusColors[order.status]}40` : "rgba(148, 163, 184, 0.4)"}`;
                         }}
                       >
                         {order.status === "Cancellation In Progress"
                           ? "Cancellation Request"
                           : order?.status}
                       </button>
-                      {/* {!["Delivered", "Cancelled"].includes(order?.status) ? (
-                        <MdOutlineMoreVert
-                          onClick={(e) => {
-                            handleMenuOpen(e, order);
-                            setShippingModalData(order);
-                          }}
-                        />
-                      ) : (
-                        // this empty <p> tag is for aligning the button if the product is delivered
-                        <p style={{ width: "14px" }}></p>
-                      )} */}
                     </TableCell>
                     <TableCell align="center">
-                      <IoDocumentText
-                        size={18}
-                        onClick={() => {
-                          navigate(`/admin/orders/${order._id}`);
-                        }}
-                      />
+                      <Tooltip title="View Order Details">
+                        <Box
+                          sx={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                            padding: "8px",
+                            borderRadius: "8px",
+                            transition: "all 0.3s ease",
+                            "&:hover": {
+                              backgroundColor: "rgba(237, 200, 98, 0.1)",
+                              transform: "scale(1.1)",
+                            },
+                          }}
+                        >
+                          <IoDocumentText
+                            size={20}
+                            onClick={() => {
+                              navigate(`/admin/orders/${order._id}`);
+                            }}
+                            style={{ color: "#edc862" }}
+                          />
+                        </Box>
+                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))
@@ -625,9 +669,9 @@ export default function AdminOrderPage() {
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           sx={{
-            border: "1px solid #E0E0E0",
+            borderTop: "2px solid #f1f5f9",
             background: "white",
-            boxShadow: "0px 2px 10px #E0E0E0",
+            borderRadius: "0 0 16px 16px",
           }}
         />
 

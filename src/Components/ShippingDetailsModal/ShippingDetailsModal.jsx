@@ -23,11 +23,12 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 500,
   bgcolor: "background.paper",
-  borderRadius: "8px",
-  boxShadow: 24,
+  borderRadius: "16px",
+  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15)",
   p: 4,
   maxHeight: "90vh",
   overflowY: "auto",
+  border: "2px solid rgba(237, 200, 98, 0.2)",
 };
 
 export default function ShippingDetailsModal({
@@ -110,10 +111,20 @@ export default function ShippingDetailsModal({
           <Button
             variant="contained"
             size="small"
-            sx={{ textTransform: "none" }}
+            sx={{ 
+              textTransform: "none",
+              background: "linear-gradient(135deg, #edc862 0%, #d4b050 100%)",
+              color: "#1a1a1a",
+              fontWeight: 600,
+              "&:hover": {
+                background: "linear-gradient(135deg, #d4b050 0%, #edc862 100%)",
+                transform: "translateY(-2px)",
+                boxShadow: "0 6px 20px rgba(237, 200, 98, 0.4)",
+              },
+            }}
             onClick={() => setAddProvider(true)}
           >
-            Add Provider
+            ➕ Add Provider
           </Button>
         </Box>
 
@@ -242,8 +253,27 @@ export default function ShippingDetailsModal({
             sx={{ mb: 2 }}
           />
 
-          <Button type="submit" variant="contained" color="primary" fullWidth>
-            Save Shipping Details
+          <Button 
+            type="submit" 
+            variant="contained" 
+            fullWidth
+            sx={{
+              background: "linear-gradient(135deg, #edc862 0%, #d4b050 100%)",
+              color: "#1a1a1a",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "0.5px",
+              padding: "12px",
+              borderRadius: "12px",
+              boxShadow: "0 4px 15px rgba(237, 200, 98, 0.3)",
+              "&:hover": {
+                background: "linear-gradient(135deg, #d4b050 0%, #edc862 100%)",
+                transform: "translateY(-2px)",
+                boxShadow: "0 6px 20px rgba(237, 200, 98, 0.4)",
+              },
+            }}
+          >
+            💾 Save Shipping Details
           </Button>
         </Box>
       </Box>

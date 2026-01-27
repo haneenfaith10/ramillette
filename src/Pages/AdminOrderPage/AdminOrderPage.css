@@ -1,128 +1,445 @@
 .admin-orders-main-container {
   width: 100%;
   height: 100%;
+  padding: 0;
+  /* background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); */
+  min-height: 100vh;
 }
+
 .admin-orders-table-container {
   width: 100%;
   height: 100%;
+  margin-top: 1.5rem;
 }
+
 .admin-table-order-status {
   border: none;
   background-color: white;
-  border-radius: 8px;
-  padding: 0.4rem 0.6rem;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
   color: white;
-  /* cursor: pointer; */
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
   outline: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.admin-table-order-status:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .admin-table-order-status.blue {
-  background-color: #3b82f6;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
+
 .admin-table-order-status.red {
-  background-color: #ef4444;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
 }
+
 .admin-table-order-status.orange {
-  background-color: #f97316;
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
 }
+
 .admin-table-order-status.green {
-  background-color: #22c55e;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
+
 .admin-table-order-status-change {
   gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .admin-table-order-status-change svg {
   cursor: pointer;
+  transition: transform 0.2s ease;
 }
+
+.admin-table-order-status-change svg:hover {
+  transform: scale(1.2);
+}
+
 .admin-table-order-action svg {
   cursor: pointer;
+  color: #edc862;
+  transition: all 0.3s ease;
+}
+
+.admin-table-order-action svg:hover {
+  color: #d4b050;
+  transform: scale(1.15);
 }
 
 .admin-order-filters {
   display: flex;
   gap: 1rem;
-  margin: 1rem 0;
+  margin: 1.5rem 0;
   flex-wrap: wrap;
   align-items: center;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
 }
 
-.admin-order-search-input,
-.admin-order-sort-select,
-.admin-order-filter-select {
-  padding: 8px;
+.admin-order-search-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 12px 16px;
   font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: 2px solid #f5e6c8;
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.3s ease;
+  background: #f8fafc;
+  color: #334155;
+}
+
+.admin-order-search-input:focus {
+  border-color: #edc862;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(237, 200, 98, 0.1);
+}
+
+.admin-order-search-input::placeholder {
+  color: #94a3b8;
+}
+
+.admin-order-filter-select {
+  padding: 12px 16px;
+  font-size: 14px;
+  border: 2px solid #f5e6c8;
+  border-radius: 12px;
   min-width: 200px;
   outline: none;
+  background: #f8fafc;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.admin-order-filter-select:focus {
+  border-color: #edc862;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(237, 200, 98, 0.1);
+}
+
+.admin-order-filter-select option {
+  padding: 8px;
+  background: white;
 }
 
 .clear-filter-btn {
-  padding: 8px 12px;
+  padding: 12px 20px;
   font-size: 14px;
-  background-color: #e0e0e0;
+  background: linear-gradient(135deg, #edc862 0%, #d4b050 100%);
   border: none;
-  border-radius: 6px;
+  border-radius: 12px;
   cursor: pointer;
-  color: #333;
+  color: #1a1a1a;
   outline: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(237, 200, 98, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .clear-filter-btn:hover {
-  background-color: #d4d4d4;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(237, 200, 98, 0.4);
+}
+
+.clear-filter-btn:active {
+  transform: translateY(0);
 }
 
 .download-excel-btn,
 .download-pdf-btn {
-  background-color: #4caf50;
   color: white;
   border: none;
-  padding: 6px 12px;
-  margin-left: 10px;
-  border-radius: 4px;
+  padding: 12px 20px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.download-excel-btn {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
 }
 
 .download-excel-btn:hover {
-  background-color: #388e3c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(17, 153, 142, 0.4);
+}
+
+.download-excel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .download-pdf-btn {
-  background-color: #f44336;
+  background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
 }
 
 .download-pdf-btn:hover {
-  background-color: #d32f2f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(235, 51, 73, 0.4);
+}
+
+.download-pdf-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .custom-swal-zindex {
   z-index: 9999 !important;
 }
-.hello {
-  background-color: rgba(255, 0, 0, 0.293);
-}
+
 .bulk-update-btn-wrapper {
-  margin: 12px 0;
+  margin: 1rem 0;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .bulk-update-status-btn {
-  background-color: var(--secondary-color);
-  color: #fff;
-  border: 1px solid transparent;
-  padding: 10px 16px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
+  background: linear-gradient(135deg, #edc862 0%, #d4b050 100%);
+  color: #1a1a1a;
+  border: 2px solid transparent;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-bottom: 16px;
-  display: inline-block;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(237, 200, 98, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .bulk-update-status-btn:hover {
-  background-color: transparent;
-  color: var(--secondary-color);
-  border: 1px solid var(--secondary-color);
+  background: white;
+  color: #edc862;
+  border-color: #edc862;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(237, 200, 98, 0.4);
+}
+
+.bulk-update-status-btn:active {
+  transform: translateY(0);
+}
+
+/* Enhanced table styles */
+.admin-orders-table-container .MuiTableContainer-root {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+.admin-orders-table-container .MuiTableHead-root {
+  background: linear-gradient(135deg, #edc862 0%, #d4b050 100%);
+}
+
+.admin-orders-table-container .MuiTableHead-root .MuiTableCell-head {
+  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 16px;
+  border-bottom: none;
+}
+
+.admin-orders-table-container .MuiTableHead-root .MuiTableSortLabel-root {
+  color: #1a1a1a;
+}
+
+.admin-orders-table-container .MuiTableHead-root .MuiTableSortLabel-root:hover {
+  color: rgba(26, 26, 26, 0.8);
+}
+
+.admin-orders-table-container .MuiTableHead-root .MuiTableSortLabel-root.Mui-active {
+  color: #1a1a1a;
+}
+
+.admin-orders-table-container .MuiTableHead-root .MuiTableSortLabel-icon {
+  color: rgba(26, 26, 26, 0.7);
+}
+
+.admin-orders-table-container .MuiTableBody-root .MuiTableRow-root {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.admin-orders-table-container .MuiTableBody-root .MuiTableRow-root:hover {
+  background: linear-gradient(90deg, rgba(237, 200, 98, 0.08) 0%, rgba(212, 176, 80, 0.08) 100%);
+  transform: scale(1.001);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.admin-orders-table-container .MuiTableBody-root .MuiTableCell-root {
+  padding: 16px;
+  font-size: 13px;
+  color: #475569;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.admin-orders-table-container .MuiTablePagination-root {
+  border-top: 2px solid #f1f5f9;
+  background: white;
+  border-radius: 0 0 16px 16px;
+}
+
+/* Checkbox styling */
+.admin-orders-table-container input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #edc862;
+  border-radius: 4px;
+}
+
+/* Empty state styling */
+.admin-orders-table-container .MuiTableCell-root img {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+/* Additional enhancements */
+.admin-orders-main-container {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Improved checkbox styling */
+.admin-orders-table-container input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #edc862;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.admin-orders-table-container input[type="checkbox"]:hover {
+  transform: scale(1.1);
+}
+
+/* Table row number styling */
+.admin-orders-table-container .MuiTableBody-root .MuiTableCell-root:first-child {
+  font-weight: 600;
+  color: #edc862;
+}
+
+/* Product name styling */
+.admin-orders-table-container .MuiTableBody-root .MuiTableCell-root:nth-child(4) {
+  font-weight: 500;
+}
+
+/* Price styling */
+.admin-orders-table-container .MuiTableBody-root .MuiTableCell-root:nth-child(6) {
+  font-weight: 600;
+  color: #059669;
+  font-size: 14px;
+}
+
+/* Date styling */
+.admin-orders-table-container .MuiTableBody-root .MuiTableCell-root:nth-child(5) {
+  color: #64748b;
+  font-size: 12px;
+}
+
+/* Smooth scrollbar */
+.admin-orders-table-container .MuiTableContainer-root::-webkit-scrollbar {
+  height: 8px;
+}
+
+.admin-orders-table-container .MuiTableContainer-root::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.admin-orders-table-container .MuiTableContainer-root::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #edc862 0%, #d4b050 100%);
+  border-radius: 4px;
+}
+
+.admin-orders-table-container .MuiTableContainer-root::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #d4b050 0%, #edc862 100%);
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .admin-order-filters {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+  }
+
+  .admin-order-search-input,
+  .admin-order-filter-select {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .clear-filter-btn,
+  .download-excel-btn,
+  .download-pdf-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .admin-orders-table-container .MuiTableContainer-root {
+    overflow-x: auto;
+  }
+
+  .admin-orders-table-container .MuiTableHead-root .MuiTableCell-head {
+    font-size: 11px;
+    padding: 12px 8px;
+  }
+
+  .admin-orders-table-container .MuiTableBody-root .MuiTableCell-root {
+    font-size: 12px;
+    padding: 12px 8px;
+  }
+}
+
+
+.css-u6v8er {
+  align-items: start;
+}
+
+.admin-orders-table-container .MuiTableHead-root .MuiTableCell-head {
+  text-align: start;
 }
