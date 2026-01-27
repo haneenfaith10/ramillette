@@ -121,10 +121,12 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
-  borderRadius: "20px",
-  boxShadow: 24,
-  p: 2,
+  bgcolor: "#ffffff",
+  borderRadius: "16px",
+  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
+  p: 4,
+  outline: "none",
+  border: "1px solid rgba(237, 200, 98, 0.3)", // Gold tint border
 };
 
 export default function AdminSideBar() {
@@ -137,13 +139,13 @@ export default function AdminSideBar() {
     setShowLogoutModal(false);
   }
 
-useEffect(() => {
-  navLinks.forEach((item) => {
-    if (item.subLinks?.some((sub) => sub.link === location)) {
-      setOpenTabs({ [item.name]: true }); // ensures only 1 opens on load
-    }
-  });
-}, [location]);
+  useEffect(() => {
+    navLinks.forEach((item) => {
+      if (item.subLinks?.some((sub) => sub.link === location)) {
+        setOpenTabs({ [item.name]: true }); // ensures only 1 opens on load
+      }
+    });
+  }, [location]);
 
   function LogoutModal() {
     function handleLogout() {
@@ -159,20 +161,70 @@ useEffect(() => {
         aria-describedby="logout-modal-description"
       >
         <Box sx={style}>
-          <Typography id="logout-modal-title" variant="h6" component="h2">
+          <Typography
+            id="logout-modal-title"
+            variant="h6"
+            component="h2"
+            sx={{
+              fontWeight: 700,
+              color: "#3d3d3d",
+              textAlign: "center",
+              mb: 1,
+            }}
+          >
             Confirm Logout
           </Typography>
-          <Typography id="logout-modal-description" sx={{ mt: 2 }}>
-            Are you sure you want to log out?
+          <Typography
+            id="logout-modal-description"
+            sx={{
+              textAlign: "center",
+              color: "#7a7a7a",
+              mb: 4,
+              fontSize: "0.95rem",
+            }}
+          >
+            Are you sure you want to log out of the admin panel?
           </Typography>
 
           <Box
-            sx={{ mt: 3, display: "flex", justifyContent: "flex-end", gap: 2 }}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              gap: 2,
+            }}
           >
-            <Button variant="outlined" color="inherit" onClick={handleClose}>
+            <Button
+              onClick={handleClose}
+              sx={{
+                color: "#7a7a7a",
+                border: "1px solid #e0e0e0",
+                borderRadius: "8px",
+                padding: "8px 24px",
+                textTransform: "none",
+                fontWeight: 600,
+                "&:hover": {
+                  backgroundColor: "#f5f5f5",
+                  borderColor: "#d5d5d5",
+                },
+              }}
+            >
               Cancel
             </Button>
-            <Button variant="contained" color="error" onClick={handleLogout}>
+            <Button
+              onClick={handleLogout}
+              sx={{
+                backgroundColor: "#edc862", // Gold
+                color: "#fff",
+                borderRadius: "8px",
+                padding: "8px 24px",
+                textTransform: "none",
+                fontWeight: 600,
+                boxShadow: "0 4px 10px rgba(237, 200, 98, 0.3)",
+                "&:hover": {
+                  backgroundColor: "#d4b458",
+                },
+              }}
+            >
               Logout
             </Button>
           </Box>
@@ -205,21 +257,19 @@ useEffect(() => {
               hasSubLinks && item.subLinks.some((sub) => sub.link === location);
 
             return (
-              <div key={index} className={`admin-side-bar-nav-item ${
-                    isActiveParent
-                      ? "active"
-                      : isActiveSub
-                      ? "active-parent"
-                      : ""
-                  }`}>
+              <div key={index} className={`admin-side-bar-nav-item ${isActiveParent
+                  ? "active"
+                  : isActiveSub
+                    ? "active-parent"
+                    : ""
+                }`}>
                 <p
-                  className={`admin-side-bar-nav-link ${
-                    isActiveParent
+                  className={`admin-side-bar-nav-link ${isActiveParent
                       ? "active"
                       : isActiveSub
-                      ? "active-parent"
-                      : ""
-                  }`}
+                        ? "active-parent"
+                        : ""
+                    }`}
                   onClick={() => {
                     if (item.name === "Logout") {
                       setShowLogoutModal(true);
@@ -247,9 +297,8 @@ useEffect(() => {
                     {item.subLinks.map((sub, subIndex) => (
                       <p
                         key={subIndex}
-                        className={`admin-side-bar-subnav-link ${
-                          sub.link === location ? "active" : ""
-                        }`}
+                        className={`admin-side-bar-subnav-link ${sub.link === location ? "active" : ""
+                          }`}
                         onClick={() => navigate(sub.link)}
                       >
                         {sub.name}
