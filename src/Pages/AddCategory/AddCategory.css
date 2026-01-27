@@ -144,7 +144,7 @@
   margin-top: 24px;
   display: flex;
   justify-content: center;
-  padding-top: 24px;
+  padding-top: 0;
   border-top: 2px solid #f1f5f9;
 }
 
