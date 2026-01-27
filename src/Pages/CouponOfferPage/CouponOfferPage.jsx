@@ -58,8 +58,8 @@ export default function CouponOfferPage() {
         statusFilter === "all"
           ? true
           : statusFilter === "active"
-          ? offer.isActive
-          : !offer.isActive;
+            ? offer.isActive
+            : !offer.isActive;
 
       return matchesSearch && matchesStatus;
     })
@@ -149,13 +149,14 @@ export default function CouponOfferPage() {
           Coupon Offers
         </Typography>
         {/* Search and Filter Controls */}
-        <Box display="flex" gap={2} mb={2}>
+        <Box className="coupon-page-controls" display="flex" gap={2} mb={2}>
           <TextField
             label="Search"
             variant="outlined"
             size="small"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            sx={{ backgroundColor: "white", flex: 1, maxWidth: 300 }}
           />
           <TextField
             label="Status"
@@ -164,6 +165,7 @@ export default function CouponOfferPage() {
             size="small"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
+            sx={{ backgroundColor: "white", minWidth: 150 }}
           >
             <MenuItem value="all">All</MenuItem>
             <MenuItem value="active">Active</MenuItem>
@@ -223,7 +225,14 @@ export default function CouponOfferPage() {
                   <TableCell>
                     <Chip
                       label={offer.isActive ? "Active" : "Inactive"}
-                      color={offer.isActive ? "success" : "default"}
+                      sx={{
+                        backgroundColor: offer.isActive
+                          ? "#edc862" // Gold
+                          : "#d63031", // Inactive Red
+                        color: "white",
+                        fontSize: "11px",
+                        fontWeight: "bold",
+                      }}
                       size="small"
                     />
                   </TableCell>

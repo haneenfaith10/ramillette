@@ -1,110 +1,177 @@
+/* DiscountOffers.css */
+
 .discount-offer-form-container {
   width: 100%;
-  height: fit-content;
+  margin-bottom: 2rem;
+  background: var(--admin-card-bg);
+  padding: 2rem;
+  border-radius: var(--admin-radius);
+  box-shadow: var(--admin-shadow);
+  border: 1px solid var(--admin-accent-light);
+}
+
+.discount-offer-top-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--admin-border-color);
 }
 
 .discount-offer-form-title {
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  color: #333;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--admin-text-primary);
+  margin: 0;
 }
 
+.discount-offer-top-section>button {
+  background-color: var(--admin-accent-color);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  /* Slightly softer than 6px */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.discount-offer-top-section>button:hover {
+  background-color: var(--admin-accent-hover);
+  transform: translateY(-1px);
+}
+
+/* Form Layout */
 .discount-offer-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 1.5rem;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .discount-offer-row {
   display: flex;
-  gap: 16px;
-  /* flex-wrap: wrap; */
+  gap: 1.5rem;
 }
 
-.discount-offer-row input,
-.discount-offer-row select,
-.discount-offer-row textarea {
+@media (max-width: 768px) {
+  .discount-offer-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* Inputs */
+.discount-offer-input-wrapper {
   flex: 1;
-  padding: 10px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  outline: none;
-}
-
-textarea {
-  resize: vertical;
-  min-height: 60px;
-}
-
-.discount-offer-date-time {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+}
+
+.discount-offer-input-wrapper input,
+.discount-offer-input-wrapper select,
+.discount-offer-row textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  font-size: 0.9rem;
+  background-color: #fafafa;
+  transition: all 0.2s;
+  color: var(--admin-text-primary);
+  font-family: inherit;
+}
+
+.discount-offer-input-wrapper input:focus,
+.discount-offer-input-wrapper select:focus,
+.discount-offer-row textarea:focus {
+  outline: none;
+  border-color: var(--admin-accent-color);
+  background-color: #fff;
+  box-shadow: 0 0 0 3px var(--admin-accent-light);
+}
+
+.discount-offer-row textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Date Time */
+.discount-offer-date-time {
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .discount-offer-date-time label {
-  font-size: 13px;
-  color: #555;
-  margin-bottom: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--admin-text-secondary);
+  margin-bottom: 0.5rem;
 }
 
-.discount-offer-date-time input {
-  margin-bottom: 6px;
+/* Buttons */
+.discount-offer-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--admin-border-color);
 }
 
-.discount-offer-submit-btn,
-.discount-offer-cancel-btn {
-  padding: 12px 20px;
-  background-color: var(--secondary-color);
-  color: #fff;
+.discount-offer-submit-btn {
+  background-color: var(--admin-accent-color);
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
   border: none;
   font-weight: 600;
-  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s ease;
-  width: 100%;
+  transition: all 0.2s;
 }
 
 .discount-offer-submit-btn:hover {
-  background-color: var(--secondary-color);
+  background-color: var(--admin-accent-hover);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.discount-offer-input-wrapper {
-  width: 100%;
-}
-.discount-offer-input-wrapper input,
-.discount-offer-input-wrapper select {
-  width: 100%;
-}
-.discount-offer-error {
-  color: red;
-  font-size: 12px;
-}
-.discount-offer-top-section {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.discount-offer-top-section > button {
-  border: none;
-  background-color: var(--secondary-color);
-  padding: 0.5rem 1rem;
+.discount-offer-cancel-btn {
+  background-color: #f3f4f6;
+  color: var(--admin-text-secondary);
+  padding: 0.75rem 2rem;
   border-radius: 8px;
-  color: white;
+  border: 1px solid #e5e7eb;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
-.discount-offer-btn-wrapper {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
+.discount-offer-cancel-btn:hover {
+  background-color: #e5e7eb;
+  color: var(--admin-text-primary);
 }
-.discount-offer-cancel-btn {
-  background-color: gray;
-  color: white;
+
+/* Error Messages */
+.discount-offer-error {
+  color: var(--admin-danger);
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 4px;
 }

@@ -75,8 +75,8 @@ export default function DiscountOfferPage() {
         statusFilter === "all"
           ? true
           : statusFilter === "active"
-          ? offer.isActive
-          : !offer.isActive;
+            ? offer.isActive
+            : !offer.isActive;
 
       return matchesSearch && matchesStatus;
     })
@@ -158,16 +158,17 @@ export default function DiscountOfferPage() {
       />
 
       {/* Controls */}
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 3 }}>
+      <Box className="discount-page-controls" sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 3 }}>
         <TextField
           label="Search Offers"
           variant="outlined"
           size="small"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          sx={{ backgroundColor: "white" }}
         />
 
-        <FormControl size="small" sx={{ minWidth: 120 }}>
+        <FormControl size="small" sx={{ minWidth: 120, backgroundColor: "white" }}>
           <InputLabel>Status</InputLabel>
           <Select
             value={statusFilter}
@@ -247,8 +248,8 @@ export default function DiscountOfferPage() {
                       label={offer.isActive ? "Active" : "Inactive"}
                       sx={{
                         backgroundColor: offer.isActive
-                          ? "var(--secondary-color)"
-                          : "gray",
+                          ? "#edc862" // Gold
+                          : "#d63031", // Danger red for inactive
                         color: "white",
                         fontSize: "11px",
                         fontWeight: "bold",
