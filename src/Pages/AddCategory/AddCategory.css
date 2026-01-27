@@ -1,25 +1,41 @@
 .admin-add-category-main-container {
   width: 100%;
   padding: 24px;
-  background-color: #f8f9fa;
+  background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
   min-height: 100vh;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .admin-add-category-form-container {
   max-width: 900px;
   margin: 0;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(237, 200, 98, 0.2);
 }
 
 .admin-add-category-form {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(237, 200, 98, 0.2);
 }
 
 .admin-add-category-form-row {
@@ -30,26 +46,39 @@
 
 .admin-add-category-form-row label {
   font-size: 14px;
-  font-weight: 600;
-  color: #444;
+  font-weight: 700;
+  color: #334155;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  margin-bottom: 4px;
 }
 
-.admin-add-category-form-row input[type="text"] {
+.admin-add-category-form-row input[type="text"],
+.admin-add-category-form-row input[type="email"],
+.admin-add-category-form-row input[type="tel"] {
   width: 100%;
-  padding: 12px 16px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  padding: 14px 18px;
+  border: 2px solid #f5e6c8;
+  border-radius: 12px;
   font-size: 15px;
-  background: #ffffff;
+  background: #f8fafc;
+  color: #334155;
   transition: all 0.3s ease;
 }
 
-.admin-add-category-form-row input[type="text"]:focus {
-  border-color: var(--secondary-color);
-  box-shadow: 0 0 0 3px rgba(237, 200, 98, 0.15);
+.admin-add-category-form-row input[type="text"]:focus,
+.admin-add-category-form-row input[type="email"]:focus,
+.admin-add-category-form-row input[type="tel"]:focus {
+  border-color: #edc862;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(237, 200, 98, 0.1);
   outline: none;
+}
+
+.admin-add-category-form-row input[type="text"]::placeholder,
+.admin-add-category-form-row input[type="email"]::placeholder,
+.admin-add-category-form-row input[type="tel"]::placeholder {
+  color: #94a3b8;
 }
 
 /* Custom File Upload Styling */
@@ -110,32 +139,91 @@
   background: white;
 }
 
-.admin-add-category-submit-btn-wrapper {
-  margin-top: 16px;
+.admin-add-category-submit-btn-wrapper,
+.admin-add-settings-submit-btn-wrapper {
+  margin-top: 24px;
   display: flex;
   justify-content: center;
+  padding-top: 24px;
+  border-top: 2px solid #f1f5f9;
 }
 
-.admin-add-category-submit-btn-wrapper button {
+.admin-add-category-submit-btn-wrapper button,
+.admin-add-settings-submit-btn-wrapper button {
   width: 100%;
-  padding: 14px;
+  max-width: 400px;
+  padding: 16px 32px;
   border-radius: 12px;
-  background: var(--secondary-color);
+  background: linear-gradient(135deg, #edc862 0%, #d4b050 100%);
   border: none;
-  color: #333;
+  color: #1a1a1a;
   font-size: 16px;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(237, 200, 98, 0.3);
 }
 
-.admin-add-category-submit-btn-wrapper button:hover:not(:disabled) {
+.admin-add-category-submit-btn-wrapper button:hover:not(:disabled),
+.admin-add-settings-submit-btn-wrapper button:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(237, 200, 98, 0.4);
 }
 
-.admin-add-category-submit-btn-wrapper button:disabled {
-  opacity: 0.7;
+.admin-add-category-submit-btn-wrapper button:disabled,
+.admin-add-settings-submit-btn-wrapper button:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Error Message Styling */
+.admin-add-category-form-row .error-message {
+  font-size: 13px;
+  color: #ef4444;
+  margin-top: 6px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+  border-left: 3px solid #ef4444;
+  border-radius: 6px;
+  font-weight: 500;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-add-category-main-container {
+    padding: 1rem;
+  }
+
+  .admin-add-category-form {
+    padding: 1.5rem;
+  }
+
+  .admin-add-category-form-row input[type="text"],
+  .admin-add-category-form-row input[type="email"],
+  .admin-add-category-form-row input[type="tel"] {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .admin-add-category-submit-btn-wrapper button,
+  .admin-add-settings-submit-btn-wrapper button {
+    padding: 14px 24px;
+    font-size: 14px;
+  }
 }
