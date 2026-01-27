@@ -15,7 +15,13 @@ export default function AdminProductPreview() {
     }
   }, [productId]);
 
-  if (!product || !product.productName) return <p>Loading...</p>;
+  if (!product || !product.productName)
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>Loading Product Data...</p>
+      </div>
+    );
 
   return (
     <div className="app-container">
@@ -49,9 +55,8 @@ export default function AdminProductPreview() {
                 product.productCategory.map((category) => (
                   <div className="category-box" key={category._id}>
                     <img
-                      src={`${
-                        import.meta.env.VITE_BASE_URL
-                      }/${category.categoryImage.replace(/\\/g, "/")}`}
+                      src={`${import.meta.env.VITE_BASE_URL
+                        }/${category.categoryImage.replace(/\\/g, "/")}`}
                       alt={category.categoryName}
                       className="category-image"
                     />
