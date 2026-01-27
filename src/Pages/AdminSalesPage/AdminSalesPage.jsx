@@ -241,8 +241,8 @@ export default function AdminSalesPage() {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="sales" fill="#667eea" name="Sales ₹" />
-              <Bar dataKey="orders" fill="#764ba2" name="Orders" />
+              <Bar dataKey="sales" fill="#edc862" name="Sales ₹" />
+              <Bar dataKey="orders" fill="#d4b050" name="Orders" />
             </BarChart>
           </ResponsiveContainer>
         ) : (
