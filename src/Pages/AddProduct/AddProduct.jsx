@@ -71,9 +71,9 @@ const SortableImage = ({
         <input
           type="checkbox"
           checked={imageOrientations[index] === "portrait"}
-        // onChange={e =>
-        //   handleOrientationChange(index, e.target.checked ? "portrait" : "landscape")
-        // }
+          // onChange={e =>
+          //   handleOrientationChange(index, e.target.checked ? "portrait" : "landscape")
+          // }
         />
         Portrait
       </label>
@@ -98,7 +98,7 @@ function BadgeSelector({ selectedBadges, setSelectedBadges }) {
   };
 
   const availableBadges = badges.filter(
-    (badge) => !selectedBadges.some((b) => b._id === badge._id)
+    (badge) => !selectedBadges.some((b) => b._id === badge._id),
   );
 
   return (
@@ -183,7 +183,7 @@ export default function AddProduct() {
         } catch (error) {
           console.warn(
             `Error deleting offer ${id}`,
-            error?.response?.data || error.message
+            error?.response?.data || error.message,
           );
         }
       }
@@ -245,7 +245,7 @@ export default function AddProduct() {
       .of(
         Yup.string()
           .matches(/^[0-9a-fA-F]{24}$/, "Invalid category ID format")
-          .required("Category ID is required")
+          .required("Category ID is required"),
       )
       .min(1, "At least one category must be selected")
       .required("Product category is required"),
@@ -272,16 +272,16 @@ export default function AddProduct() {
           .test(
             "fileRequired",
             "Image is required",
-            (file) => file instanceof File
+            (file) => file instanceof File,
           )
           .test("fileType", "Only image files are allowed", (file) =>
             file
               ? ["image/jpeg", "image/png", "image/webp"].includes(file.type)
-              : false
+              : false,
           )
           .test("fileSize", "Each image must be less than 5MB", (file) =>
-            file ? file.size <= 5 * 1024 * 1024 : false
-          )
+            file ? file.size <= 5 * 1024 * 1024 : false,
+          ),
       )
       .min(2, "At least two images are required")
       .required("Images are required"),
@@ -291,14 +291,12 @@ export default function AddProduct() {
         Yup.object().shape({
           question: Yup.string().required("Question is required"),
           answer: Yup.string().required("Answer is required"),
-        })
+        }),
       )
       .min(1, "At least one FAQ is required"),
 
     selectedCountries: Yup.array()
-      .of(
-        Yup.string().required("Country is required")
-      )
+      .of(Yup.string().required("Country is required"))
       .min(1, "At least one country must be selected")
       .required("Available countries are required"),
     countryVariants: Yup.object().test(
@@ -308,7 +306,7 @@ export default function AddProduct() {
         const { selectedCountries } = this.parent;
         if (!selectedCountries || !value) {
           return this.createError({
-            message: "Variants are required for selected countries"
+            message: "Variants are required for selected countries",
           });
         }
 
@@ -318,7 +316,7 @@ export default function AddProduct() {
           // Check if variants exist for this country
           if (!variants || variants.length === 0) {
             return this.createError({
-              message: `Please add at least one variant for selected country`
+              message: `Please add at least one variant for selected country`,
             });
           }
 
@@ -326,26 +324,34 @@ export default function AddProduct() {
           for (const variant of variants) {
             if (!variant.variantName?.trim()) {
               return this.createError({
-                message: "Variant name is required"
+                message: "Variant name is required",
               });
             }
 
-            if (!variant.price || isNaN(Number(variant.price)) || Number(variant.price) < 0) {
+            if (
+              !variant.price ||
+              isNaN(Number(variant.price)) ||
+              Number(variant.price) < 0
+            ) {
               return this.createError({
-                message: "Valid price is required for each variant"
+                message: "Valid price is required for each variant",
               });
             }
 
-            if (!variant.stock || isNaN(Number(variant.stock)) || Number(variant.stock) < 0) {
+            if (
+              !variant.stock ||
+              isNaN(Number(variant.stock)) ||
+              Number(variant.stock) < 0
+            ) {
               return this.createError({
-                message: "Valid stock quantity is required for each variant"
+                message: "Valid stock quantity is required for each variant",
               });
             }
           }
         }
 
         return true;
-      }
+      },
     ),
   });
 
@@ -424,7 +430,7 @@ export default function AddProduct() {
   function deleteImage(id) {
     const newImages = productImages.filter((_, index) => index !== id);
     const newOrientations = imageOrientations.filter(
-      (_, index) => index !== id
+      (_, index) => index !== id,
     );
     setProductImages(newImages);
     setImageOrientations(newOrientations);
@@ -451,16 +457,16 @@ export default function AddProduct() {
     const { active, over } = event;
     if (active.id !== over?.id) {
       const oldIndex = productImages.findIndex(
-        (_, i) => `img-${i}` === active.id
+        (_, i) => `img-${i}` === active.id,
       );
       const newIndex = productImages.findIndex(
-        (_, i) => `img-${i}` === over?.id
+        (_, i) => `img-${i}` === over?.id,
       );
       const reorderedImages = arrayMove(productImages, oldIndex, newIndex);
       const reorderedOrientations = arrayMove(
         imageOrientations,
         oldIndex,
-        newIndex
+        newIndex,
       );
       setProductImages(reorderedImages);
       setImageOrientations(reorderedOrientations);
@@ -554,7 +560,7 @@ export default function AddProduct() {
               isMulti
               options={countryOptions}
               value={countryOptions.filter((opt) =>
-                values.selectedCountries.includes(opt.value)
+                values.selectedCountries.includes(opt.value),
               )}
               styles={customSelectStyles}
               onChange={(selected) => {
@@ -658,16 +664,21 @@ export default function AddProduct() {
                 {errors?.countryVariants && touched.countryVariants && (
                   <p className="error-message">
                     {(() => {
-                      const countryVariants = values.countryVariants[countryId] || [];
-                      const isCountryValid = countryVariants.length > 0 &&
-                        countryVariants.every(variant =>
-                          variant.variantName?.trim() &&
-                          !isNaN(Number(variant.price)) &&
-                          Number(variant.price) >= 0 &&
-                          !isNaN(Number(variant.stock)) &&
-                          Number(variant.stock) >= 0
+                      const countryVariants =
+                        values.countryVariants[countryId] || [];
+                      const isCountryValid =
+                        countryVariants.length > 0 &&
+                        countryVariants.every(
+                          (variant) =>
+                            variant.variantName?.trim() &&
+                            !isNaN(Number(variant.price)) &&
+                            Number(variant.price) >= 0 &&
+                            !isNaN(Number(variant.stock)) &&
+                            Number(variant.stock) >= 0,
                         );
-                      return !isCountryValid ? "Please add at least one variant with valid name, price, and stock" : null;
+                      return !isCountryValid
+                        ? "Please add at least one variant with valid name, price, and stock"
+                        : null;
                     })()}
                   </p>
                 )}
@@ -704,7 +715,7 @@ export default function AddProduct() {
                 placeholder="Select categories..."
                 onChange={handleCategoryChange}
                 value={categoryOptions.filter((opt) =>
-                  values.productCategory.includes(opt.value)
+                  values.productCategory.includes(opt.value),
                 )}
                 onBlur={() => {
                   if (setFieldTouched) setFieldTouched("productCategory", true);
@@ -735,7 +746,6 @@ export default function AddProduct() {
               )}
             </div>
           </div>
-
 
           <div className="admin-add-product-form-group">
             <label htmlFor="product-price">Product Rating (optional)</label>
@@ -768,6 +778,21 @@ export default function AddProduct() {
               ></textarea>
               {errors?.productUseCase && touched.productUseCase && (
                 <p className="error-message">{errors?.productUseCase}</p>
+              )}
+            </div>
+          </div>
+          <div className="admin-add-product-form-group full-width">
+            <label htmlFor="product-description">Product Benefits</label>
+            <div className="admin-add-product-input-wrapper">
+              <textarea
+                id="productBenefits"
+                name="productBenefits"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.productBenefits}
+              ></textarea>
+              {errors?.productBenefits && touched.productBenefits && (
+                <p className="error-message">{errors?.productBenefits}</p>
               )}
             </div>
           </div>
@@ -859,7 +884,8 @@ export default function AddProduct() {
               </DndContext>
             </div>
           )}
-          <BadgeSelector className="full-width"
+          <BadgeSelector
+            className="full-width"
             selectedBadges={selectedBadges}
             setSelectedBadges={setSelectedBadges}
           />

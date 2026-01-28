@@ -25,7 +25,7 @@ export async function addProduct(
   navigate,
   resetForm,
   setSubmitting,
-  imageRef
+  imageRef,
 ) {
   try {
     const formData = new FormData();
@@ -39,7 +39,9 @@ export async function addProduct(
         key === "badges" ||
         key === "productCategory" ||
         key === "countryVariants" ||
-        key === "imageOrientations"
+        key === "imageOrientations" ||
+        key === "productBenefits" ||
+        key === "productUseCase"
       ) {
         formData.append(key, JSON.stringify(data[key]));
       } else if (key !== "productImages") {
@@ -79,7 +81,7 @@ export async function getAllProducts(
   search,
   setProducts,
   setTotalProducts,
-  token
+  token,
 ) {
   try {
     const response = await axios.get(
@@ -89,7 +91,7 @@ export async function getAllProducts(
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     // console.log(response, "response from get all products api");
     if (response.status === 200 && response.data.isSuccess) {
@@ -110,7 +112,7 @@ export async function getSingleProduct(id, setProduct, countryCode) {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     if (response.status === 200 && response.data.isSuccess) {
       setProduct(response.data.product);
@@ -143,7 +145,7 @@ export async function deleteProduct(id, setChanged) {
 export async function getAllProductsForUser(
   setProducts,
   // setPriceRange,
-  countryCode
+  countryCode,
   // setActualPriceRange
 ) {
   try {
@@ -153,7 +155,7 @@ export async function getAllProductsForUser(
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     if (response.status === 200 && response.data.isSuccess) {
@@ -194,7 +196,7 @@ export async function changeProductStatus(id, setChanged) {
 export async function getLatestProductsForUser(
   limit,
   setProducts,
-  countryCode
+  countryCode,
 ) {
   try {
     const response = await axios.get(
@@ -204,7 +206,7 @@ export async function getLatestProductsForUser(
           "Content-Type": "application/json",
           limit,
         },
-      }
+      },
     );
     if (response.status === 200 && response.data.isSuccess) {
       setProducts(response.data.products);
@@ -220,7 +222,7 @@ export async function updateProduct(
   formData,
   setSubmitting,
   setProductImages,
-  navigate
+  navigate,
 ) {
   try {
     const response = await axios.post(
@@ -231,7 +233,7 @@ export async function updateProduct(
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${adminToken}`,
         },
-      }
+      },
     );
 
     if (response.status === 200 && response.data?.isSuccess) {
@@ -253,8 +255,8 @@ export async function fetchSuggestions(query, countryId) {
   try {
     const response = await axios.get(
       `${searchProductUrl}?query=${encodeURIComponent(
-        query
-      )}&countryId=${countryId}`
+        query,
+      )}&countryId=${countryId}`,
     );
     if (response.status === 200 && response.data.isSuccess) {
       return response.data.suggestions;
@@ -269,7 +271,7 @@ export async function fetchSuggestions(query, countryId) {
 export async function getSearchResult(
   query,
   countryId,
-  setProducts
+  setProducts,
   // setPriceRange,
   // setActualPriceRange
 ) {
@@ -301,7 +303,7 @@ export async function getSearchResult(
 export async function getRelatedProduct(
   productId,
   setRelatedProducts,
-  countryCode
+  countryCode,
 ) {
   try {
     const response = await axios.get(`${getRelatedProductUrl}/${productId}`, {
