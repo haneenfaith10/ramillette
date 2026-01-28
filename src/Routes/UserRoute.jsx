@@ -102,11 +102,7 @@ export default function UserRoute() {
         </Route>
 
         <Route path="order/:orderId" element={<UserOrderDetails />} />
-        <Route path="checkout-single" element={<PurchaseSingleItem />} />
-        <Route
-          path="payment-single-checkout"
-          element={<PaymentSingleProduct />}
-        />
+        <Route path="order/:orderId" element={<UserOrderDetails />} />
       </Route>
 
       {/* {setTimeout(() => {

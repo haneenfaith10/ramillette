@@ -34,7 +34,6 @@ export default function Checkout() {
   const [cartItems, setCartItems] = useState([]);
   const [selectedOffers, setSelectedOffers] = useState({});
   const [couponInputs, setCouponInputs] = useState({});
-  const [selectedVariants, setSelectedVariants] = useState({});
   const [subtotal, setSubtotal] = useState(0);
   const [originalSubtotal, setOriginalSubtotal] = useState(0);
   const [newUserOffer, setNewUserOffer] = useState(null);
@@ -84,24 +83,11 @@ export default function Checkout() {
   }, [reduxCart?.length]);
 
   useEffect(() => {
-    const initialVariants = {};
-    cartItems.forEach((item) => {
-      const variants = item.productVariants || [];
-      if (variants.length > 0) {
-        initialVariants[item.productId] =
-          selectedVariants[item.productId] || variants[0];
-      }
-    });
-    setSelectedVariants(initialVariants);
-  }, [cartItems]);
-
-  useEffect(() => {
     let originalTotal = 0;
     let discountedTotal = 0;
 
     cartItems.forEach((item) => {
-      const variant = selectedVariants[item.productId];
-      const basePrice = variant?.price || item.basePrice;
+      const basePrice = item.basePrice;
       const productDiscount = item.productDiscount || 0;
       const offer = selectedOffers[item.productId];
 
@@ -153,7 +139,7 @@ export default function Checkout() {
     }
 
     setFinalTotal(totalAfterOffer);
-  }, [cartItems, selectedOffers, selectedVariants, newUserOffer]);
+  }, [cartItems, selectedOffers, newUserOffer]);
 
   async function handleQuantityChange(cartItem, action) {
     try {
@@ -179,7 +165,7 @@ export default function Checkout() {
             ...c,
             productId: c.productId?._id || c.productId,
           }));
-          validateSelectedOffers(updatedCartItems, selectedVariants);
+          validateSelectedOffers(updatedCartItems);
         }
       }
     } catch (err) {
@@ -187,29 +173,17 @@ export default function Checkout() {
     }
   }
 
-  function validateSelectedOffers(updatedCartItems, updatedVariants) {
+  function validateSelectedOffers(updatedCartItems) {
     const newSelectedOffers = { ...selectedOffers };
 
     updatedCartItems.forEach((item) => {
-      const variant = updatedVariants[item.productId];
-      const price = variant?.price || item.basePrice;
+      const price = item.basePrice;
       const qty = item.qty;
       const total = price * qty;
 
       const offer = newSelectedOffers[item.productId];
       if (!offer) return;
 
-      // ⭐ 1. Handle BOGO
-      // if (offer.offerType === "bogo") {
-      //   if (!offer.buyQuantity || qty < offer.buyQuantity) {
-      //     // ❌ Quantity no longer satisfies BOGO requirement → remove offer
-      //     delete newSelectedOffers[item.productId];
-      //     dispatch(
-      //       setCheckoutOffer({ productId: item.productId, offer: null })
-      //     );
-      //   }
-      //   return; // stop here, do NOT check min/max
-      // }
       if (offer.offerType === "bogo") {
         if (!offer.buyQuantity || qty < offer.buyQuantity) {
           delete newSelectedOffers[item.productId];
@@ -247,20 +221,7 @@ export default function Checkout() {
     }
   }
 
-  async function handleVariantSelect(productId, variant) {
-    try {
-      setSelectedVariants((prev) => ({ ...prev, [productId]: variant }));
-      const response = await addToCartWithQuantity(
-        productId,
-        1,
-        selectedCountry._id,
-        false,
-      );
-      if (response) dispatch(updateCart({ cart: response.cart }));
-    } catch (err) {
-      console.error("Error selecting variant:", err);
-    }
-  }
+  // Removed handleVariantSelect as per requirements
 
   function handleSelectOffer(productId, offer) {
     // Check if this offer is already selected
@@ -337,8 +298,7 @@ export default function Checkout() {
   }, []);
 
   function getValidOffers(item) {
-    const variant = selectedVariants[item.productId];
-    const price = variant?.price || item.basePrice;
+    const price = item.basePrice;
     const qty = item.qty;
     const total = price * qty;
 
@@ -363,8 +323,7 @@ export default function Checkout() {
   function handleProceedToAddress() {
     if (cartItems.length > 0) {
       const cartWithOffers = cartItems.map((item) => {
-        const variant = selectedVariants[item.productId];
-        const basePrice = variant?.price || item.basePrice;
+        const basePrice = item.basePrice;
         const productDiscount = item.productDiscount || 0;
         const offer = selectedOffers[item.productId];
 
@@ -386,14 +345,12 @@ export default function Checkout() {
 
         return {
           ...item,
-          selectedVariant: variant || null,
           selectedOffer: offer || null,
           discountedPrice,
         };
       });
 
       // ✅ Update Redux with computed prices
-      // dispatch(setCheckoutCart(cartWithOffers));
       dispatch(
         setCheckoutCart({
           items: cartWithOffers,
@@ -486,9 +443,7 @@ export default function Checkout() {
           <div className="checkout-cart-items-wrapper">
             {cartItems.length > 0 ? (
               cartItems.map((item) => {
-                const variants = item.productVariants || [];
-                const selectedVariant = selectedVariants[item.productId];
-                const basePrice = selectedVariant?.price || item.basePrice;
+                const basePrice = item.basePrice;
                 const productDiscount = item.productDiscount || 0;
                 const offer = selectedOffers[item.productId];
 
@@ -527,27 +482,6 @@ export default function Checkout() {
                         <p className="cart-item-description">
                           {item.productDescription}
                         </p>
-
-                        {variants.length > 0 && (
-                          <div className="variant-selector">
-                            {variants.map((variant, idx) => (
-                              <button
-                                key={idx}
-                                className={`variant-chip ${
-                                  selectedVariant?._id === variant._id
-                                    ? "active"
-                                    : ""
-                                }`}
-                                onClick={() =>
-                                  handleVariantSelect(item.productId, variant)
-                                }
-                                type="button"
-                              >
-                                {variant.variantName}
-                              </button>
-                            ))}
-                          </div>
-                        )}
 
                         <div className="cart-item-price-section">
                           <span className="current-price">
@@ -866,9 +800,7 @@ export default function Checkout() {
           <div className="checkout-cart-items-container">
             {cartItems.length > 0 ? (
               cartItems.map((item) => {
-                const variants = item.productVariants || [];
-                const selectedVariant = selectedVariants[item.productId];
-                const basePrice = selectedVariant?.price || item.basePrice;
+                const basePrice = item.basePrice;
                 const productDiscount = item.productDiscount || 0;
                 const offer = selectedOffers[item.productId];
 
@@ -909,34 +841,6 @@ export default function Checkout() {
                             {item.productDescription}
                           </p>
 
-                          {/*  Variant selection */}
-                          {variants.length > 0 && (
-                            <div className="variant-selection">
-                              <p>Select Variant:</p>
-                              <ul className="variant-list">
-                                {variants.map((variant, idx) => (
-                                  <li
-                                    key={idx}
-                                    className={`variant-item ${
-                                      selectedVariant?._id === variant._id
-                                        ? "active"
-                                        : ""
-                                    }`}
-                                    onClick={() =>
-                                      handleVariantSelect(
-                                        item.productId,
-                                        variant,
-                                      )
-                                    }
-                                  >
-                                    <strong>{variant.variantName}</strong> —{" "}
-                                    {selectedCountry.priceLabel}
-                                    {variant.price.toFixed(2)}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
                           <div className="price-section">
                             <p className="total-price-checkout">
                               Price: {selectedCountry.priceLabel}

@@ -1,26 +1,14 @@
 import React, { useEffect } from "react";
-import Perfumimg from "../../assets/images/perfume.png";
-import Perfumhoverimg from "../../assets/images/perfume-hover.png";
 import "./Productcard.css";
 import { useState } from "react";
 import Popup from "../ProductPopup/ProductPopup";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  addToCart,
-  notifyMeAboutProduct,
-} from "../../services/userApiServices";
-import { useDispatch, useSelector } from "react-redux";
-import { updateCart } from "../../redux/slices/userSlice";
-import { successToast } from "../Notification/NotificationMessage";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Productcard(Props) {
   const { product, maxLength } = Props;
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const selectedCountry = useSelector((state) => state.user.selectedCountry);
-  const userCart = useSelector((state) => state.user.user?.cart?.items);
   const [productPrice, setProductPrice] = useState("");
 
   useEffect(() => {
@@ -35,76 +23,11 @@ export default function Productcard(Props) {
     }
   }, [product]);
 
-  const token = localStorage.getItem("remilletteTkn");
-  useEffect(() => {
-    if (token) {
-      setIsUserLoggedIn(true);
-    }
-  }, [token]);
-  async function addProductToCart() {
-    if (!isUserLoggedIn) {
-      navigate("/login");
-      return;
-    }
-    const response = await addToCart(
-      product?._id,
-      1,
-      selectedCountry?._id,
-      false,
-      token,
-    );
-    if (response) {
-      dispatch(updateCart({ cart: response }));
-    }
-  }
-
-  const isOutOfStock = (() => {
-    if (product?.status === false || product?.isDelete === true) return true;
-    const variants = product?.countryVariants?.[selectedCountry?._id] || [];
-    if (variants.length === 0) return true;
-    return variants.every((v) => Number(v.stock || 0) <= 0);
-  })();
-
-  const userEmail = useSelector((state) => state.user.user?.email);
-
-  async function handleNotifyMe() {
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-
-    const data = {
-      productId: product?._id,
-      userEmail: userEmail,
-      countryId: selectedCountry?._id,
-    };
-
-    if (!data.userEmail) {
-      navigate("/login");
-      return;
-    }
-
-    await notifyMeAboutProduct(data);
-  }
-
   // function to calculate the actual price
   function getDiscountedPrice(amount, discountPercent) {
     const discountAmount = (discountPercent / 100) * amount;
     const finalPrice = amount - discountAmount;
     return finalPrice;
-  }
-
-  // function to check is the product in the cart or not
-  function isInCart() {
-    if (userCart && userCart.length > 0) {
-      return userCart.some((item) => {
-        const idInCart =
-          typeof item.productId === "object"
-            ? item.productId._id
-            : item.productId;
-        return idInCart === product._id;
-      });
-    }
   }
 
   function truncateProductName(name) {
@@ -154,7 +77,12 @@ export default function Productcard(Props) {
         </div>
         <div className="product-content">
           <div className="product-info-section">
-            <h3>{truncateProductName(product?.productName)}</h3>
+            <Link
+              to={`/${selectedCountry?.code}/product-inner/${product?._id}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <h3>{truncateProductName(product?.productName)}</h3>
+            </Link>
             <p>
               {selectedCountry?.priceLabel}
               {getDiscountedPrice(productPrice, product?.productDiscount)}
@@ -164,24 +92,6 @@ export default function Productcard(Props) {
               </span>
             </p>
           </div>
-        </div>
-        <div className="product-button-section">
-          {isInCart() ? (
-            <button
-              className="secondry-btn buy-now"
-              onClick={() => navigate(`/${selectedCountry?.code}/checkout`)}
-            >
-              Go to Checkout
-            </button>
-          ) : isOutOfStock ? (
-            <button className="secondry-btn buy-now" onClick={handleNotifyMe}>
-              NOTIFY ME
-            </button>
-          ) : (
-            <button className="secondry-btn" onClick={addProductToCart}>
-              ADD TO CART
-            </button>
-          )}
         </div>
       </div>
       <Popup

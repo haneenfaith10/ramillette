@@ -76,6 +76,17 @@ export default function ProductInner(Props) {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
   const [validOffers, setValidOffers] = useState();
+  const [selectedVariant, setSelectedVariant] = useState(null);
+
+  const availableVariants = useMemo(() => {
+    return product?.variants?.filter((v) => v.stock > 0) || [];
+  }, [product?.variants]);
+
+  useEffect(() => {
+    if (availableVariants.length > 0 && !selectedVariant) {
+      setSelectedVariant(availableVariants[0]);
+    }
+  }, [availableVariants, selectedVariant]);
 
   useEffect(() => {
     const filterValidOffers = () => {
@@ -145,6 +156,7 @@ export default function ProductInner(Props) {
         1,
         selectedCountry._id,
         false,
+        selectedVariant, // Pass the selected variant
       );
       if (response) {
         dispatch(updateCart({ cart: response }));
@@ -204,10 +216,16 @@ export default function ProductInner(Props) {
     });
   }
 
-  const isInCart =
-    user?.cart?.items.length > 0
-      ? user.cart.items.some((item) => item.productId._id === product._id)
-      : false;
+  const isInCart = useMemo(() => {
+    if (!user?.cart?.items) return false;
+    return user.cart.items.some((item) => {
+      const idInCart =
+        typeof item.productId === "object"
+          ? item.productId?._id
+          : item.productId;
+      return idInCart === product?._id;
+    });
+  }, [user?.cart?.items, product?._id]);
 
   // function to increment cart item quantity
   async function updateCartQuantity(productId, action, countryId) {
@@ -296,18 +314,18 @@ export default function ProductInner(Props) {
 
   // Calculate unit price and total price based on quantity
   const unitPrice = useMemo(() => {
-    const basePrice = product?.productPrice || 0;
+    const basePrice = selectedVariant?.price || product?.productPrice || 0;
     const discount = product?.productDiscount || 0;
     return getDiscountedPrice(basePrice, discount);
-  }, [product?.productPrice, product?.productDiscount]);
+  }, [selectedVariant, product?.productPrice, product?.productDiscount]);
 
   const totalPrice = useMemo(() => {
     return quantity > 0 ? unitPrice * quantity : unitPrice;
   }, [unitPrice, quantity]);
 
   const unitMRP = useMemo(() => {
-    return product?.productPrice || 0;
-  }, [product?.productPrice]);
+    return selectedVariant?.price || product?.productPrice || 0;
+  }, [selectedVariant, product?.productPrice]);
 
   const totalMRP = useMemo(() => {
     return quantity > 0 ? unitMRP * quantity : unitMRP;
@@ -326,8 +344,6 @@ export default function ProductInner(Props) {
       console.error("Failed to copy link:", err);
     }
   };
-
-  const availableVariants = product?.variants?.filter((v) => v.stock > 0) || [];
 
   const isOutOfStock = useMemo(() => {
     // If product is inactive or deleted, it should be treated as out of stock/notify required
@@ -521,12 +537,12 @@ export default function ProductInner(Props) {
                 <div className="price-section">
                   <div className="price-section-inline">
                     <span className="price">
-                      {selectedCountry.priceLabel}
+                      {selectedCountry?.priceLabel}
                       {totalPrice.toFixed(2)}
                     </span>
                     {unitMRP > unitPrice && (
                       <span className="mrp">
-                        {selectedCountry.priceLabel}
+                        {selectedCountry?.priceLabel}
                         {totalMRP.toFixed(2)}
                       </span>
                     )}
@@ -556,27 +572,29 @@ export default function ProductInner(Props) {
                     <span>
                       {bestOffer.discountType === "percent"
                         ? `${bestOffer.discountValue}% OFF`
-                        : `${selectedCountry.priceLabel}${bestOffer.discountValue} OFF`}{" "}
+                        : `${selectedCountry?.priceLabel}${bestOffer.discountValue} OFF`}{" "}
                       Applicable
                     </span>
                   </div>
                 )}
                 {!isOutOfStock && availableVariants.length > 0 && (
                   <div className="variant-section">
-                    <p className="variant-note">
-                      <strong>Note:</strong> You can select the variant during
-                      checkout.
-                    </p>
+                    <p className="variant-note">Select Variant:</p>
 
                     <div className="variant-list">
                       {availableVariants.map((variant, index) => (
-                        <div key={index} className="variant-badge">
+                        <div
+                          key={index}
+                          className={`variant-badge interactive ${
+                            selectedVariant?._id === variant._id ? "active" : ""
+                          }`}
+                          onClick={() => setSelectedVariant(variant)}
+                        >
                           <span className="variant-name">
                             {variant.variantName}
                           </span>
                           <span className="variant-details">
-                            Stock: {variant.stock} | Price:{" "}
-                            {selectedCountry.priceLabel}
+                            {selectedCountry?.priceLabel}
                             {variant.price}
                           </span>
                         </div>
@@ -625,18 +643,20 @@ export default function ProductInner(Props) {
                         NOTIFY ME
                       </button>
                     ) : (
-                      <button
-                        className="add-to-cart"
-                        onClick={addProductToCart}
-                      >
-                        ADD TO CART
-                      </button>
+                      <>
+                        <button
+                          className="add-to-cart"
+                          onClick={addProductToCart}
+                        >
+                          ADD TO CART
+                        </button>
+                      </>
                     )
                   ) : (
                     <button
                       className="add-to-cart"
                       onClick={() =>
-                        navigate(`/${selectedCountry.code}/checkout`)
+                        navigate(`/${selectedCountry?.code}/checkout`)
                       }
                     >
                       Go to Checkout

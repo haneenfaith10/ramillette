@@ -184,54 +184,18 @@ const Popup = ({ isOpen, onClose, product, productPrice }) => {
                   )}
 
                   <div className="product-popup-btns">
-                    <div className="add-btn">
-                      <button
-                        className="secondry-btn"
-                        onClick={() => {
-                          if (token) {
-                            navigate(
-                              `/${selectedCountry?.code}/checkout-single`,
-                              {
-                                state: { product: { ...product, quantity } },
-                              },
-                            );
-                          } else {
-                            navigate("/login");
-                          }
-                        }}
-                      >
-                        Go to Checkout
-                      </button>
-                    </div>
-                    <div className="product-buy-btn">
-                      {isInCart() ? (
-                        <button
-                          className="buy-btn"
-                          onClick={() =>
-                            navigate(`/${selectedCountry?.code}/checkout`)
-                          }
-                        >
-                          Check out
-                        </button>
-                      ) : isOutOfStock ? (
-                        <button className="buy-btn" onClick={handleNotifyMe}>
-                          NOTIFY ME
-                        </button>
-                      ) : (
-                        <button
-                          className="buy-btn"
-                          onClick={() => {
-                            if (!token) {
-                              navigate("/login");
-                            } else {
-                              addProductToCart();
-                            }
-                          }}
-                        >
-                          Add to Cart
-                        </button>
-                      )}
-                    </div>
+                    <button
+                      className="buy-btn"
+                      onClick={() => {
+                        onClose();
+                        navigate(
+                          `/${selectedCountry?.code}/product-inner/${product._id}`,
+                        );
+                      }}
+                      style={{ width: "100%" }}
+                    >
+                      View Details
+                    </button>
                   </div>
                   <div className="product-popup-details">
                     <div className="accordion-tabs">

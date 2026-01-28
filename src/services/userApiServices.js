@@ -174,7 +174,7 @@ export async function getUserDetails(userId, updateState) {
   try {
     const response = await axios.get(getUserDetailsUrl, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem("remilletteTkn")}`,
         userId,
       },
     });
@@ -321,7 +321,7 @@ export async function deleteAddress(userId, addressId) {
     const response = await axios.delete(deleteAddressUrl, {
       headers: {
         // "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem("remilletteTkn")}`,
         userId,
         addressId,
       },
@@ -341,6 +341,7 @@ export async function addToCartWithQuantity(
   quantity,
   countryId,
   isShowMessage = true,
+  selectedVariant = null, // Added selectedVariant
 ) {
   try {
     if (!countryId) {
@@ -351,10 +352,11 @@ export async function addToCartWithQuantity(
       {
         productId,
         quantity,
+        selectedVariant, // Pass variant to backend
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${localStorage.getItem("remilletteTkn")}`,
           "Content-Type": "application/json",
         },
       },
@@ -378,7 +380,7 @@ export async function changeCartQuantity(productId, quantity, countryId) {
       { productId, quantity },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${localStorage.getItem("remilletteTkn")}`,
         },
       },
     );

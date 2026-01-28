@@ -37,10 +37,12 @@ export default function PurchaseSingleItem() {
   const [cities, setCities] = useState([]);
   const [tax, setTax] = useState("");
   const userSelectedCountry = useSelector(
-    (state) => state.user.selectedCountry
+    (state) => state.user.selectedCountry,
   );
   const [productAvailableError, setProductAvailableError] = useState(false);
-  const [selectedVariant, setSelectedVariant] = useState(null);
+  const [selectedVariant, setSelectedVariant] = useState(
+    location.state?.selectedVariant || null,
+  );
 
   useEffect(() => {
     (async () => {
@@ -57,7 +59,7 @@ export default function PurchaseSingleItem() {
         product._id,
         product.quantity,
         selectedVariant._id,
-        setProductAvailableError
+        setProductAvailableError,
       );
     }
   }
@@ -72,9 +74,8 @@ export default function PurchaseSingleItem() {
     return product.countryVariants?.[userSelectedCountry._id] || [];
   }, [product.countryVariants, userSelectedCountry._id]);
 
-
   useEffect(() => {
-    if (countryVariants.length > 0 && !selectedVariant) {
+    if (!selectedVariant && countryVariants.length > 0) {
       setSelectedVariant(countryVariants[0]);
     }
   }, [countryVariants, selectedVariant]);
@@ -95,7 +96,7 @@ export default function PurchaseSingleItem() {
         then: (schema) =>
           schema.matches(
             /^\d{10}$/,
-            "Phone number must be exactly 10 digits for India"
+            "Phone number must be exactly 10 digits for India",
           ),
         otherwise: (schema) =>
           schema
@@ -153,8 +154,8 @@ export default function PurchaseSingleItem() {
       setCities(
         City.getCitiesOfState(
           selectedCountry.toUpperCase(),
-          selectedState.toUpperCase()
-        )
+          selectedState.toUpperCase(),
+        ),
       );
     }
   }, [selectedState, selectedCountry]);
@@ -181,7 +182,7 @@ export default function PurchaseSingleItem() {
     formik.setFieldValue("zipCode", address.zip || "");
     // Update country
     const matchedCountry = countries.find(
-      (c) => c.name.toLowerCase() === address.country.toLowerCase()
+      (c) => c.name.toLowerCase() === address.country.toLowerCase(),
     );
 
     if (matchedCountry) {
@@ -191,7 +192,7 @@ export default function PurchaseSingleItem() {
 
     // Update state
     const matchedState = states.find(
-      (s) => s.name.toLowerCase() === address.state.toLowerCase()
+      (s) => s.name.toLowerCase() === address.state.toLowerCase(),
     );
     if (matchedState) {
       setSelectedState(matchedState.isoCode);
@@ -246,7 +247,7 @@ export default function PurchaseSingleItem() {
                   selectedVariant.price &&
                   getDiscountedPrice(
                     selectedVariant.price,
-                    product.productDiscount
+                    product.productDiscount,
                   )}
               </p>
               <p>
@@ -276,41 +277,14 @@ export default function PurchaseSingleItem() {
               <p>
                 <strong>Other Info:</strong> {product.productOtherInfo}
               </p>
-              <div className="variant-selection">
-                <h4 style={{ fontWeight: 700 }}>Select Variant:</h4>
-                <ul className="variant-list">
-                  {countryVariants.map((variant, index) => {
-                    const discountedPrice = getDiscountedPrice(
-                      variant.price,
-                      product.productDiscount
-                    );
-                    return (
-                      <li
-                        key={index}
-                        className={`variant-item ${
-                          selectedVariant?._id === variant._id ? "active" : ""
-                        }`}
-                        onClick={() => setSelectedVariant(variant)}
-                      >
-                        <strong>{variant.variantName}</strong>
-                        <p>Price: ₹{discountedPrice}</p>
-                        {variant.stock <= 10 && (
-                          <p
-                            style={{
-                              color: variant.stock <= 3 ? "#ff4d4d" : "#f59e0b",
-                              fontWeight: 500,
-                            }}
-                          >
-                            {variant.stock > 3
-                              ? "Only few remaining"
-                              : `Only ${variant.stock} remaining`}
-                          </p>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
+              {selectedVariant && (
+                <div className="variant-info-display">
+                  <p>
+                    <strong>Selected Variant:</strong>{" "}
+                    {selectedVariant.variantName}
+                  </p>
+                </div>
+              )}
             </div>
             {productAvailableError ? (
               <p style={{ color: "red" }}>Product is unavailable</p>
@@ -331,7 +305,7 @@ export default function PurchaseSingleItem() {
                     selectedVariant.price &&
                     getDiscountedPrice(
                       selectedVariant.price,
-                      product.productDiscount
+                      product.productDiscount,
                     )}
                   / item
                 </p>
@@ -341,7 +315,7 @@ export default function PurchaseSingleItem() {
                     selectedVariant.price &&
                     getDiscountedPrice(
                       selectedVariant.price,
-                      product.productDiscount
+                      product.productDiscount,
                     ) * product.quantity}
                 </p>
                 <p>Tax in percentage : {tax.taxPercentage}%</p>
@@ -351,9 +325,9 @@ export default function PurchaseSingleItem() {
                     calculateTotalPriceWithTax(
                       getDiscountedPrice(
                         selectedVariant.price,
-                        product.productDiscount
+                        product.productDiscount,
                       ) * product.quantity,
-                      tax.taxPercentage
+                      tax.taxPercentage,
                     ).totalPrice}
                 </p>
               </div>
@@ -517,8 +491,8 @@ export default function PurchaseSingleItem() {
                     formik.setFieldValue(
                       "country",
                       countries.find(
-                        (country) => country.code === e.target.value
-                      ).name
+                        (country) => country.code === e.target.value,
+                      ).name,
                     );
                   }}
                   onBlur={formik.handleBlur}
@@ -552,7 +526,7 @@ export default function PurchaseSingleItem() {
                     formik.setFieldValue(
                       "state",
                       states.find((state) => state.isoCode === e.target.value)
-                        .name
+                        .name,
                     );
                   }}
                   onBlur={formik.handleBlur}
