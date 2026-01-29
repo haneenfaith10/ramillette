@@ -64,12 +64,11 @@ export default function AdminBestSellerList() {
   function deleteTheBestSeller(bestSellerId) {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't to delete !",
+      text: "You want to delete this item?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
     }).then(async (result) => {
       if (result.isConfirmed) {
         const response = await deleteBestSeller(bestSellerId);
