@@ -210,10 +210,11 @@ export default function AddProduct() {
   const customSelectStyles = {
     control: (base, state) => ({
       ...base,
-      boxShadow: "none",
-      borderColor: state.isFocused ? "#ccc" : "#ccc",
+      boxShadow: state.isFocused ? "0 0 0 3px rgba(201, 162, 39, 0.12)" : "none",
+      borderColor: state.isFocused ? "#c9a227" : "#e8e9ed",
+      minHeight: "42px",
       "&:hover": {
-        borderColor: "#aaa",
+        borderColor: state.isFocused ? "#c9a227" : "#d1d3d9",
       },
     }),
   };
