@@ -208,13 +208,14 @@ export default function Checkout() {
     setSelectedOffers(newSelectedOffers);
   }
 
-  async function handleRemove(productId) {
+  async function handleRemove(item) {
     try {
       const res = await removeCartItem(
-        productId,
+        item.productId,
         selectedCountry._id,
         false,
         token,
+        item.selectedVariant,
       );
       if (res?.cart) dispatch(updateCart({ cart: res.cart }));
     } catch (err) {
@@ -552,7 +553,7 @@ export default function Checkout() {
 
                       <button
                         className="remove-btn-mobile"
-                        onClick={() => handleRemove(item.productId)}
+                        onClick={() => handleRemove(item)}
                         type="button"
                       >
                         <IoCloseCircleOutline size={18} />
@@ -937,7 +938,7 @@ export default function Checkout() {
                           </div>
                           <button
                             className="remove-btn"
-                            onClick={() => handleRemove(item.productId)}
+                            onClick={() => handleRemove(item)}
                           >
                             <IoCloseCircleOutline size={18} /> remove
                           </button>

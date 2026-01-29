@@ -114,14 +114,20 @@ export async function addToCart(
 }
 
 // function to remove product item form cart
-export async function removeCartItem(id, countryId, isShow = true, token) {
+export async function removeCartItem(
+  id,
+  countryId,
+  isShow = true,
+  token,
+  selectedVariant = null,
+) {
   if (!countryId) {
     return console.log("countryId is missing");
   }
   try {
     const response = await axios.put(
       `${removeCartItemUrl}?countryId=${countryId}`,
-      { productId: id },
+      { productId: id, selectedVariant },
       {
         headers: {
           Authorization: `Bearer ${token}`,

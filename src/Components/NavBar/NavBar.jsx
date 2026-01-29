@@ -151,6 +151,7 @@ export default function NavBar() {
       selectedCountry?._id,
       false,
       token,
+      item.selectedVariant,
     );
 
     if (response) {

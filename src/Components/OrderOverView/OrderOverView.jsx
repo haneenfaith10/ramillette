@@ -29,10 +29,17 @@ export default function OrderOverView() {
   const selectedCountry = useSelector((state) => state.user.selectedCountry);
   const [stockErrorMessage, setStockErrorMessage] = useState({});
   const [tax, setTax] = useState("");
+  const token = localStorage.getItem("remilletteTkn");
 
   //   function to remove cart item
-  async function removeItem(productId) {
-    const response = await removeCartItem(productId, selectedCountry._id);
+  async function removeItem(productId, variant) {
+    const response = await removeCartItem(
+      productId,
+      selectedCountry._id,
+      false,
+      token,
+      variant,
+    );
     if (response) {
       dispatch(updateCart({ cart: response.cart }));
       dispatch(setCheckoutCart(response.cart.items));
@@ -156,7 +163,11 @@ export default function OrderOverView() {
                     {stockErrorMessage[cart?.productId?._id]}
                   </p>
                 )}
-                <button onClick={() => removeItem(cart?.productId?._id)}>
+                <button
+                  onClick={() =>
+                    removeItem(cart?.productId?._id, cart?.selectedVariant)
+                  }
+                >
                   <IoCloseCircleOutline size={18} />
                   remove
                 </button>
