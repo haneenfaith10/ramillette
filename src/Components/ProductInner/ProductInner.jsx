@@ -129,14 +129,18 @@ export default function ProductInner(Props) {
   }, [validOffers, product.productPrice]);
 
   useEffect(() => {
-    if (cartItems.length > 0) {
-      cartItems.forEach((item) => {
-        if (product._id === item?.productId._id) {
-          setQuantity(item.qty);
-        }
-      });
+    setQuantity(0); // Reset quantity when variant changes
+    if (cartItems.length > 0 && selectedVariant) {
+      const matchingItem = cartItems.find(
+        (item) =>
+          item.productId?._id === product?._id &&
+          item.selectedVariant?._id === selectedVariant._id,
+      );
+      if (matchingItem) {
+        setQuantity(matchingItem.qty);
+      }
     }
-  }, [cartItems, product._id]);
+  }, [cartItems, product?._id, selectedVariant]);
 
   // toggle to show and hide the complete description
   const toggleShowFull = () => setReadMore((prev) => !prev);
@@ -217,19 +221,28 @@ export default function ProductInner(Props) {
   }
 
   const isInCart = useMemo(() => {
-    if (!user?.cart?.items) return false;
+    if (!user?.cart?.items || !selectedVariant) return false;
     return user.cart.items.some((item) => {
       const idInCart =
         typeof item.productId === "object"
           ? item.productId?._id
           : item.productId;
-      return idInCart === product?._id;
+      const variantIdInCart = item.selectedVariant?._id;
+
+      return (
+        idInCart === product?._id && variantIdInCart === selectedVariant._id
+      );
     });
-  }, [user?.cart?.items, product?._id]);
+  }, [user?.cart?.items, product?._id, selectedVariant]);
 
   // function to increment cart item quantity
   async function updateCartQuantity(productId, action, countryId) {
-    const response = await updateCartItemQuantity(productId, action, countryId);
+    const response = await updateCartItemQuantity(
+      productId,
+      action,
+      countryId,
+      selectedVariant, // Pass the variant to differentiate which one to update
+    );
     if (response) {
       dispatch(updateCart({ cart: response?.cart }));
     }

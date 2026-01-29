@@ -30,15 +30,6 @@ export default function Productcard(Props) {
     return finalPrice;
   }
 
-  function truncateProductName(name) {
-    if (!name) return "";
-    const maxLength = 30;
-    if (name.length > maxLength) {
-      return `${name.substring(0, maxLength)}...`;
-    }
-    return name;
-  }
-
   return (
     <div>
       <div className="product-card">
@@ -81,7 +72,7 @@ export default function Productcard(Props) {
               to={`/${selectedCountry?.code}/product-inner/${product?._id}`}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <h3>{truncateProductName(product?.productName)}</h3>
+              <h3>{product?.productName}</h3>
             </Link>
             <p>
               {selectedCountry?.priceLabel}

@@ -158,13 +158,20 @@ export default function NavBar() {
     }
   }
   // function to increment cart item quantity
+
   async function updateCartQuantity(
     productId,
     action,
     countryId,
+    selectedVariant = null,
     // isShow = true
   ) {
-    const response = await updateCartItemQuantity(productId, action, countryId);
+    const response = await updateCartItemQuantity(
+      productId,
+      action,
+      countryId,
+      selectedVariant,
+    );
     if (response) {
       dispatch(updateCart({ cart: response?.cart }));
     }
@@ -681,6 +688,7 @@ export default function NavBar() {
                               item.productId._id,
                               "decrement",
                               selectedCountry?._id,
+                              item.selectedVariant,
                             )
                           }
                         >
@@ -693,6 +701,7 @@ export default function NavBar() {
                               item.productId._id,
                               "increment",
                               selectedCountry?._id,
+                              item.selectedVariant,
                             )
                           }
                         >
@@ -700,6 +709,19 @@ export default function NavBar() {
                         </button>
                       </div>
                     </div>
+                    {item.selectedVariant && (
+                      <div
+                        className="variant-info"
+                        style={{
+                          fontSize: "12px",
+                          color: "#666",
+                          marginTop: "-5px",
+                          paddingLeft: "10px",
+                        }}
+                      >
+                        Variant: {item.selectedVariant.variantName}
+                      </div>
+                    )}
                     <div className="item-price" style={{ display: "none" }}>
                       {selectedCountry.priceLabel}
                       {((item && item?.productId?.productPrice) || 0).toFixed(
@@ -719,13 +741,9 @@ export default function NavBar() {
                   </div> */}
                     <div className="item-price">
                       {selectedCountry.priceLabel}
-                      {calculateTotalPrice(
-                        item?.productId?.countryVariants?.[
-                          selectedCountry._id
-                        ]?.[0]?.price || 0,
-                        item?.productId?.productDiscount || 0,
-                        item.qty,
-                      ).toFixed(2)}
+                      {(item.selectedVariant?.price || item.price || 0).toFixed(
+                        2,
+                      )}
                     </div>
                     <button onClick={() => removeItem(item)}>✖</button>
                   </div>

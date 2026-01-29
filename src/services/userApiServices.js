@@ -83,6 +83,7 @@ export async function addToCart(
   productId,
   quantity,
   countryId,
+  selectedVariant,
   isShow = true,
   userToken,
 ) {
@@ -92,7 +93,7 @@ export async function addToCart(
     }
     const response = await axios.post(
       `${addToCartUrl}?countryId=${countryId}`,
-      { productId, quantity },
+      { productId, quantity, selectedVariant },
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("remilletteTkn")}`,
@@ -146,12 +147,12 @@ export async function updateCartItemQuantity(
   productId,
   action = "increment",
   countryId,
-  selectedVariants = {},
+  selectedVariant = {},
 ) {
   try {
     const response = await axios.put(
       `${updateCartItemQuantityUrl}?countryId=${countryId}`,
-      { productId, action, selectedVariants },
+      { productId, action, selectedVariant },
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("remilletteTkn")}`,
@@ -373,11 +374,16 @@ export async function addToCartWithQuantity(
   }
 }
 
-export async function changeCartQuantity(productId, quantity, countryId) {
+export async function changeCartQuantity(
+  productId,
+  quantity,
+  countryId,
+  selectedVariant,
+) {
   try {
     const response = await axios.put(
       `${changeCartQuantityUrl}?countryId=${countryId}`,
-      { productId, quantity },
+      { productId, quantity, selectedVariant },
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("remilletteTkn")}`,

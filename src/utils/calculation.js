@@ -15,8 +15,9 @@ export function calculateCartSubtotal(cartItems, countryId) {
 
     if (!variants.length) return subtotal;
 
-    // Use the first variant's price (or customize as needed)
-    const basePrice = Number(variants[0].price || 0);
+    // Use the selected variant's price if available, else fallback
+    const price = item.selectedVariant?.price || variants[0]?.price || 0;
+    const basePrice = Number(price);
     const discountPercent = Number(item.productId.productDiscount || 0);
     const discountedPrice = basePrice - (basePrice * discountPercent) / 100;
 

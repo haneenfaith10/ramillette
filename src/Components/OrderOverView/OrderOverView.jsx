@@ -52,12 +52,13 @@ export default function OrderOverView() {
   }, [selectedCountry?._id]);
 
   //   function to change the quantity of the cart item
-  async function handleQtyChange(productId, newQty) {
+  async function handleQtyChange(productId, newQty, variant) {
     try {
       const response = await changeCartQuantity(
         productId,
         newQty,
-        selectedCountry?._id
+        selectedCountry?._id,
+        variant,
       );
       if (response) {
         dispatch(updateCart({ cart: response }));
@@ -102,21 +103,21 @@ export default function OrderOverView() {
                     ? `${cart?.productId?.productDescription.slice(0, 100)}...`
                     : cart?.productId?.productDescription}
                 </p>
-                <p >
+                <p>
                   {" "}
                   Price : {selectedCountry.priceLabel}
                   {calculateTotalPrice(
                     cart.productId.countryPrices.find(
-                      (cp) => cp.country._id === selectedCountry._id
+                      (cp) => cp.country._id === selectedCountry._id,
                     )?.price,
                     cart?.productId?.productDiscount,
-                    cart?.qty
+                    cart?.qty,
                   )}
-                  <strike style={{ color: "red",marginLeft:".5rem" }}>
+                  <strike style={{ color: "red", marginLeft: ".5rem" }}>
                     {selectedCountry.priceLabel}
                     {
                       cart.productId.countryPrices.find(
-                        (cp) => cp.country._id === selectedCountry._id
+                        (cp) => cp.country._id === selectedCountry._id,
                       )?.price
                     }
                   </strike>
@@ -140,7 +141,11 @@ export default function OrderOverView() {
                   min="1"
                   value={cart?.qty}
                   onChange={(e) =>
-                    handleQtyChange(cart?.productId?._id, e.target.value)
+                    handleQtyChange(
+                      cart?.productId?._id,
+                      e.target.value,
+                      cart?.selectedVariant,
+                    )
                   }
                   onWheel={(e) => {
                     e.target.blur();
@@ -190,8 +195,8 @@ export default function OrderOverView() {
               handlePayment(
                 calculateTotalPriceWithTax(
                   calculateCartSubtotal(cartItems, selectedCountry?._id),
-                  tax
-                ).totalPrice
+                  tax,
+                ).totalPrice,
               )
             }
           >
@@ -207,7 +212,7 @@ export default function OrderOverView() {
             <p>
               {selectedCountry.priceLabel}
               {calculateCartSubtotal(cartItems, selectedCountry?._id).toFixed(
-                2
+                2,
               )}
             </p>
           </div>
@@ -222,7 +227,7 @@ export default function OrderOverView() {
               {
                 calculateTotalPriceWithTax(
                   calculateCartSubtotal(cartItems, selectedCountry?._id),
-                  tax
+                  tax,
                 ).taxAmount
               }
             </p>
@@ -234,7 +239,7 @@ export default function OrderOverView() {
               {
                 calculateTotalPriceWithTax(
                   calculateCartSubtotal(cartItems, selectedCountry?._id),
-                  tax
+                  tax,
                 ).totalPrice
               }
             </p>

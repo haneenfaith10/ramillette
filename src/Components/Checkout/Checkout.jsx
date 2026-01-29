@@ -147,6 +147,7 @@ export default function Checkout() {
         cartItem.productId,
         action,
         selectedCountry._id,
+        cartItem.selectedVariant,
       );
       if (res?.cart) {
         dispatch(updateCart({ cart: res.cart }));
@@ -177,7 +178,7 @@ export default function Checkout() {
     const newSelectedOffers = { ...selectedOffers };
 
     updatedCartItems.forEach((item) => {
-      const price = item.basePrice;
+      const price = item.selectedVariant?.price || item.basePrice;
       const qty = item.qty;
       const total = price * qty;
 
@@ -323,7 +324,7 @@ export default function Checkout() {
   function handleProceedToAddress() {
     if (cartItems.length > 0) {
       const cartWithOffers = cartItems.map((item) => {
-        const basePrice = item.basePrice;
+        const basePrice = item.selectedVariant?.price || item.basePrice;
         const productDiscount = item.productDiscount || 0;
         const offer = selectedOffers[item.productId];
 
@@ -345,6 +346,7 @@ export default function Checkout() {
 
         return {
           ...item,
+          selectedVariant: item.selectedVariant || null,
           selectedOffer: offer || null,
           discountedPrice,
         };
@@ -443,7 +445,8 @@ export default function Checkout() {
           <div className="checkout-cart-items-wrapper">
             {cartItems.length > 0 ? (
               cartItems.map((item) => {
-                const basePrice = item.basePrice;
+                const selectedVariant = item.selectedVariant;
+                const basePrice = selectedVariant?.price || item.basePrice;
                 const productDiscount = item.productDiscount || 0;
                 const offer = selectedOffers[item.productId];
 
@@ -482,6 +485,15 @@ export default function Checkout() {
                         <p className="cart-item-description">
                           {item.productDescription}
                         </p>
+
+                        {selectedVariant && (
+                          <div className="variant-info-display">
+                            <span className="variant-label">Variant: </span>
+                            <span className="variant-value">
+                              {selectedVariant.variantName}
+                            </span>
+                          </div>
+                        )}
 
                         <div className="cart-item-price-section">
                           <span className="current-price">
@@ -800,7 +812,8 @@ export default function Checkout() {
           <div className="checkout-cart-items-container">
             {cartItems.length > 0 ? (
               cartItems.map((item) => {
-                const basePrice = item.basePrice;
+                const selectedVariant = item.selectedVariant;
+                const basePrice = selectedVariant?.price || item.basePrice;
                 const productDiscount = item.productDiscount || 0;
                 const offer = selectedOffers[item.productId];
 
@@ -840,6 +853,15 @@ export default function Checkout() {
                           <p className="cart-item-description">
                             {item.productDescription}
                           </p>
+
+                          {selectedVariant && (
+                            <div className="variant-info-display-desktop">
+                              <span>
+                                <strong>Variant:</strong>{" "}
+                                {selectedVariant.variantName}
+                              </span>
+                            </div>
+                          )}
 
                           <div className="price-section">
                             <p className="total-price-checkout">
