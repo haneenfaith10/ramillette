@@ -1,85 +1,198 @@
-.admin-manage-tax-container {
-  width: 100%;
-  height: 100%;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
-  min-height: 100vh;
-  animation: fadeIn 0.5s ease-in;
+/* Manage Tax – config/tax (admin design system) */
+
+:root {
+  --manage-tax-bg: #f5f4f0;
+  --manage-tax-surface: #ffffff;
+  --manage-tax-border: #e8e9ed;
+  --manage-tax-border-light: #f0f1f5;
+  --manage-tax-text: #1a1d24;
+  --manage-tax-text-muted: #6b7280;
+  --manage-tax-accent: #c9a227;
+  --manage-tax-accent-light: rgba(201, 162, 39, 0.12);
+  --manage-tax-accent-hover: #b8921f;
+  --manage-tax-danger: #dc2626;
+  --manage-tax-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+  --manage-tax-shadow-hover: 0 8px 30px rgba(15, 23, 42, 0.08);
+  --manage-tax-radius: 12px;
+  --manage-tax-radius-sm: 8px;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Page container */
+.manage-tax-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 1.5rem 1.75rem 2rem;
+  background: linear-gradient(160deg, #faf9f6 0%, var(--manage-tax-bg) 50%, #eeede8 100%);
+  font-family: "Albert Sans", system-ui, -apple-system, sans-serif;
+}
+
+.manage-tax-content {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Form card */
+.manage-tax-form-card {
+  background: var(--manage-tax-surface) !important;
+  padding: 1.75rem 2rem !important;
+  border-radius: var(--manage-tax-radius) !important;
+  box-shadow: var(--manage-tax-shadow) !important;
+  border: 1px solid var(--manage-tax-border-light) !important;
+  transition: box-shadow 0.2s ease;
+}
+
+.manage-tax-form-card:focus-within {
+  box-shadow: var(--manage-tax-shadow-hover) !important;
+}
+
+.manage-tax-form-title {
+  margin: 0 0 1.25rem 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--manage-tax-text);
+  letter-spacing: 0.02em;
 }
 
 .manage-tax-form {
-  max-width: 600px;
-  margin: 2rem auto;
-  background: white;
-  padding: 2.5rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 2px solid rgba(237, 200, 98, 0.2);
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.25rem !important;
 }
 
-.form-group {
-  margin-bottom: 1.5rem;
+/* MUI FormControl & TextField overrides */
+.manage-tax-form .manage-tax-field .MuiOutlinedInput-root {
+  border-radius: var(--manage-tax-radius-sm) !important;
+  background: #fafbfc !important;
+  font-size: 0.9rem !important;
 }
 
-.form-group label {
-  display: block;
+.manage-tax-form .manage-tax-field .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--manage-tax-accent) !important;
+}
+
+.manage-tax-form .manage-tax-field .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--manage-tax-accent) !important;
+  border-width: 1px !important;
+}
+
+.manage-tax-form .manage-tax-field .MuiInputLabel-root.Mui-focused {
+  color: var(--manage-tax-accent) !important;
+}
+
+.manage-tax-form .manage-tax-field .MuiFormHelperText-root.Mui-error {
+  color: var(--manage-tax-danger) !important;
+  font-size: 0.8rem !important;
+}
+
+.manage-tax-form .manage-tax-field .MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline {
+  border-color: var(--manage-tax-danger) !important;
+}
+
+/* Submit button */
+.manage-tax-submit-btn {
+  background: linear-gradient(180deg, #d4af37 0%, var(--manage-tax-accent) 100%) !important;
+  color: #fff !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  padding: 0.6rem 1.25rem !important;
+  border-radius: var(--manage-tax-radius-sm) !important;
+  box-shadow: 0 2px 8px rgba(201, 162, 39, 0.35) !important;
+  align-self: flex-start !important;
+  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s !important;
+}
+
+.manage-tax-submit-btn:hover {
+  background: linear-gradient(180deg, var(--manage-tax-accent) 0%, var(--manage-tax-accent-hover) 100%) !important;
+  box-shadow: 0 6px 20px rgba(201, 162, 39, 0.4) !important;
+  transform: translateY(-2px) !important;
+  filter: brightness(1.05) !important;
+}
+
+/* Table card */
+.manage-tax-table-card {
+  background: var(--manage-tax-surface) !important;
+  padding: 1.5rem 1.75rem !important;
+  border-radius: var(--manage-tax-radius) !important;
+  box-shadow: var(--manage-tax-shadow) !important;
+  border: 1px solid var(--manage-tax-border-light) !important;
+  overflow: hidden;
+}
+
+.manage-tax-table-title {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
   font-weight: 700;
-  margin-bottom: 8px;
-  color: #334155;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: var(--manage-tax-text);
+  letter-spacing: 0.02em;
 }
 
-.form-group select,
-.form-group input {
-  width: 100%;
-  padding: 14px 18px;
-  font-size: 15px;
-  border: 2px solid #f5e6c8;
-  border-radius: 12px;
-  background: #f8fafc;
-  color: #334155;
-  transition: all 0.3s ease;
+.manage-tax-table-card .MuiTableContainer-root {
+  border-radius: var(--manage-tax-radius-sm);
+  overflow: hidden;
 }
 
-.form-group select:focus,
-.form-group input:focus {
-  border-color: #edc862;
-  background: white;
-  box-shadow: 0 0 0 4px rgba(237, 200, 98, 0.1);
-  outline: none;
+.manage-tax-table .MuiTableHead-root {
+  background: linear-gradient(180deg, #f8f9fc 0%, #f2f3f7 100%) !important;
 }
 
-.message {
-  margin: 1rem 0;
-  padding: 12px 16px;
-  font-weight: 600;
-  color: #059669;
-  background: linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
-  border-left: 4px solid #059669;
-  border-radius: 8px;
-  font-size: 14px;
+.manage-tax-table .MuiTableCell-head {
+  font-weight: 700 !important;
+  font-size: 0.8rem !important;
+  color: var(--manage-tax-text) !important;
+  letter-spacing: 0.02em !important;
+  padding: 0.85rem 1rem !important;
+  border-bottom: 1px solid var(--manage-tax-border) !important;
+}
+
+.manage-tax-table .MuiTableCell-body {
+  font-size: 0.875rem !important;
+  color: var(--manage-tax-text) !important;
+  padding: 0.85rem 1rem !important;
+  border-bottom: 1px solid var(--manage-tax-border-light) !important;
+}
+
+.manage-tax-table .MuiTableRow-root:last-child .MuiTableCell-body {
+  border-bottom: none !important;
+}
+
+.manage-tax-table .MuiTableBody-root .MuiTableRow-root:hover {
+  background: rgba(201, 162, 39, 0.04) !important;
+}
+
+/* Empty state – when no taxes */
+.manage-tax-table-card .MuiTableBody-root .MuiTableRow-root:only-child .MuiTableCell-body {
+  font-style: italic;
+  color: var(--manage-tax-text-muted);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .admin-manage-tax-container {
-    padding: 1rem;
+  .manage-tax-page {
+    padding: 1rem 1.25rem 1.5rem;
   }
 
-  .manage-tax-form {
-    padding: 1.5rem;
+  .manage-tax-form-card,
+  .manage-tax-table-card {
+    padding: 1.25rem 1.5rem !important;
+  }
+
+  .manage-tax-content {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .manage-tax-page {
+    padding: 0.75rem 1rem 1.25rem;
+  }
+
+  .manage-tax-submit-btn {
+    width: 100% !important;
+    align-self: stretch !important;
   }
 }

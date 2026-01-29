@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Container,
-  Typography,
   Box,
   TextField,
   Select,
@@ -22,6 +20,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 import AdminHeader from "../../Components/AdminHeader/AdminHeader";
+import "./ManageTaxPage.css";
 import { getActiveCountries } from "../../services/configApiService";
 import {
   getTaxByCountry,
@@ -120,17 +119,15 @@ export default function ManageTaxPage() {
   }, [selectedCountry]);
 
   return (
-    <div>
+    <div className="manage-tax-page">
       <AdminHeader title="Manage Tax" />
-      <Container maxWidth="sm" sx={{ mt: 2 }}>
-        <Paper elevation={2} sx={{ p: 2, borderRadius: 2 }}>
-          <Typography variant="h6" gutterBottom fontWeight="bold">
-            Update Country Tax
-          </Typography>
+      <div className="manage-tax-content">
+        <Paper elevation={0} className="manage-tax-form-card">
+          <h3 className="manage-tax-form-title">Update Country Tax</h3>
           <Box
             component="form"
             onSubmit={formik.handleSubmit}
-            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+            className="manage-tax-form"
           >
             <FormControl
               fullWidth
@@ -138,6 +135,7 @@ export default function ManageTaxPage() {
               error={Boolean(
                 formik.touched.countryId && formik.errors.countryId
               )}
+              className="manage-tax-field"
             >
               <InputLabel>Select Country</InputLabel>
               <Select
@@ -162,7 +160,7 @@ export default function ManageTaxPage() {
             </FormControl>
             <TextField
               name="taxName"
-              label="Tax Name (eg. VAT,GST..)"
+              label="Tax Name (e.g. VAT, GST)"
               type="text"
               size="small"
               inputProps={{ min: 0, step: 0.01 }}
@@ -172,6 +170,7 @@ export default function ManageTaxPage() {
               error={formik.touched.taxName && Boolean(formik.errors.taxName)}
               helperText={formik.touched.taxName && formik.errors.taxName}
               fullWidth
+              className="manage-tax-field"
             />
             <TextField
               name="taxPercentage"
@@ -190,37 +189,27 @@ export default function ManageTaxPage() {
                 formik.touched.taxPercentage && formik.errors.taxPercentage
               }
               fullWidth
+              className="manage-tax-field"
             />
-
             <Button
               type="submit"
               variant="contained"
-              color="primary"
-              size="small"
-              sx={{ textTransform: "none", alignSelf: "flex-start" }}
+              className="manage-tax-submit-btn"
             >
               Update Tax
             </Button>
           </Box>
         </Paper>
 
-        <Paper elevation={2} sx={{ p: 2, borderRadius: 2, mt: 3 }}>
-          <Typography variant="subtitle1" gutterBottom fontWeight="bold">
-            Current Country Taxes
-          </Typography>
+        <Paper elevation={0} className="manage-tax-table-card">
+          <h3 className="manage-tax-table-title">Current Country Taxes</h3>
           <TableContainer>
-            <Table size="small">
+            <Table size="small" className="manage-tax-table">
               <TableHead>
                 <TableRow>
-                  <TableCell>
-                    <strong>Country</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Tax Name</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Tax (%)</strong>
-                  </TableCell>
+                  <TableCell>Country</TableCell>
+                  <TableCell>Tax Name</TableCell>
+                  <TableCell>Tax (%)</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -235,7 +224,7 @@ export default function ManageTaxPage() {
             </Table>
           </TableContainer>
         </Paper>
-      </Container>
+      </div>
     </div>
   );
 }
