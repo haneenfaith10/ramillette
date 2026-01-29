@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
+import AdminHeader from "../../AdminHeader/AdminHeader";
 
 export default function CountryConfiguration() {
   const [countries, setCountries] = useState([]);
@@ -157,127 +158,127 @@ export default function CountryConfiguration() {
 
   return (
     <div className="country-config">
-      <h2>Manage Countries</h2>
-      <form
-        onSubmit={formik.handleSubmit}
-        className="country-form"
-        encType="multipart/form-data"
-      >
-        <div>
-          <input
-            name="name"
-            placeholder="Country Name"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.name && formik.errors.name && (
-            <div className="form-error">{formik.errors.name}</div>
-          )}
-        </div>
-        <div>
-          <input
-            name="code"
-            placeholder="Country Code"
-            value={formik.values.code}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            maxLength={3}
-            // disabled={editing !== null} // Optional: disable code editing when updating
-          />
-          {formik.touched.code && formik.errors.code && (
-            <div className="form-error">{formik.errors.code}</div>
-          )}
-        </div>
-        <div>
-          <input
-            name="currency"
-            placeholder="Currency"
-            value={formik.values.currency}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.currency && formik.errors.currency && (
-            <div className="form-error">{formik.errors.currency}</div>
-          )}
-        </div>
-        <div>
-          <input
-            name="priceLabel"
-            placeholder="Price Label (e.g., ₹, $, €)"
-            value={formik.values.priceLabel}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.priceLabel && formik.errors.priceLabel && (
-            <div className="form-error">{formik.errors.priceLabel}</div>
-          )}
-        </div>
-
-        <div>
-          {/* Flag upload input */}
-          <input
-            type="file"
-            name="flag"
-            accept="image/*"
-            ref={imageRef}
-            onChange={(e) => {
-              const file = e.currentTarget.files[0];
-              setFlagFile(file);
-              if (file) {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                  setPreviewUrl(reader.result);
-                };
-                reader.readAsDataURL(file);
-              } else {
-                setPreviewUrl(null);
-              }
-            }}
-          />
-
-          {/* Image preview */}
-          {previewUrl && (
-            <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-              <strong>Flag Preview:</strong>
-              <br />
-              <img
-                src={previewUrl}
-                alt="Flag Preview"
-                style={{
-                  width: "80px",
-                  height: "auto",
-                  borderRadius: "4px",
-                  marginTop: "5px",
+      <AdminHeader title="Manage Countries" />
+      <div className="country-config-form-card">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="country-form"
+          encType="multipart/form-data"
+        >
+          <div className="country-config-form-group">
+            <label htmlFor="country-name">Country Name</label>
+            <input
+              id="country-name"
+              name="name"
+              placeholder="e.g. India"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.name && formik.errors.name && (
+              <div className="form-error">{formik.errors.name}</div>
+            )}
+          </div>
+          <div className="country-config-form-group">
+            <label htmlFor="country-code">Country Code</label>
+            <input
+              id="country-code"
+              name="code"
+              placeholder="e.g. IN"
+              value={formik.values.code}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              maxLength={3}
+            />
+            {formik.touched.code && formik.errors.code && (
+              <div className="form-error">{formik.errors.code}</div>
+            )}
+          </div>
+          <div className="country-config-form-group">
+            <label htmlFor="country-currency">Currency</label>
+            <input
+              id="country-currency"
+              name="currency"
+              placeholder="e.g. INR"
+              value={formik.values.currency}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.currency && formik.errors.currency && (
+              <div className="form-error">{formik.errors.currency}</div>
+            )}
+          </div>
+          <div className="country-config-form-group">
+            <label htmlFor="country-priceLabel">Price Label</label>
+            <input
+              id="country-priceLabel"
+              name="priceLabel"
+              placeholder="e.g. ₹, $, €"
+              value={formik.values.priceLabel}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.priceLabel && formik.errors.priceLabel && (
+              <div className="form-error">{formik.errors.priceLabel}</div>
+            )}
+          </div>
+          <div className="country-config-form-group full-width">
+            <label htmlFor="country-flag">Flag</label>
+            <div className="country-config-flag-zone">
+              <input
+                id="country-flag"
+                type="file"
+                name="flag"
+                accept="image/*"
+                ref={imageRef}
+                onChange={(e) => {
+                  const file = e.currentTarget.files[0];
+                  setFlagFile(file);
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      setPreviewUrl(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                  } else {
+                    setPreviewUrl(null);
+                  }
                 }}
               />
+              {previewUrl && (
+                <div className="country-config-flag-preview-wrap">
+                  <strong>Preview</strong>
+                  <img src={previewUrl} alt="Flag Preview" />
+                </div>
+              )}
             </div>
-          )}
-        </div>
-
-        <button type="submit" className="submit-btn">
-          {editing ? "Update" : "Add"} Country
-        </button>
-
-        {editing && (
-          <button
-            type="button"
-            className="cancel-btn"
-            onClick={() => {
-              setEditing(null);
-              formik.resetForm();
-              setFlagFile(null);
-              setPreviewUrl(null);
-              imageRef.current.value = null;
-            }}
-          >
-            Cancel
-          </button>
-        )}
-      </form>
+          </div>
+          <div className="country-config-form-actions">
+            <button type="submit" className="submit-btn">
+              {editing ? "Update" : "Add"} Country
+            </button>
+            {editing && (
+              <button
+                type="button"
+                className="cancel-btn"
+                onClick={() => {
+                  setEditing(null);
+                  formik.resetForm();
+                  setFlagFile(null);
+                  setPreviewUrl(null);
+                  imageRef.current.value = null;
+                }}
+              >
+                Cancel
+              </button>
+            )}
+          </div>
+        </form>
+      </div>
 
       {countries && countries.length > 0 ? (
-        <table className="country-table">
+        <div className="country-config-table-wrap">
+          <table className="country-table">
           <thead>
             <tr>
               <th>Name</th>
@@ -297,25 +298,22 @@ export default function CountryConfiguration() {
                 <td>{c.name}</td>
                 <td>{c.code}</td>
                 <td>{c.currency}</td>
-                <td>
+                <td className="country-flag-cell">
                   {c.flagUrl ? (
                     <img
                       src={`${import.meta.env.VITE_BASE_URL}${c.flagUrl}`}
                       alt={`${c.name} Flag`}
-                      style={{
-                        width: "40px",
-                        height: "auto",
-                        // borderRadius: "3px",
-                        border: "1px solid black",
-                        borderRadius: "50%",
-                      }}
                     />
                   ) : (
-                    "No flag"
+                    <span className="no-flag">No flag</span>
                   )}
                 </td>
                 <td>{c.priceLabel || "-"}</td>
-                <td>{c.isActive ? "Yes" : "No"}</td>
+                <td>
+                  <span className={c.isActive ? "status-yes" : "status-no"}>
+                    {c.isActive ? "Yes" : "No"}
+                  </span>
+                </td>
                 <td>
                   <label className="switch">
                     <input
@@ -337,20 +335,23 @@ export default function CountryConfiguration() {
                   </label>
                 </td>
                 <td>
-                  <button className="edit-btn" onClick={() => handleEdit(c)}>
-                    Edit
-                  </button>
-                  <button
-                    className="delete-btn"
-                    onClick={() => handleDelete(c._id)}
-                  >
-                    Delete
-                  </button>
+                  <div className="country-actions">
+                    <button className="edit-btn" onClick={() => handleEdit(c)}>
+                      Edit
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(c._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
       ) : (
         <div className="no-data-fallback">No country found.</div>
       )}
