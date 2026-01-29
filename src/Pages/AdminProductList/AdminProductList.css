@@ -1,80 +1,297 @@
+/* Admin Product List – Products page */
+
+:root {
+  --productlist-bg: #f5f4f0;
+  --productlist-surface: #ffffff;
+  --productlist-border: #e8e9ed;
+  --productlist-border-light: #f0f1f5;
+  --productlist-text: #1a1d24;
+  --productlist-text-muted: #6b7280;
+  --productlist-accent: #c9a227;
+  --productlist-accent-hover: #b8921f;
+  --productlist-accent-light: rgba(201, 162, 39, 0.12);
+  --productlist-success: #0d9488;
+  --productlist-success-bg: #ccfbf1;
+  --productlist-error: #dc2626;
+  --productlist-error-bg: #fef2f2;
+  --productlist-radius: 12px;
+  --productlist-radius-sm: 8px;
+  --productlist-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+  --productlist-shadow-hover: 0 4px 20px rgba(15, 23, 42, 0.08);
+}
+
+/* Page container */
 .admin-product-list-main-container {
   width: 100%;
-  min-height: 100vh;
-  background-color: #fcfcfc;
+  min-height: 100%;
+  padding: 1.5rem 1.75rem 2rem;
+  background: linear-gradient(160deg, #faf9f6 0%, var(--productlist-bg) 50%, #eeede8 100%);
+  font-family: "Albert Sans", system-ui, -apple-system, sans-serif;
 }
 
-.admin-product-list-container {
-  width: 100%;
-  height: 100%;
+/* Filter card */
+.admin-product-list-filters {
+  border-radius: var(--productlist-radius) !important;
+  border: 1px solid var(--productlist-border-light) !important;
+  box-shadow: var(--productlist-shadow) !important;
+  padding: 1.25rem 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  background: var(--productlist-surface) !important;
 }
 
-/* Retaining some utility classes if needed, but mostly relying on MUI sx */
-.admin-product-list-image {
-  width: 45px;
-  height: 45px;
-  border-radius: 8px;
-  object-fit: cover;
-  border: 1px solid #eee;
+.admin-product-list-filters .MuiOutlinedInput-root {
+  border-radius: var(--productlist-radius-sm) !important;
+  background: #fafbfc !important;
 }
 
-.product-empty-container {
-  width: 100%;
-  height: 20rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #fafafa;
-  border: 1px dashed #ccc;
-  border-radius: 12px;
-  margin-top: 2rem;
-  color: #888;
+.admin-product-list-filters .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--productlist-accent) !important;
 }
 
-/* Adjusting scrollbar for table container if needed */
-.MuiTableContainer-root {
+.admin-product-list-filters .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--productlist-accent) !important;
+  border-width: 1px !important;
+}
+
+.admin-product-list-filters .MuiInputLabel-root.Mui-focused {
+  color: var(--productlist-accent) !important;
+}
+
+.admin-product-list-filters .MuiSelect-select,
+.admin-product-list-filters .MuiInputBase-input {
+  font-size: 0.9rem !important;
+}
+
+.admin-product-list-filters .MuiFormControl-root {
+  border-radius: var(--productlist-radius-sm);
+}
+
+.admin-product-list-add-btn {
+  background: linear-gradient(180deg, #d4af37 0%, var(--productlist-accent) 100%) !important;
+  color: #fff !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  padding: 0.5rem 1.25rem !important;
+  border-radius: var(--productlist-radius-sm) !important;
+  box-shadow: 0 2px 8px rgba(201, 162, 39, 0.3) !important;
+  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s !important;
+}
+
+.admin-product-list-add-btn:hover {
+  background: linear-gradient(180deg, var(--productlist-accent) 0%, var(--productlist-accent-hover) 100%) !important;
+  box-shadow: 0 4px 14px rgba(201, 162, 39, 0.4) !important;
+  transform: translateY(-1px) !important;
+  filter: brightness(1.02) !important;
+}
+
+.admin-product-list-clear-btn {
+  text-transform: none !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+}
+
+/* Table card */
+.admin-product-list-table-card {
+  border-radius: var(--productlist-radius) !important;
+  border: 1px solid var(--productlist-border-light) !important;
+  box-shadow: var(--productlist-shadow) !important;
+  overflow: hidden !important;
+  background: var(--productlist-surface) !important;
+}
+
+.admin-product-list-table-card .MuiTableContainer-root {
   scrollbar-width: thin;
-  scrollbar-color: #ccc transparent;
+  scrollbar-color: var(--productlist-border) transparent;
 }
 
-.MuiTableContainer-root::-webkit-scrollbar {
+.admin-product-list-table-card .MuiTableContainer-root::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
-.MuiTableContainer-root::-webkit-scrollbar-thumb {
-  background-color: #ccc;
+.admin-product-list-table-card .MuiTableContainer-root::-webkit-scrollbar-thumb {
+  background: var(--productlist-border);
   border-radius: 10px;
 }
 
-/* Custom responsiveness for filters if Box isn't enough */
-@media (max-width: 600px) {
+.admin-product-list-table-card .MuiTableHead-root {
+  background: linear-gradient(180deg, #f8f9fc 0%, #f2f3f7 100%) !important;
+}
+
+.admin-product-list-table-card .MuiTableRow-root:hover .MuiTableCell-root {
+  background: rgba(201, 162, 39, 0.04) !important;
+}
+
+.admin-product-list-table-card .MuiTableCell-head {
+  font-weight: 700 !important;
+  font-size: 0.8rem !important;
+  color: var(--productlist-text) !important;
+  letter-spacing: 0.02em !important;
+  padding: 1rem 16px !important;
+  border-bottom: 1px solid var(--productlist-border) !important;
+}
+
+.admin-product-list-table-card .MuiTableCell-body {
+  font-size: 0.875rem !important;
+  color: var(--productlist-text) !important;
+  padding: 0.9rem 16px !important;
+  border-bottom: 1px solid var(--productlist-border-light) !important;
+}
+
+.admin-product-list-table-card .MuiTableRow-root:last-child .MuiTableCell-body {
+  border-bottom: none !important;
+}
+
+/* Status chip */
+.admin-product-list-table-card .MuiChip-colorSuccess {
+  background: var(--productlist-success-bg) !important;
+  color: var(--productlist-success) !important;
+  font-weight: 600 !important;
+  border: none !important;
+}
+
+.admin-product-list-table-card .MuiChip-colorError {
+  background: var(--productlist-error-bg) !important;
+  color: var(--productlist-error) !important;
+  font-weight: 600 !important;
+  border: none !important;
+}
+
+/* Discount chip – gold tint */
+.admin-product-list-discount-chip {
+  background: var(--productlist-accent-light) !important;
+  color: var(--productlist-accent-hover) !important;
+  font-weight: 700 !important;
+  font-size: 0.8rem !important;
+  border: none !important;
+}
+
+/* Country chips */
+.admin-product-list-table-card .MuiChip-outlined {
+  border-color: var(--productlist-border) !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+}
+
+/* Product image in table */
+.admin-product-list-table-card .MuiAvatar-rounded {
+  border-radius: var(--productlist-radius-sm) !important;
+  border: 1px solid var(--productlist-border-light) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Action buttons */
+.admin-product-list-action-btn {
+  color: var(--productlist-accent) !important;
+  transition: color 0.2s, background 0.2s !important;
+}
+
+.admin-product-list-action-btn:hover {
+  color: var(--productlist-accent-hover) !important;
+  background: var(--productlist-accent-light) !important;
+}
+
+/* Pagination */
+.admin-product-list-table-card .MuiTablePagination-root {
+  border-top: 1px solid var(--productlist-border-light) !important;
+  background: #fafbfc !important;
+  font-size: 0.875rem !important;
+}
+
+.admin-product-list-table-card .MuiTablePagination-selectLabel,
+.admin-product-list-table-card .MuiTablePagination-displayedRows {
+  font-size: 0.85rem !important;
+  color: var(--productlist-text-muted) !important;
+}
+
+.admin-product-list-table-card .MuiTablePagination-actions .MuiIconButton-root {
+  color: var(--productlist-accent) !important;
+}
+
+.admin-product-list-table-card .MuiTablePagination-actions .MuiIconButton-root:hover {
+  background: var(--productlist-accent-light) !important;
+  color: var(--productlist-accent-hover) !important;
+}
+
+.admin-product-list-table-card .MuiTablePagination-actions .MuiIconButton-root.Mui-disabled {
+  color: var(--productlist-text-muted) !important;
+  opacity: 0.6 !important;
+}
+
+/* Empty state */
+.admin-product-list-empty {
+  border-radius: var(--productlist-radius) !important;
+  border: 2px dashed var(--productlist-border) !important;
+  background: linear-gradient(180deg, #fcfcfd 0%, #f6f7fa 100%) !important;
+  padding: 3rem 2rem !important;
+  text-align: center !important;
+}
+
+.admin-product-list-empty .MuiTypography-root {
+  font-size: 1rem !important;
+  color: var(--productlist-text-muted) !important;
+  font-weight: 500 !important;
+}
+
+/* Product name cell – slight emphasis */
+.admin-product-list-product-name {
+  font-weight: 600 !important;
+  color: var(--productlist-text) !important;
+}
+
+/* Rating cell */
+.admin-product-list-rating {
+  font-weight: 600 !important;
+  color: var(--productlist-text) !important;
+}
+
+/* Legacy / utility */
+.admin-product-list-image {
+  width: 45px;
+  height: 45px;
+  border-radius: var(--productlist-radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--productlist-border-light);
+}
+
+.product-empty-container {
+  width: 100%;
+  min-height: 18rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, #fcfcfd 0%, #f6f7fa 100%);
+  border: 2px dashed var(--productlist-border);
+  border-radius: var(--productlist-radius);
+  margin-top: 1.5rem;
+  color: var(--productlist-text-muted);
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
   .admin-product-list-main-container {
+    padding: 1rem 1.25rem 1.5rem;
+  }
+
+  .admin-product-list-filters {
     padding: 1rem !important;
   }
 }
 
-.css-1dab4qp {
-  justify-content: start !important;
-  gap: 10px !important;
-}
+@media (max-width: 600px) {
+  .admin-product-list-main-container {
+    padding: 0.75rem 1rem 1.25rem !important;
+  }
 
-.css-15cumcu-MuiTableCell-root {
-  text-align: start;
-}
+  .admin-product-list-filters {
+    padding: 0.75rem 1rem !important;
+  }
 
-.css-14y13q2-MuiTableCell-root {
-  text-align: start;
-}
-
-.css-1brzdu3 {
-  justify-content: start !important;
-}
-
-.css-w2roj6 {
-  justify-content: start !important;
-}
-
-.css-45uj6g-MuiButtonBase-root-MuiButton-root {
-  box-shadow: none !important;
+  .admin-product-list-table-card .MuiTableCell-head,
+  .admin-product-list-table-card .MuiTableCell-body {
+    padding: 0.6rem 10px !important;
+    font-size: 0.8rem !important;
+  }
 }

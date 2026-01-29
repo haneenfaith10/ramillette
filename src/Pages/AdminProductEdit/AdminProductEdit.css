@@ -1,155 +1,689 @@
+/* AdminProductEdit.css – Edit Product (matches Add Product design system) */
+
+:root {
+  --editproduct-card-bg: #ffffff;
+  --editproduct-border: #e8e9ed;
+  --editproduct-border-light: #f0f1f5;
+  --editproduct-text: #1a1d24;
+  --editproduct-text-muted: #6b7280;
+  --editproduct-accent: #c9a227;
+  --editproduct-accent-light: rgba(201, 162, 39, 0.12);
+  --editproduct-accent-hover: #b8921f;
+  --editproduct-danger: #dc2626;
+  --editproduct-danger-bg: #fef2f2;
+  --editproduct-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+  --editproduct-shadow-hover: 0 8px 30px rgba(15, 23, 42, 0.08);
+  --editproduct-radius: 12px;
+  --editproduct-radius-sm: 8px;
+  --editproduct-input-bg: #fafbfc;
+  --editproduct-section-bg: #f8f9fc;
+}
+
+/* Page container */
 .admin-edit-product-main-container {
-    width: 100%;
-    height: 100%;
-    padding: 1rem;
-    overflow-y: scroll;
+  width: 100%;
+  min-height: 100%;
+  padding: 1.75rem 2rem 3rem;
+  background: linear-gradient(160deg, #faf9f6 0%, #f5f4f0 50%, #f0efe9 100%);
+  overflow-y: auto;
+  font-family: "Albert Sans", system-ui, -apple-system, sans-serif;
+}
+
+.admin-edit-product-main-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admin-edit-product-main-container::-webkit-scrollbar-thumb {
+  background: var(--editproduct-border);
+  border-radius: 10px;
+}
+
+.admin-edit-product-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Form card – same grid layout as Add Product */
+.admin-edit-product-form {
+  background: var(--editproduct-card-bg);
+  padding: 2.25rem 2.5rem 2.5rem;
+  border-radius: var(--editproduct-radius);
+  box-shadow: var(--editproduct-shadow);
+  border: 1px solid var(--editproduct-border-light);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  transition: box-shadow 0.2s ease;
+}
+
+.admin-edit-product-form:focus-within {
+  box-shadow: var(--editproduct-shadow-hover);
+}
+
+/* Full-width sections in edit form */
+.admin-edit-product-form > .variant-section,
+.admin-edit-product-form > .admin-add-product-images-preview-container,
+.admin-edit-product-form > .badge-selector-container,
+.admin-edit-product-form > button.admin-add-product-submit-btn,
+.admin-edit-product-form .admin-add-product-form-group:has(textarea),
+.admin-edit-product-form .admin-add-product-form-group:has(.admin-add-product-input-custom-file),
+.admin-edit-product-form .admin-add-product-form-group:has(.admin-add-product-faq-container) {
+  grid-column: 1 / -1;
+}
+
+/* Form groups & labels (admin-add-product-* used in edit JSX) */
+.admin-edit-product-form .admin-add-product-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.admin-edit-product-form .admin-add-product-form-group label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--editproduct-text);
+  letter-spacing: 0.01em;
+  display: block;
+}
+
+.admin-edit-product-form .admin-add-product-form-group label sub {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--editproduct-text-muted);
+  margin-left: 2px;
+}
+
+.admin-edit-product-form .admin-add-product-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Inputs & textareas */
+.admin-edit-product-form .admin-add-product-input,
+.admin-edit-product-form .admin-add-product-input-wrapper textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--editproduct-radius-sm);
+  border: 1px solid var(--editproduct-border);
+  font-size: 0.9rem;
+  background: var(--editproduct-input-bg);
+  color: var(--editproduct-text);
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.admin-edit-product-form .admin-add-product-input::placeholder,
+.admin-edit-product-form .admin-add-product-input-wrapper textarea::placeholder {
+  color: var(--editproduct-text-muted);
+  opacity: 0.8;
+}
+
+.admin-edit-product-form .admin-add-product-input:hover,
+.admin-edit-product-form .admin-add-product-input-wrapper textarea:hover {
+  border-color: #d1d3d9;
+}
+
+.admin-edit-product-form .admin-add-product-input:focus,
+.admin-edit-product-form .admin-add-product-input-wrapper textarea:focus {
+  outline: none;
+  border-color: var(--editproduct-accent);
+  background: #fff;
+  box-shadow: 0 0 0 3px var(--editproduct-accent-light);
+}
+
+.admin-edit-product-form .admin-add-product-input-wrapper textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* Error messages */
+.admin-edit-product-form .error-message {
+  font-size: 0.8rem;
+  color: var(--editproduct-danger);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.admin-edit-product-form .error-message::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--editproduct-danger);
+}
+
+/* Variant section */
+.admin-edit-product-form .variant-section {
+  padding: 1.5rem 1.75rem;
+  border: 1px solid var(--editproduct-border-light);
+  border-radius: var(--editproduct-radius);
+  background: var(--editproduct-section-bg);
+  margin-top: 0.5rem;
+}
+
+.admin-edit-product-form .variant-section h4 {
+  margin: 0 0 1.25rem 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--editproduct-text);
+  letter-spacing: 0.02em;
+}
+
+.admin-edit-product-form .variant-section > div {
+  margin-bottom: 1rem;
+}
+
+.admin-edit-product-form .variant-section p {
+  font-size: 0.8rem;
+  color: var(--editproduct-text-muted);
+  margin: 0 0 0.5rem 0;
+}
+
+.admin-edit-product-form .variant-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.admin-edit-product-form .variant-row input {
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--editproduct-border);
+  border-radius: var(--editproduct-radius-sm);
+  font-size: 0.9rem;
+  background: #fff;
+  color: var(--editproduct-text);
+  flex: 1;
+  min-width: 100px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.admin-edit-product-form .variant-row input:focus {
+  outline: none;
+  border-color: var(--editproduct-accent);
+  box-shadow: 0 0 0 2px var(--editproduct-accent-light);
+}
+
+.admin-edit-product-form .variant-row button {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: var(--editproduct-danger-bg);
+  color: var(--editproduct-danger);
+  border: 1px solid #fecaca;
+  border-radius: var(--editproduct-radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+}
+
+.admin-edit-product-form .variant-row button:hover {
+  background: #fecaca;
+  color: #b91c1c;
+}
+
+.admin-edit-product-form .variant-section > button {
+  margin-top: 0.5rem;
+  background: transparent;
+  color: var(--editproduct-accent);
+  border: 1px dashed var(--editproduct-accent);
+  padding: 0.6rem 1rem;
+  border-radius: var(--editproduct-radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.admin-edit-product-form .variant-section > button:hover {
+  background: var(--editproduct-accent-light);
+  border-color: var(--editproduct-accent);
+}
+
+/* Submit button */
+.admin-edit-product-form .admin-add-product-submit-btn {
+  margin-top: 1.5rem;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(180deg, #d4af37 0%, var(--editproduct-accent) 100%);
+  color: #fff;
+  border: none;
+  border-radius: var(--editproduct-radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  width: 100%;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+  box-shadow: 0 2px 8px rgba(201, 162, 39, 0.35);
+}
+
+.admin-edit-product-form .admin-add-product-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(201, 162, 39, 0.4);
+  filter: brightness(1.05);
+}
+
+.admin-edit-product-form .admin-add-product-submit-btn:active {
+  transform: translateY(0);
+}
+
+/* Image upload */
+.admin-edit-product-form .admin-add-product-input-custom-file {
+  width: 100%;
+  min-height: 200px;
+  border: 2px dashed var(--editproduct-border);
+  border-radius: var(--editproduct-radius);
+  background: linear-gradient(180deg, #fcfcfd 0%, #f6f7fa 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+  cursor: pointer;
+}
+
+.admin-edit-product-form .admin-add-product-input-custom-file:hover {
+  border-color: var(--editproduct-accent);
+  background: var(--editproduct-accent-light);
+  box-shadow: 0 0 0 1px var(--editproduct-accent-light);
+}
+
+.admin-edit-product-form .custom-file-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.admin-edit-product-form .admin-add-product-input-custom-file-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.admin-edit-product-form .admin-add-product-input-custom-file-btn svg {
+  color: var(--editproduct-accent);
+  font-size: 2.75rem;
+  opacity: 0.9;
+}
+
+.admin-edit-product-form .admin-add-product-input-custom-file-btn p {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--editproduct-text);
+}
+
+/* Image previews (SortableImage uses admin-add-product-* classes) */
+.admin-edit-product-form .admin-add-product-images-preview-container {
+  margin-top: 1rem;
+}
+
+.admin-edit-product-form .admin-add-product-images-preview-container > p {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--editproduct-text);
+  margin: 0 0 0.75rem 0;
+}
+
+.admin-edit-product-form .admin-add-product-images-preview-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.admin-edit-product-form .admin-add-product-images-preview {
+  width: 112px;
+  height: 112px;
+  position: relative;
+  border-radius: var(--editproduct-radius-sm);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--editproduct-border-light);
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.admin-edit-product-form .admin-add-product-images-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.admin-edit-product-form .drag-handle {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--editproduct-text-muted);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.admin-edit-product-form .admin-add-product-images-preview label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 4px 6px;
+  background: rgba(0, 0, 0, 0.5);
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.admin-edit-product-form .admin-add-product-image-delete-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 26px;
+  height: 26px;
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--editproduct-danger);
+  font-size: 1.1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: background 0.2s, transform 0.2s;
+  z-index: 1;
+}
+
+.admin-edit-product-form .admin-add-product-image-delete-btn:hover {
+  background: var(--editproduct-danger-bg);
+  transform: scale(1.08);
+}
+
+/* Badge selector (BadgeSelector component) */
+.admin-edit-product-form .badge-selector-container {
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--editproduct-border-light);
+  border-radius: var(--editproduct-radius);
+  background: var(--editproduct-section-bg);
+}
+
+.admin-edit-product-form .badge-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--editproduct-text);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.admin-edit-product-form .badge-select-box {
+  background: #fff;
+  border: 1px solid var(--editproduct-border);
+  padding: 0.7rem 1rem;
+  border-radius: var(--editproduct-radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: border-color 0.2s;
+}
+
+.admin-edit-product-form .badge-select-box:hover {
+  border-color: var(--editproduct-accent);
+}
+
+.admin-edit-product-form .badge-select-box .arrow {
+  font-size: 0.7rem;
+  color: var(--editproduct-text-muted);
+}
+
+.admin-edit-product-form .badge-select-dropdown {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: #fff;
+  border: 1px solid var(--editproduct-border);
+  border-radius: var(--editproduct-radius-sm);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.admin-edit-product-form .badge-option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admin-edit-product-form .badge-option:hover {
+  background: var(--editproduct-accent-light);
+}
+
+.admin-edit-product-form .badge-option img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.admin-edit-product-form .badge-preview-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.admin-edit-product-form .badge-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem 0.4rem 0.5rem;
+  background: #fff;
+  border: 1px solid var(--editproduct-border);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: var(--editproduct-text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.admin-edit-product-form .badge-card img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.admin-edit-product-form .badge-card .remove-btn {
+  margin-left: 2px;
+  padding: 0 4px;
+  background: none;
+  border: none;
+  color: var(--editproduct-text-muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.admin-edit-product-form .badge-card .remove-btn:hover {
+  color: var(--editproduct-danger);
+  background: var(--editproduct-danger-bg);
+}
+
+/* FAQ */
+.admin-edit-product-form .admin-add-product-faq-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.admin-edit-product-form .admin-add-product-faq-container label {
+  margin: 0;
+}
+
+.admin-edit-product-form .admin-add-product-faq-container button {
+  background: transparent;
+  color: var(--editproduct-accent);
+  border: 1px solid var(--editproduct-accent);
+  padding: 0.5rem 1rem;
+  border-radius: var(--editproduct-radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.admin-edit-product-form .admin-add-product-faq-container button:hover {
+  background: var(--editproduct-accent-light);
+  color: var(--editproduct-accent-hover);
+}
+
+.admin-edit-product-form .admin-add-product-faq-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: start;
+  padding: 1.25rem;
+  background: var(--editproduct-section-bg);
+  border: 1px solid var(--editproduct-border-light);
+  border-radius: var(--editproduct-radius-sm);
+}
+
+.admin-edit-product-form .admin-add-product-faq-section-item label,
+.admin-edit-product-form .admin-add-product-faq-section-item-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--editproduct-text-muted);
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+.admin-edit-product-form .admin-add-product-faq-section button {
+  margin-top: 1.6rem;
+  background: var(--editproduct-danger-bg);
+  color: var(--editproduct-danger);
+  border: 1px solid #fecaca;
+  padding: 0.65rem 1rem;
+  cursor: pointer;
+  border-radius: var(--editproduct-radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s;
+}
+
+.admin-edit-product-form .admin-add-product-faq-section button:hover {
+  background: #fecaca;
+  color: #b91c1c;
+}
+
+/* React-Select (scoped to edit form) */
+.admin-edit-product-form .admin-add-product-input-wrapper [class*="react-select"] {
+  font-size: 0.9rem;
+}
+
+.admin-edit-product-form [class*="control"] {
+  min-height: 42px;
+  border-radius: var(--editproduct-radius-sm);
+  border-color: var(--editproduct-border);
+}
+
+.admin-edit-product-form [class*="control"]:hover {
+  border-color: #d1d3d9;
+}
+
+.admin-edit-product-form [class*="control"][class*="--is-focused"] {
+  border-color: var(--editproduct-accent);
+  box-shadow: 0 0 0 3px var(--editproduct-accent-light);
+}
+
+/* Number input – remove spinners */
+.admin-edit-product-form input[type="number"]::-webkit-inner-spin-button,
+.admin-edit-product-form input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.admin-edit-product-form input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-edit-product-main-container {
+    padding: 1rem 1.25rem 2rem;
   }
-  .admin-edit-product-main-container::-webkit-scrollbar {
-    display: none;
-  }
-  .admin-edit-product-container {
-    width: 100%;
-    height: 100%;
-  }
+
   .admin-edit-product-form {
-    width: 100%;
-    height: fit-content;
-    display: flex;
+    grid-template-columns: 1fr;
+    padding: 1.5rem 1.25rem 1.75rem;
+    gap: 1.25rem;
+  }
+
+  .admin-edit-product-form .variant-row {
     flex-direction: column;
-    gap: 0.8rem;
-    margin-bottom: 2rem;
+    align-items: stretch;
   }
-  .admin-edit-product-form-group {
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
+
+  .admin-edit-product-form .variant-row input {
+    min-width: 0;
   }
-  .admin-edit-product-form-group label{
-    font-size: 14px;
-  }
-  .admin-edit-product-input-wrapper {
+
+  .admin-edit-product-form .variant-row button {
     width: 100%;
   }
-  .admin-edit-product-input {
-    padding: 0.5rem 0.5rem;
-    border-radius: 5px;
-    width: 100%;
-    border: 1px solid #ccc;
+
+  .admin-edit-product-form .admin-add-product-faq-section {
+    grid-template-columns: 1fr;
   }
-  .admin-edit-product-form-group > .admin-edit-product-input-wrapper > textarea {
-    padding: 0.5rem 0.5rem;
-    border-radius: 5px;
-    resize: none;
-    width: 100%;
-    border: 1px solid #ccc;
+
+  .admin-edit-product-form .admin-add-product-faq-section button {
+    margin-top: 0.5rem;
   }
-  
-  .admin-edit-product-submit-btn {
-    width: 100%;
-    height: 3rem;
-    background-color: #f0c14b;
-    border-radius: 5px;
-    border: 1px solid #a88734;
-  
-    font-size: 1.2rem;
-    cursor: pointer;
-    color: white;
+
+  .admin-edit-product-form .admin-add-product-submit-btn {
+    max-width: 100%;
   }
-  .admin-edit-product-submit-btn:hover {
-    background-color: #fcf4e0;
-    transition: all 0.3s ease-in-out;
-    color: #f0c14b;
+}
+
+@media (max-width: 480px) {
+  .admin-edit-product-form .admin-add-product-images-preview {
+    width: 96px;
+    height: 96px;
   }
-  .admin-edit-product-images-preview-container {
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .admin-edit-product-images-preview-section {
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    gap: 0.5rem;
-  }
-  .admin-edit-product-images-preview {
-    width: 8rem;
-    aspect-ratio: 1/1;
-    /* background-color: red; */
-    border-radius: 12px;
-    border: 1px solid #ccc;
-    position: relative;
-  }
-  .admin-edit-product-images-preview > img {
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-    object-fit: cover;
-  }
-  .admin-edit-product-image-delete-btn {
-    position: absolute;
-    top: -0.5rem;
-    right: -0.5rem;
-    background-color: rgb(242, 104, 104);
-    color: white;
-    border-radius: 50%;
-    width: 1.5rem;
-    height: 1.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-  }
-  .admin-edit-product-input-custom-file {
-    width: 100%;
-    height: 3rem;
-    position: relative;
-    overflow: hidden;
-    border-radius: 5px;
-  }
-  
-  .admin-edit-product-input-custom-file-btn {
-    width: 100%;
-    height: 100%;
-    background-color: #f0c14b;
-    border: 1px solid #a88734;
-    font-size: 1rem;
-    /* font-weight: bold; */
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 5px;
-    gap: 0.5rem;
-  }
-  .admin-edit-product-input-custom-file-btn > svg {
-    font-size: 24px;
-  }
-  .custom-file-input {
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 100px;
-    opacity: 0;
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-  }
-  
-  /* to remove the arrows in the number input fields  */
-  /* Chrome, Safari, Edge, Opera */
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  
-  /* Firefox */
-  input[type="number"] {
-    -moz-appearance: textfield;
-  }
-  
+}
