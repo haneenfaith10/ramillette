@@ -1,0 +1,149 @@
+/* SweetAlert2 theme – delete/confirm popups (admin design system) */
+
+/* Backdrop */
+.swal2-container {
+  background: rgba(15, 23, 42, 0.4) !important;
+  backdrop-filter: blur(4px);
+}
+
+/* Popup card */
+.swal2-popup {
+  padding: 0 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.18), 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid #e8e9ed !important;
+  background: #ffffff !important;
+  font-family: "Albert Sans", system-ui, -apple-system, sans-serif !important;
+  max-width: 420px !important;
+  overflow: hidden;
+}
+
+/* Icon (warning / success / error) */
+.swal2-icon {
+  margin: 1.25rem auto 0 !important;
+  border-width: 3px !important;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: #c9a227 !important;
+  color: #c9a227 !important;
+}
+
+.swal2-icon.swal2-warning [class^="swal2-icon-content"] {
+  color: #c9a227 !important;
+}
+
+.swal2-icon.swal2-success {
+  border-color: #0d9488 !important;
+  color: #0d9488 !important;
+}
+
+.swal2-icon.swal2-success [class^="swal2-icon-content"] {
+  color: #0d9488 !important;
+}
+
+.swal2-icon.swal2-error {
+  border-color: #dc2626 !important;
+  color: #dc2626 !important;
+}
+
+.swal2-icon.swal2-error [class^="swal2-icon-content"] {
+  color: #dc2626 !important;
+}
+
+/* Title */
+.swal2-title {
+  padding: 1.25rem 1.5rem 0.5rem !important;
+  font-size: 1.2rem !important;
+  font-weight: 700 !important;
+  color: #1a1d24 !important;
+  letter-spacing: 0.01em !important;
+  line-height: 1.35 !important;
+}
+
+/* Content text */
+.swal2-html-container {
+  padding: 0 1.5rem 1.25rem !important;
+  margin: 0 !important;
+  font-size: 0.95rem !important;
+  color: #6b7280 !important;
+  line-height: 1.5 !important;
+}
+
+/* Actions (buttons container) */
+.swal2-actions {
+  margin: 0 !important;
+  padding: 0 1.5rem 1.5rem !important;
+  gap: 0.75rem !important;
+  flex-wrap: wrap !important;
+}
+
+/* Buttons – base */
+.swal2-styled {
+  margin: 0 !important;
+  padding: 0.65rem 1.35rem !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s !important;
+  font-family: inherit !important;
+  box-shadow: none !important;
+}
+
+.swal2-styled:focus {
+  box-shadow: none !important;
+}
+
+/* Confirm button (e.g. "Yes, delete it!") */
+.swal2-confirm {
+  background: linear-gradient(180deg, #d4af37 0%, #c9a227 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(201, 162, 39, 0.35) !important;
+}
+
+.swal2-confirm:hover {
+  background: linear-gradient(180deg, #c9a227 0%, #b8921f 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(201, 162, 39, 0.4) !important;
+  filter: brightness(1.05) !important;
+}
+
+/* Cancel button */
+.swal2-cancel {
+  background: #f0f1f5 !important;
+  color: #6b7280 !important;
+  border: 1px solid #e8e9ed !important;
+}
+
+.swal2-cancel:hover {
+  background: #e8e9ed !important;
+  color: #1a1d24 !important;
+  border-color: #d1d3d9 !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Success popup – optional green confirm */
+.swal2-popup.swal2-success .swal2-confirm {
+  background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%) !important;
+  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.35) !important;
+}
+
+.swal2-popup.swal2-success .swal2-confirm:hover {
+  background: linear-gradient(180deg, #0d9488 0%, #0f766e 100%) !important;
+  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4) !important;
+}
+
+/* Deny button (if used) – red */
+.swal2-deny {
+  background: #fef2f2 !important;
+  color: #dc2626 !important;
+  border: 1px solid #fecaca !important;
+}
+
+.swal2-deny:hover {
+  background: #fecaca !important;
+  color: #b91c1c !important;
+  transform: translateY(-1px) !important;
+}

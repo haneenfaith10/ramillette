@@ -459,7 +459,7 @@ export default function AddressList() {
     if (user?.id && id) {
       Swal.fire({
         title: "Are you sure?",
-        text: "You won't to delete the address!",
+        text: "You want to delete this address?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#edc862",

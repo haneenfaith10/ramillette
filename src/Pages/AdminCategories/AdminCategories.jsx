@@ -53,7 +53,7 @@ export default function AdminCategories() {
   function deleteCategoryItem(categoryId) {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't to delete the category!",
+      text: "You want to delete this category?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -151,7 +151,7 @@ export default function AdminCategories() {
                   <TableCell align="center">
                     <div style={{ display: "flex", gap: "10px", justifyContent: "start" }}>
                       <Link to={`/admin/edit-category/${row._id}`} className="admin-category-action-btn edit-btn">
-                        <MdOutlineEdit size={20} />
+                        <MdOutlineEdit color="white" size={20} />
                       </Link>
                       <button
                         className="admin-category-action-btn delete-btn"

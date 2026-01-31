@@ -40,7 +40,7 @@ import {
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#edc862",
+      main: "#c9a227",
       contrastText: "#fff",
     },
   },
@@ -49,7 +49,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#edc862",
+            borderColor: "#c9a227",
           },
         },
       },
@@ -194,10 +194,10 @@ export default function AdminProductList() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box className="admin-product-list-main-container" sx={{ p: 3 }}>
+      <Box className="admin-product-list-main-container">
         <AdminHeader title="Product List" />
 
-        <Paper elevation={0} sx={{ p: 2, mb: 3, border: '1px solid #eee', borderRadius: 2 }}>
+        <Paper elevation={0} className="admin-product-list-filters">
           <Box
             sx={{
               display: "flex",
@@ -291,6 +291,7 @@ export default function AdminProductList() {
                 <Button
                   variant="text"
                   color="error"
+                  className="admin-product-list-clear-btn"
                   onClick={() => {
                     setSearchText("");
                     setDebouncedSearch("");
@@ -308,16 +309,8 @@ export default function AdminProductList() {
 
             <Button
               variant="contained"
+              className="admin-product-list-add-btn"
               onClick={() => navigate("/admin/add-new-product")}
-              sx={{
-                backgroundColor: "#edc862",
-                color: "#fff",
-                '&:hover': {
-                  backgroundColor: "#dcb44e"
-                },
-                textTransform: 'none',
-                px: 3
-              }}
             >
               Create Product
             </Button>
@@ -325,19 +318,19 @@ export default function AdminProductList() {
         </Paper>
 
         {products.length > 0 ? (
-          <Paper elevation={0} sx={{ border: "1px solid #eee", borderRadius: 2, overflow: 'hidden' }}>
+          <Paper elevation={0} className="admin-product-list-table-card">
             <TableContainer>
               <Table sx={{ minWidth: 650 }}>
-                <TableHead sx={{ backgroundColor: '#f8f9fa' }}>
+                <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 600 }}>Sl No.</TableCell>
-                    <TableCell sx={{ fontWeight: 600 }}>Product Name</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 600 }}>Countries</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 600 }}>Discount</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 600 }}>Image</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 600 }}>Rating</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 600 }}>Status</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 600 }}>Actions</TableCell>
+                    <TableCell>Sl No.</TableCell>
+                    <TableCell>Product Name</TableCell>
+                    <TableCell align="center">Countries</TableCell>
+                    <TableCell align="center">Discount</TableCell>
+                    <TableCell align="center">Image</TableCell>
+                    <TableCell align="center">Rating</TableCell>
+                    <TableCell align="center">Status</TableCell>
+                    <TableCell align="center">Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -348,8 +341,8 @@ export default function AdminProductList() {
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell>{page * rowsPerPage + index + 1}</TableCell>
-                      <TableCell sx={{ fontWeight: 500 }}>
-                        <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                      <TableCell>
+                        <Typography variant="body2" className="admin-product-list-product-name">
                           {product.productName}
                         </Typography>
                       </TableCell>
@@ -370,9 +363,7 @@ export default function AdminProductList() {
                         <Chip
                           label={`${product.productDiscount}%`}
                           size="small"
-                          color="secondary"
-                          variant="soft"
-                          sx={{ fontWeight: 600, bgcolor: 'rgba(156, 39, 176, 0.1)', color: 'secondary.main' }}
+                          className="admin-product-list-discount-chip"
                         />
                       </TableCell>
                       <TableCell align="center">
@@ -383,11 +374,11 @@ export default function AdminProductList() {
                         />
                       </TableCell>
                       <TableCell align="center">
-                        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0.5 }}>
-                          <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0.5 }} className="admin-product-list-rating">
+                          <Typography variant="body2">
                             {product.productRating}
                           </Typography>
-                          <MdStarRate color="#faaf00" size={18} />
+                          <MdStarRate color="#f59e0b" size={18} />
                         </Box>
                       </TableCell>
                       <TableCell align="center">
@@ -405,22 +396,22 @@ export default function AdminProductList() {
                         />
                       </TableCell>
                       <TableCell align="center">
-                        <Box sx={{ display: "flex", justifyContent: "center", gap: 1 }}>
+                        <Box sx={{ display: "flex", justifyContent: "center", gap: 0.5 }}>
                           <IconButton
                             size="small"
+                            className="admin-product-list-action-btn"
                             onClick={() => navigate(`/admin/product-preview/${product._id}`)}
                             title="View"
-                            sx={{ color: '#edc862' }}
                           >
                             <FaRegEye size={18} />
                           </IconButton>
                           <IconButton
                             size="small"
+                            className="admin-product-list-action-btn"
                             component={Link}
                             to={`/admin/edit-product/${product._id}`}
                             state={{ product }}
                             title="Edit"
-                            sx={{ color: '#edc862' }}
                           >
                             <MdOutlineEdit size={18} />
                           </IconButton>
@@ -446,11 +437,10 @@ export default function AdminProductList() {
               onPageChange={handleChangePage}
               rowsPerPage={rowsPerPage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-              sx={{ borderTop: "1px solid #eee" }}
             />
           </Paper>
         ) : (
-          <Paper variant="outlined" sx={{ py: 10, textAlign: 'center', bgcolor: '#fafafa', borderRadius: 2 }}>
+          <Paper variant="outlined" className="admin-product-list-empty">
             <Typography color="textSecondary">No product available</Typography>
           </Paper>
         )}
