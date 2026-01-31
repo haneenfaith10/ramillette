@@ -121,14 +121,23 @@
 }
 
 .checkout-quantity-section input {
-  padding: 0.5rem;
+  width: 40px;
+  height: 2.25rem;
+  padding: 0;
   border-radius: 6px;
   border: 1px solid #d1d5db;
-  max-width: 50px;
   text-align: center;
   font-size: 15px;
   font-weight: 600;
   transition: border-color 0.2s;
+  -moz-appearance: textfield;
+  appearance: none;
+}
+
+.checkout-quantity-section input::-webkit-outer-spin-button,
+.checkout-quantity-section input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .checkout-quantity-section input:focus {

@@ -337,13 +337,6 @@
   margin-bottom: 12px;
 }
 
-.skeleton-button {
-  height: 40px;
-  width: 100%;
-  background: #f3f4f6;
-  border-radius: 8px;
-  margin-top: auto;
-}
 
 @keyframes shimmer {
   0% {
