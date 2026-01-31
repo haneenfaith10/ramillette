@@ -26,8 +26,8 @@ export default function Footer() {
       <div className="footer-wrap-sec">
         <div className="container">
           <div className="footer-main-content">
-            {/* Company Info Section */}
-            <div className="footer-section footer-company">
+            {/* Column 1: Branding (Logo, Description, Socials) */}
+            <div className="footer-branding-col">
               <div className="footer-logo">
                 <img
                   src={footerlogo}
@@ -89,95 +89,62 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Quick Links Section */}
-            <div className="footer-section footer-quick-links">
-              <h3 className="footer-section-title">Quick Links</h3>
-              <ul className="footer-links-list">
-                <li>
-                  <Link to={`/${selectedCountry.code}`}>Home</Link>
-                </li>
-                <li>
-                  <Link to={`/${selectedCountry.code}/product-list`}>
-                    All Products
-                  </Link>
-                </li>
-                <li>
-                  <Link to={`/${selectedCountry.code}/about`}>About Us</Link>
-                </li>
-                {user?.id && (
+            {/* Column 2: Navigation Links */}
+            <div className="footer-nav-col">
+              <div className="footer-links-group">
+                <h3 className="footer-section-title">Quick Links</h3>
+                <ul className="footer-links-list">
                   <li>
-                    <Link to={`/${selectedCountry.code}/profile/wishlist`}>
-                      My Wishlist
+                    <Link to={`/${selectedCountry.code}`}>Home</Link>
+                  </li>
+                  <li>
+                    <Link to={`/${selectedCountry.code}/product-list`}>
+                      All Products
                     </Link>
                   </li>
-                )}
-                {user?.id && (
                   <li>
-                    <Link to={`/${selectedCountry.code}/profile/orders`}>
-                      My Orders
-                    </Link>
+                    <Link to={`/${selectedCountry.code}/about`}>About Us</Link>
                   </li>
-                )}
-              </ul>
-            </div>
+                  {user?.id && (
+                    <li>
+                      <Link to={`/${selectedCountry.code}/profile/wishlist`}>
+                        My Wishlist
+                      </Link>
+                    </li>
+                  )}
+                </ul>
+              </div>
 
-            {/* Customer Service Section */}
-            <div className="footer-section footer-customer-service">
-              <h3 className="footer-section-title">Customer Service</h3>
-              <ul className="footer-links-list">
-                <li>
-                  <Link to={`/${selectedCountry.code}/contact`}>
-                    Contact Us
-                  </Link>
-                </li>
-                <li>
-                  <Link to={`/${selectedCountry.code}/terms-and-policies`}>
-                    Terms & Policies
-                  </Link>
-                </li>
-                {user?.id && (
+              <div className="footer-links-group">
+                <h3 className="footer-section-title">Customer Service</h3>
+                <ul className="footer-links-list">
                   <li>
-                    <Link to={`/${selectedCountry.code}/profile/addresses`}>
-                      My Addresses
+                    <Link to={`/${selectedCountry.code}/contact`}>
+                      Contact Us
                     </Link>
                   </li>
-                )}
-                {user?.id && (
                   <li>
-                    <Link to={`/${selectedCountry.code}/profile/details`}>
-                      My Account
+                    <Link to={`/${selectedCountry.code}/terms-and-policies`}>
+                      Terms & Policies
                     </Link>
                   </li>
-                )}
-              </ul>
+                  {user?.id && (
+                    <li>
+                      <Link to={`/${selectedCountry.code}/profile/addresses`}>
+                        My Addresses
+                      </Link>
+                    </li>
+                  )}
+                  {user?.id && (
+                    <li>
+                      <Link to={`/${selectedCountry.code}/profile/details`}>
+                        My Account
+                      </Link>
+                    </li>
+                  )}
+                </ul>
+              </div>
             </div>
-
-            {/* Legal & Info Section */}
-            {/* <div className="footer-section footer-legal">
-              <h3 className="footer-section-title">Legal & Info</h3>
-              <ul className="footer-links-list">
-                <li>
-                  <Link to={`/${selectedCountry.code}/terms-and-policies`}>
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link to={`/${selectedCountry.code}/terms-and-policies`}>
-                    Terms of Service
-                  </Link>
-                </li>
-                <li>
-                  <Link to={`/${selectedCountry.code}/terms-and-policies`}>
-                    Return Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link to={`/${selectedCountry.code}/terms-and-policies`}>
-                    Shipping Policy
-                  </Link>
-                </li>
-              </ul>
-            </div> */}
           </div>
 
           {/* Footer Bottom */}
