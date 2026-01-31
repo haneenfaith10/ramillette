@@ -228,7 +228,7 @@
   font-weight: 600;
   color: var(--admin-text-primary) !important;
   font-size: 1rem !important;
-  margin-bottom: 0.4rem !important;
+  /* margin-bottom: 0.4rem !important; */
 }
 
 .price-tag {

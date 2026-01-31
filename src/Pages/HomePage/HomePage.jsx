@@ -96,7 +96,7 @@ export default function HomePage() {
           <div className="product-cards-slider">
             {latestProducts && latestProducts.length > 0 ? (
               <Slider
-                infinite={true}
+                infinite={false}
                 speed={800}
                 slidesToShow={4}
                 slidesToScroll={1}
@@ -109,7 +109,7 @@ export default function HomePage() {
                     breakpoint: 1200,
                     settings: {
                       slidesToShow: 3,
-                      infinite: true,
+                      infinite: false,
                       autoplay: false,
                       arrows: true,
                     },
@@ -118,18 +118,29 @@ export default function HomePage() {
                     breakpoint: 991,
                     settings: {
                       slidesToShow: 2,
-                      infinite: true,
+                      infinite: false,
                       autoplay: false,
                       arrows: true,
                     },
                   },
                   {
+                    breakpoint: 600,
+                    settings: {
+                      slidesToShow: 1.6,
+                      infinite: false,
+                      autoplay: false,
+                      arrows: false,
+                      centerMode: false,
+                    },
+                  },
+                  {
                     breakpoint: 480,
                     settings: {
-                      slidesToShow: 1,
-                      infinite: true,
+                      slidesToShow: 1.6,
+                      infinite: false,
                       autoplay: false,
-                      arrows: true,
+                      arrows: false,
+                      centerMode: false,
                     },
                   },
                 ]}

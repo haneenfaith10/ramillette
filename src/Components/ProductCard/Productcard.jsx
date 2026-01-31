@@ -3,13 +3,72 @@ import "./Productcard.css";
 import { useState } from "react";
 import Popup from "../ProductPopup/ProductPopup";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { FaHeart, FaRegHeart, FaStar } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../services/wishlistApiServices";
+import { updateUserWishList } from "../../redux/slices/userSlice";
+import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Productcard(Props) {
   const { product, maxLength } = Props;
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useSelector((state) => state.user);
   const selectedCountry = useSelector((state) => state.user.selectedCountry);
   const [productPrice, setProductPrice] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // Wishlist logic (Sync with Productolistproductcard)
+  const wishlistProductIds = useMemo(() => {
+    if (!user?.wishlist) return new Set();
+    return new Set(
+      user.wishlist.map((item) =>
+        typeof item.product === "string" ? item.product : item.product?._id,
+      ),
+    );
+  }, [user?.wishlist]);
+
+  function isWishListed() {
+    return wishlistProductIds.has(product?._id);
+  }
+
+  async function addPRoductToWishlist(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (product._id && user.id) {
+      const response = await addToWishlist(
+        product?._id,
+        user.id,
+        selectedCountry._id,
+      );
+      if (response) {
+        dispatch(updateUserWishList({ user: response?.wishlist?.products }));
+      }
+    } else {
+      navigate("/login");
+    }
+  }
+
+  async function removeProductFromWishlist(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (product._id && user.id) {
+      const response = await removeFromWishlist(
+        product._id,
+        user.id,
+        selectedCountry._id,
+      );
+      if (response) {
+        dispatch(updateUserWishList({ user: response?.wishlist?.products }));
+      }
+    } else {
+      navigate("/login");
+    }
+  }
 
   useEffect(() => {
     if (
@@ -43,45 +102,53 @@ export default function Productcard(Props) {
                 alt="product-image-1"
               />
             </div>
-            <div className="product-hover-image">
-              <img
-                src={`${import.meta.env.VITE_BASE_URL}/${
-                  product?.productImages[1].path || product?.productImages[1]
-                }`}
-                alt="product-image-2"
-              />
-            </div>
-            {/* <div className="product-new-label">
-              <p>{product?.specialOffers[0]?.badge || "New"}</p>
-            </div> */}
-            {(product?.specialOffers?.length > 0 ||
-              product?.productDiscount > 0) && (
-              <div className="product-offer-label">
-                <p>
-                  {product?.specialOffers?.[0]?.discountValue ??
-                    product?.productDiscount}
-                  % OFF
-                </p>
+            {product?.productImages?.length > 1 && (
+              <div className="product-hover-image">
+                <img
+                  src={`${import.meta.env.VITE_BASE_URL}/${
+                    product?.productImages[1].path || product?.productImages[1]
+                  }`}
+                  alt="product-image-2"
+                />
               </div>
             )}
+            <button
+              className="wishlist-btn"
+              onClick={(e) =>
+                isWishListed()
+                  ? removeProductFromWishlist(e)
+                  : addPRoductToWishlist(e)
+              }
+            >
+              {isWishListed() ? (
+                <FaHeart color="#f43f5e" />
+              ) : (
+                <FaRegHeart color="#a1a1aa" />
+              )}
+            </button>
           </Link>
         </div>
         <div className="product-content">
-          <div className="product-info-section">
-            <Link
-              to={`/${selectedCountry?.code}/product-inner/${product?._id}`}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <h3>{product?.productName}</h3>
-            </Link>
-            <p>
-              {selectedCountry?.priceLabel}
-              {getDiscountedPrice(productPrice, product?.productDiscount)}
-              <span className="cutting-money">
+          <Link
+            to={`/${selectedCountry?.code}/product-inner/${product?._id}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <h3 className="product-name">{product?.productName}</h3>
+          </Link>
+          <div className="product-price-row">
+            <div className="price-details">
+              <p className="current-price">
                 {selectedCountry?.priceLabel}
-                {productPrice || 0}.00
-              </span>
-            </p>
+                {getDiscountedPrice(productPrice, product?.productDiscount)}
+              </p>
+              {product?.productDiscount > 0 && (
+                <p className="discount-tag">{product?.productDiscount}% Off</p>
+              )}
+            </div>
+            <div className="rating-badge">
+              <FaStar className="star-icon" />
+              <span>{product?.productRating || "4.9"}</span>
+            </div>
           </div>
         </div>
       </div>
