@@ -52,25 +52,39 @@
   margin-bottom: 30px;
 }
 
-.btn {
+.auth-btn {
   flex: 1;
   padding: 15px;
   font-size: 16px;
   border-radius: 9999px;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
-.btn-primary {
+.auth-btn-primary {
   background-color: var(--secondary-color);
   color: #fff;
-  border: none;
+  border: 1px solid var(--secondary-color);
 }
 
-.btn-outline {
+.auth-btn-primary:hover {
+  background-color: transparent;
+  color: var(--secondary-color);
+}
+
+.auth-btn-outline {
   background: transparent;
   border: 2px solid var(--secondary-color);
   color: var(--secondary-color);
+}
+
+.auth-btn-outline:hover {
+  background-color: var(--secondary-color);
+  color: #fff;
 }
 
 .return-link {
@@ -94,5 +108,22 @@
 @media (max-width: 600px) {
   .login-title {
     font-size: 3rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-title {
+    font-size: 2.5rem !important;
+    margin-bottom: 25px;
+  }
+
+  .button-group {
+    gap: 12px;
+  }
+
+  .auth-btn {
+    padding: 12px 10px;
+    font-size: 14px;
+    border-radius: 30px;
   }
 }

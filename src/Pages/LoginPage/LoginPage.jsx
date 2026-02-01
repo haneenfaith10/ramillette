@@ -17,18 +17,16 @@ import EyeCloseIcon from "../../assets/svg/eye-close.svg";
 import EyeOpenIcon from "../../assets/svg/eye-open.svg";
 import React, { useState } from "react";
 
-
-
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const selectedCountry = useSelector((state) => state.user.selectedCountry);
-const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .required("Email is required")
-      .test('email', 'Enter a valid email address', (value) => {
+      .test("email", "Enter a valid email address", (value) => {
         if (!value) return false;
         // For regular users, check standard email format
         return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value);
@@ -89,7 +87,7 @@ const [showPassword, setShowPassword] = useState(false);
               <p className="error-message">{errors?.email}</p>
             )}
           </div>
-       <div className="login-form-group" style={{ position: "relative" }}>
+          <div className="login-form-group" style={{ position: "relative" }}>
             <input
               type={showPassword ? "text" : "password"}
               name="password"
@@ -117,9 +115,19 @@ const [showPassword, setShowPassword] = useState(false);
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? (
-                <img src={EyeOpenIcon} alt="Show password" width={20} height={20} />
+                <img
+                  src={EyeOpenIcon}
+                  alt="Show password"
+                  width={20}
+                  height={20}
+                />
               ) : (
-                <img src={EyeCloseIcon} alt="Hide password" width={20} height={20} />
+                <img
+                  src={EyeCloseIcon}
+                  alt="Hide password"
+                  width={20}
+                  height={20}
+                />
               )}
             </button>
             {errors?.password && touched?.password && (
@@ -132,14 +140,14 @@ const [showPassword, setShowPassword] = useState(false);
           </Link>
           <div className="button-group">
             <button
-              className="create-btn"
+              className="auth-btn auth-btn-primary"
               disabled={isSubmitting}
               onClick={handleSubmit}
             >
               Sign in
             </button>
             <button
-              className="signin-btn"
+              className="auth-btn auth-btn-outline"
               type="button"
               onClick={() => navigate("/register")}
             >

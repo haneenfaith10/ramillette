@@ -120,10 +120,18 @@ function RegisterForm(Props) {
                     </label> */}
 
       <div className="button-group">
-        <button disabled={isSubmitting} className="create-btn" type="submit">
+        <button
+          disabled={isSubmitting}
+          className="auth-btn auth-btn-primary"
+          type="submit"
+        >
           {!isSubmitting ? "Create" : "Please Wait..."}
         </button>
-        <button className="signin-btn" onClick={() => navigate("/login")}>
+        <button
+          className="auth-btn auth-btn-outline"
+          type="button"
+          onClick={() => navigate("/login")}
+        >
           Sign in
         </button>
       </div>
