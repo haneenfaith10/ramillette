@@ -60,10 +60,7 @@ export default function AdminLogin() {
             <p className="error-message">{errors?.userName}</p>
           )}
         </div>
-        <div
-          className="admin-login-form-group"
-          style={{ position: "relative" }}
-        >
+        <div className="admin-login-form-group password-group">
           <input
             type={showPassword ? "text" : "password"}
             name="password"
@@ -72,23 +69,12 @@ export default function AdminLogin() {
             onChange={handleChange}
             onBlur={handleBlur}
             value={values?.password}
-            style={{ paddingRight: "40px" }} // Add space for the icon
           />
           <button
             type="button"
             className="eye-icon-btn"
             onClick={() => setShowPassword((prev) => !prev)}
             tabIndex={-1}
-            style={{
-              position: "absolute",
-              right: "18px",
-              top: "20px",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              padding: 0,
-              zIndex: 2,
-            }}
             aria-label={showPassword ? "Hide password" : "Show password"}
           >
             {showPassword ? (
