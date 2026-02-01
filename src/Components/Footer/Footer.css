@@ -264,6 +264,13 @@
     align-items: center;
     text-align: center;
     margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .footer-description {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .footer-nav-col {
@@ -308,79 +315,81 @@
 
 @media (max-width: 480px) {
   .footer-wrapper .container {
-    padding-left: 14px;
-    padding-right: 14px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .footer-wrap-sec {
-    padding: 30px 0 20px;
+    padding: 50px 0 30px;
   }
 
   .footer-main-content {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px 16px;
-    margin-bottom: 28px;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+    text-align: center;
   }
 
-  .footer-company {
-    grid-column: 1 / -1;
-  }
-
-  .footer-company {
-    margin-bottom: 0;
+  .footer-branding-col {
+    align-items: center;
+    text-align: center;
   }
 
   .footer-logo {
-    margin-bottom: 14px;
+    margin-bottom: 20px;
   }
 
   .footer-logo img {
-    width: 90px;
+    width: 130px;
   }
 
   .footer-description {
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.6;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
+    max-width: 100%;
   }
 
-  .footer-social-icons {
-    gap: 8px;
+  .footer-nav-col {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px 15px;
+    text-align: center;
   }
 
-  .footer-social {
-    width: 36px;
-    height: 36px;
-  }
-
-  .footer-social-icons .social-icon {
-    width: 18px;
-    height: 18px;
-  }
-
-  .footer-social-icons .social-icon img {
-    width: 18px;
-    height: 18px;
+  .footer-links-group {
+    align-items: center;
   }
 
   .footer-section-title {
-    font-size: 13px;
-    margin-bottom: 11px;
+    font-size: 15px;
+    margin-bottom: 15px;
   }
 
   .footer-links-list {
-    gap: 8px;
+    gap: 10px;
   }
 
   .footer-links-list li a {
-    font-size: 12px;
+    font-size: 13px;
+  }
+
+  .footer-social-icons {
+    justify-content: center;
+    gap: 15px;
   }
 
   .footer-bottom {
-    padding-top: 18px;
-    gap: 8px;
+    padding-top: 25px;
+    gap: 15px;
     text-align: center;
-    align-items: center;
-    flex-direction: column;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer-copyright p {
+    font-size: 13px;
+  }
+
+  .footer-payment-info p {
+    font-size: 12px;
   }
 }
