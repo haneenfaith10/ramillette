@@ -60,7 +60,9 @@ const TestimonialSlider = (Props) => {
             {reviews.map((testimonial, index) => (
               <div key={index} className="testimonial-slide">
                 <div className="testimonial-card">
-                  <FormatQuoteIcon className="quote-icon" />
+                  <div className="quote-icon-wrapper">
+                    <FormatQuoteIcon className="quote-icon" />
+                  </div>
                   <div className="review-content">
                     <p className="review-text">
                       {testimonial?.content ||
@@ -69,22 +71,22 @@ const TestimonialSlider = (Props) => {
                   </div>
                   <div className="testimonial-separator"></div>
                   <div className="testimonial-author-info">
-                  <img
-                    src={`${import.meta.env.VITE_BASE_URL}/${
-                      testimonial?.user?.userImage
-                    }`}
+                    <img
+                      src={`${import.meta.env.VITE_BASE_URL}/${
+                        testimonial?.user?.userImage
+                      }`}
                       alt={testimonial?.user?.firstName || "user"}
                       className="testimonial-avatar"
-                    onError={(e) => {
-                      e.currentTarget.src = UserAvatar;
-                    }}
-                  />
+                      onError={(e) => {
+                        e.currentTarget.src = UserAvatar;
+                      }}
+                    />
                     <div className="author-details">
                       <p className="author-name">
                         {testimonial?.user?.firstName || ""}{" "}
                         {testimonial?.user?.lastName || ""}
-            </p>
-          </div>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
