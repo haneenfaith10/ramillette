@@ -66,9 +66,9 @@
 }
 
 .product-cards-slider .slick-list {
-  overflow: visible; /* Changed from hidden to allow shadow to peek, or use large padding */
-  margin: 0 -5px;
-  padding: 15px 0; /* Increased padding to accommodate hover shadow */
+  overflow: hidden; /* Changed from visible to prevent horizontal bleed on mobile */
+  margin: 0 -10px;
+  padding: 20px 0; /* Added vertical padding for shadows */
 }
 
 .product-cards-slider .slick-track {
@@ -414,10 +414,10 @@
     padding: 0 5px;
   }
   .product-cards-slider .slick-list {
-    margin: 0 -3px;
+    margin: 0 -10px;
   }
   .product-cards-slider .slick-slide {
-    padding: 0 3px;
+    padding: 0 10px;
   }
   .product-cards-row {
     grid-template-columns: 1fr;
