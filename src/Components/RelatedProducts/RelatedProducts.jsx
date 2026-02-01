@@ -1,93 +1,56 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { getDiscountedPrice } from "../../utils/calculation";
-import { Link } from "react-router-dom";
 import "./RelatedProducts.css";
-import { useSelector } from "react-redux";
-
-function CustomRelatedProductCard({ product }) {
-  const selectedCountry = useSelector((state) => state.user.selectedCountry);
-
-  const firstImage = product.productImages?.[0].path;
-  const discount = product.productDiscount || 0;
-  const countryId =
-    product.countryVariants && Object.keys(product.countryVariants)[0];
-  const firstVariant = product.countryVariants?.[countryId]?.[0];
-
-  const basePrice = Number(firstVariant?.price || 0);
-  const discountedPrice = getDiscountedPrice(basePrice, discount);
-
-  return (
-    <Link
-      to={`/${selectedCountry.code}/product-inner/${product._id}`}
-      className="related-product-card"
-    >
-      <div className="related-product-image-wrapper">
-        <img
-          src={`${import.meta.env.VITE_BASE_URL}/${firstImage}`}
-          alt={product.productName}
-        />
-        {discount > 0 && (
-          <span className="related-discount-badge">-{discount}%</span>
-        )}
-      </div>
-      <div className="related-product-info">
-        <h3 className="related-title">{product.productName}</h3>
-        <div className="related-price">
-          <span className="discounted-price">
-            {selectedCountry?.priceLabel || "₹"}
-            {discountedPrice.toFixed(2)}
-          </span>
-          {discount > 0 && (
-            <span className="original-price">
-              {selectedCountry?.priceLabel || "₹"}
-              {basePrice.toFixed(2)}
-            </span>
-          )}
-        </div>
-      </div>
-    </Link>
-  );
-}
+import Productcard from "../ProductCard/Productcard";
 
 export default function RelatedProducts({ relatedProducts }) {
-
   const settings = {
-    dots: false,
     infinite: false,
-    speed: 500,
-    slidesToShow: 1,
+    speed: 800,
+    slidesToShow: 4,
     slidesToScroll: 1,
-    centerMode: false,
-    centerPadding: "0px",
-    arrows: false,
-    swipe: true,
-    touchMove: true,
-    draggable: true,
+    autoplay: false,
+    arrows: true,
+    cssEase: "cubic-bezier(0.4, 0, 0.2, 1)",
+    easing: "ease-in-out",
     responsive: [
       {
-        breakpoint: 767,
+        breakpoint: 1200,
         settings: {
-          slidesToShow: 1,
-          centerMode: false,
-          centerPadding: "0px",
+          slidesToShow: 3,
+          infinite: false,
+          autoplay: false,
+          arrows: true,
+        },
+      },
+      {
+        breakpoint: 991,
+        settings: {
+          slidesToShow: 2,
+          infinite: false,
+          autoplay: false,
+          arrows: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1.6,
+          infinite: false,
+          autoplay: false,
           arrows: false,
-          swipe: true,
-          touchMove: true,
-          draggable: true,
+          centerMode: false,
         },
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
-          centerMode: false,
-          centerPadding: "0px",
+          slidesToShow: 1.6,
+          infinite: false,
+          autoplay: false,
           arrows: false,
-          swipe: true,
-          touchMove: true,
-          draggable: true,
+          centerMode: false,
         },
       },
     ],
@@ -95,34 +58,18 @@ export default function RelatedProducts({ relatedProducts }) {
 
   if (!relatedProducts || relatedProducts.length === 0) return null;
 
-  // Limit to 4 products for desktop
-  const displayProducts = relatedProducts.slice(0, 4);
-
   return (
-    <div className="related-products-slider">
-      <div className="">
-        <div className="related-product-wrap">
-          <h2>
-            Related Products
-          </h2>
-          {/* Grid layout for desktop */}
-          <div className="related-products-grid">
-            {displayProducts.map((product) => (
-              <div key={product._id} className="grid-item">
-                <CustomRelatedProductCard product={product} />
+    <div className="related-products-section">
+      <div className="related-product-wrap">
+        <h2 className="related-title-main">Related Products</h2>
+        <div className="related-products-slider-outer">
+          <Slider {...settings}>
+            {relatedProducts.slice(0, 4).map((product) => (
+              <div key={product._id}>
+                <Productcard product={product} maxLength={27} />
               </div>
             ))}
-          </div>
-          {/* Slider for mobile */}
-          <div className="related-products-mobile-slider">
-            <Slider {...settings}>
-              {relatedProducts.map((product) => (
-                <div key={product._id} className="slider-item">
-                  <CustomRelatedProductCard product={product} />
-                </div>
-              ))}
-            </Slider>
-          </div>
+          </Slider>
         </div>
       </div>
     </div>

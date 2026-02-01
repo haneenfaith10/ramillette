@@ -485,9 +485,9 @@
 }
 
 .variant-badge.interactive.active {
-  background: var(--primary-color);
+  background: var(--secondary-color);
   color: #fff;
-  border-color: var(--primary-color);
+  border-color: var(--secondary-color);
   box-shadow: 0 6px 15px rgba(76, 100, 76, 0.25);
 }
 

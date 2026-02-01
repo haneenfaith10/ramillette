@@ -90,7 +90,7 @@ export default function Productcard(Props) {
   }
 
   return (
-    <div>
+    <>
       <div className="product-card">
         <div className="product-card-image-sec">
           <Link to={`/${selectedCountry?.code}/product-inner/${product?._id}`}>
@@ -158,6 +158,6 @@ export default function Productcard(Props) {
         product={product}
         productPrice={productPrice}
       ></Popup>
-    </div>
+    </>
   );
 }
