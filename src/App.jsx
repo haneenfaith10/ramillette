@@ -21,27 +21,49 @@ function App() {
   useEffect(() => {
     const fetchUserLocation = async () => {
       try {
-        const response = await axios.get(
-          `https://ipinfo.io/json?token=${import.meta.env.VITE_LOCATION_KEY}`,
-        );
-        const data = response.data;
-        const { country: userCountryCode } = data;
-        const res = await dispatch(fetchCountries());
+        // Helper to fetch with timeout
+        const fetchWithTimeout = (url, timeout = 3000) => {
+          return Promise.race([
+            axios.get(url),
+            new Promise((_, reject) =>
+              setTimeout(() => reject(new Error("Timeout")), timeout),
+            ),
+          ]);
+        };
+
+        // Fire both requests in parallel
+        const [locationRes, countriesRes] = await Promise.allSettled([
+          fetchWithTimeout(
+            `https://ipinfo.io/json?token=${import.meta.env.VITE_LOCATION_KEY}`,
+          ),
+          dispatch(fetchCountries()),
+        ]);
+
+        let userCountryCode = null;
+        if (locationRes.status === "fulfilled") {
+          userCountryCode = locationRes.value.data.country;
+        }
+
+        // Process countries if fetchCountries succeeded
+        const countriesPayload =
+          countriesRes.status === "fulfilled" ? countriesRes.value.payload : [];
 
         if (
-          res.meta.requestStatus === "fulfilled" &&
-          res.payload.length > 0 &&
+          countriesRes.status === "fulfilled" &&
+          countriesPayload.length > 0 &&
           !selectedCountry.code
         ) {
-          const matchedCountry = res.payload.find(
-            (country) =>
-              country.code.toLowerCase() === userCountryCode.toLowerCase(),
-          );
+          const matchedCountry = userCountryCode
+            ? countriesPayload.find(
+                (country) =>
+                  country.code.toLowerCase() === userCountryCode.toLowerCase(),
+              )
+            : null;
 
           if (matchedCountry) {
             dispatch(setSelectedCountry(matchedCountry));
           } else {
-            const primaryCountry = res.payload.find(
+            const primaryCountry = countriesPayload.find(
               (country) => country.isPrimary === true,
             );
 
@@ -49,14 +71,13 @@ function App() {
               dispatch(setSelectedCountry(primaryCountry));
             } else {
               console.warn("No primary country found, using first available");
-              dispatch(setSelectedCountry(res.payload[0]));
+              dispatch(setSelectedCountry(countriesPayload[0]));
             }
           }
         }
       } catch (error) {
-        console.error("Failed to fetch IP location", error);
-        // Fallback: fetch countries even if location fails
-        await dispatch(fetchCountries());
+        console.error("Initialization error", error);
+        // Fallback or handle error as needed, fetchCountries already handled in setSettled
       } finally {
         setLoading(false);
       }
