@@ -660,28 +660,36 @@ export default function NavBar() {
               <p className="free-gift-text"></p>
               <button onClick={() => setIsCartOpen(false)}>✖</button>
             </div>
-            <div className="cart-items-list">
-              {user &&
-                user.cart &&
+            <div
+              className={`cart-items-list ${!user?.cart || user.cart.items.length === 0 ? "is-empty" : ""}`}
+            >
+              {user && user.cart && user.cart.items.length > 0 ? (
                 user.cart.items.map((item, index) => (
                   <div className="cart-item" key={index}>
                     {item.productId && (
-                      <img
-                        src={`${import.meta.env.VITE_BASE_URL}/${
-                          item.productId.productImages[0].path
-                        }`}
-                        style={{ cursor: "pointer" }}
-                        alt={item.name}
-                        onClick={() => {
-                          navigate(
-                            `/${selectedCountry.code}/product-inner/${item.productId._id}`,
-                          );
-                          setIsCartOpen(false);
-                        }}
-                      />
+                      <div className="cart-item-img-wrap">
+                        <img
+                          src={`${import.meta.env.VITE_BASE_URL}/${
+                            item.productId.productImages[0].path
+                          }`}
+                          style={{ cursor: "pointer" }}
+                          alt={item.name}
+                          onClick={() => {
+                            navigate(
+                              `/${selectedCountry.code}/product-inner/${item.productId._id}`,
+                            );
+                            setIsCartOpen(false);
+                          }}
+                        />
+                      </div>
                     )}
                     <div className="item-details">
                       <h4>{item.productId && item.productId.productName}</h4>
+                      {item.selectedVariant && (
+                        <div className="variant-info">
+                          Variant: {item.selectedVariant.variantName}
+                        </div>
+                      )}
                       <div className="quantity">
                         <button
                           onClick={() =>
@@ -710,49 +718,47 @@ export default function NavBar() {
                         </button>
                       </div>
                     </div>
-                    {item.selectedVariant && (
-                      <div
-                        className="variant-info"
-                        style={{
-                          fontSize: "12px",
-                          color: "#666",
-                          marginTop: "-5px",
-                          paddingLeft: "10px",
-                        }}
-                      >
-                        Variant: {item.selectedVariant.variantName}
+                    <div className="item-price-col">
+                      <div className="item-price">
+                        {selectedCountry.priceLabel}
+                        {(
+                          item.selectedVariant?.price ||
+                          item.price ||
+                          0
+                        ).toFixed(2)}
                       </div>
-                    )}
-                    <div className="item-price" style={{ display: "none" }}>
-                      {selectedCountry.priceLabel}
-                      {((item && item?.productId?.productPrice) || 0).toFixed(
-                        1,
-                      )}
-                      /Item
+                      <button
+                        className="remove-item-btn"
+                        onClick={() => removeItem(item)}
+                      >
+                        ✖
+                      </button>
                     </div>
-                    {/* <div className="item-price">
-                    {selectedCountry.priceLabel}
-                    {calculateTotalPrice(
-                      item?.productId?.countryPrices.find(
-                        (country) => country.country._id === selectedCountry._id
-                      )?.price,
-                      item?.productId?.productDiscount,
-                      item.qty
-                    ).toFixed(2)}
-                  </div> */}
-                    <div className="item-price">
-                      {selectedCountry.priceLabel}
-                      {(item.selectedVariant?.price || item.price || 0).toFixed(
-                        2,
-                      )}
-                    </div>
-                    <button onClick={() => removeItem(item)}>✖</button>
                   </div>
-                ))}
+                ))
+              ) : (
+                <div className="empty-cart-content">
+                  <div className="empty-cart-icon">🛒</div>
+                  <h3>Your cart is empty</h3>
+                  <p>
+                    Discover our range of exclusive fragrances and find your
+                    signature scent.
+                  </p>
+                  <button
+                    className="shop-now-btn"
+                    onClick={() => {
+                      navigate(`/${selectedCountry.code}/product-list`);
+                      setIsCartOpen(false);
+                    }}
+                  >
+                    SHOP NOW
+                  </button>
+                </div>
+              )}
             </div>
           </div>
           <div className="cart-footer">
-            {user && user.cart && user.cart.items.length > 0 ? (
+            {user && user.cart && user.cart.items.length > 0 && (
               <>
                 <p>Tax included. Shipping calculated at checkout.</p>
                 <button
@@ -769,10 +775,6 @@ export default function NavBar() {
                   ).toFixed(2)}
                 </button>
               </>
-            ) : (
-              <div className="empty-cart">
-                <p> No cart items available </p>
-              </div>
             )}
           </div>
         </div>
