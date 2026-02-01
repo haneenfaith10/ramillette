@@ -152,7 +152,7 @@ export default function ProductInner() {
         </div>
 
         <div className="footer-sec">
-          <div className="wrapper">
+          <div className="">
             <Footer />
           </div>
         </div>
