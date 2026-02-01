@@ -242,7 +242,7 @@
 
 @media (max-width: 600px) {
   .testimonial-container {
-    padding: 0 15px;
+    /* padding: 0 15px; */
   }
 
   .testimonial-container h2 {

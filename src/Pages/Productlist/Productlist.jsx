@@ -19,9 +19,11 @@ import {
 import { getAllReviews } from "../../services/ratingApiServices";
 import { useSearchParams } from "react-router-dom";
 import { getDiscountedPrice } from "../../utils/calculation";
-import { IoChevronDown } from "react-icons/io5";
-import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
-import { IoClose } from "react-icons/io5";
+import { IoChevronDown, IoClose } from "react-icons/io5";
+import {
+  HiOutlineAdjustmentsHorizontal,
+  HiOutlineArrowsUpDown,
+} from "react-icons/hi2";
 import { getActiveCategories } from "../../services/categoryApiServices";
 
 export default function Productlist() {
@@ -306,7 +308,9 @@ export default function Productlist() {
               <div className="product-right">
                 <div className="product-list-header">
                   <div className="product-list-header-left">
-                    <h1 className="product-list-title">Products</h1>
+                    <h1 className="product-list-title desktop-only">
+                      Products
+                    </h1>
                     <p className="product-list-count">
                       <span className="product-count-number">
                         {sortedProducts.length}
@@ -317,15 +321,8 @@ export default function Productlist() {
                       </span>
                     </p>
                   </div>
-                  {/* MOBILE FILTER BUTTON */}
-                  <button
-                    className="mobile-filter-toggle"
-                    onClick={() => setIsMobileFilterOpen(true)}
-                  >
-                    <HiOutlineAdjustmentsHorizontal size={16} />
-                    <span>Filters</span>
-                  </button>
-                  {/* DESKTOP SORT - Inside header */}
+
+                  {/* DESKTOP SORT */}
                   <div className="product-list-sort desktop-sort">
                     <span className="sort-label">Sort by:</span>
                     <div className="sort-dropdown-wrapper">
@@ -414,92 +411,6 @@ export default function Productlist() {
                   </div>
                 </div>
 
-                {/* MOBILE SORT - Outside header */}
-                <div className="product-list-sort mobile-sort">
-                  <span className="sort-label">Sort by:</span>
-                  <div className="sort-dropdown-wrapper">
-                    <button
-                      className="sort-dropdown-button"
-                      onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
-                      onBlur={() =>
-                        setTimeout(() => setIsSortDropdownOpen(false), 200)
-                      }
-                    >
-                      <span className="sort-selected-value">
-                        {sortBy === "recommended" && "Recommended"}
-                        {sortBy === "priceLow" && "Price: Low to High"}
-                        {sortBy === "priceHigh" && "Price: High to Low"}
-                        {sortBy === "nameAsc" && "Name: A to Z"}
-                        {sortBy === "nameDesc" && "Name: Z to A"}
-                      </span>
-                      <IoChevronDown
-                        className={`sort-arrow-icon ${
-                          isSortDropdownOpen ? "open" : ""
-                        }`}
-                      />
-                    </button>
-                    {isSortDropdownOpen && (
-                      <div className="sort-dropdown-menu">
-                        <button
-                          className={`sort-option ${
-                            sortBy === "recommended" ? "active" : ""
-                          }`}
-                          onClick={() => {
-                            setSortBy("recommended");
-                            setIsSortDropdownOpen(false);
-                          }}
-                        >
-                          Recommended
-                        </button>
-                        <button
-                          className={`sort-option ${
-                            sortBy === "priceLow" ? "active" : ""
-                          }`}
-                          onClick={() => {
-                            setSortBy("priceLow");
-                            setIsSortDropdownOpen(false);
-                          }}
-                        >
-                          Price: Low to High
-                        </button>
-                        <button
-                          className={`sort-option ${
-                            sortBy === "priceHigh" ? "active" : ""
-                          }`}
-                          onClick={() => {
-                            setSortBy("priceHigh");
-                            setIsSortDropdownOpen(false);
-                          }}
-                        >
-                          Price: High to Low
-                        </button>
-                        <button
-                          className={`sort-option ${
-                            sortBy === "nameAsc" ? "active" : ""
-                          }`}
-                          onClick={() => {
-                            setSortBy("nameAsc");
-                            setIsSortDropdownOpen(false);
-                          }}
-                        >
-                          Name: A to Z
-                        </button>
-                        <button
-                          className={`sort-option ${
-                            sortBy === "nameDesc" ? "active" : ""
-                          }`}
-                          onClick={() => {
-                            setSortBy("nameDesc");
-                            setIsSortDropdownOpen(false);
-                          }}
-                        >
-                          Name: Z to A
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
                 <div className="product-list-cards">
                   {isLoading ? (
                     // Render 6 skeleton cards while loading
@@ -541,6 +452,64 @@ export default function Productlist() {
                 </div>
               </div>
             </div>
+
+            {/* MOBILE FLOATING ACTIONS BAR */}
+            <div className="mobile-floating-actions">
+              <button
+                className="floating-action-btn"
+                onClick={() => setIsMobileFilterOpen(true)}
+              >
+                <HiOutlineAdjustmentsHorizontal size={16} />
+                <span>Filter by</span>
+              </button>
+              <div className="vertical-divider"></div>
+              <button
+                className="floating-action-btn"
+                onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+              >
+                <HiOutlineArrowsUpDown size={16} />
+                <span>Sort by</span>
+              </button>
+
+              {/* MOBILE SORT DROPDOWN (Positioned relative to bar) */}
+              {isSortDropdownOpen && (
+                <div className="floating-sort-menu">
+                  <button
+                    className={`sort-option ${
+                      sortBy === "recommended" ? "active" : ""
+                    }`}
+                    onClick={() => {
+                      setSortBy("recommended");
+                      setIsSortDropdownOpen(false);
+                    }}
+                  >
+                    Recommended
+                  </button>
+                  <button
+                    className={`sort-option ${
+                      sortBy === "priceLow" ? "active" : ""
+                    }`}
+                    onClick={() => {
+                      setSortBy("priceLow");
+                      setIsSortDropdownOpen(false);
+                    }}
+                  >
+                    Price: Low to High
+                  </button>
+                  <button
+                    className={`sort-option ${
+                      sortBy === "priceHigh" ? "active" : ""
+                    }`}
+                    onClick={() => {
+                      setSortBy("priceHigh");
+                      setIsSortDropdownOpen(false);
+                    }}
+                  >
+                    Price: High to Low
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <div className="testimonial-sec">
@@ -549,7 +518,7 @@ export default function Productlist() {
           </div>
         </div>
         <div className="footer-sec">
-          <div className="wrapper">
+          <div className="">
             <Footer />
           </div>
         </div>

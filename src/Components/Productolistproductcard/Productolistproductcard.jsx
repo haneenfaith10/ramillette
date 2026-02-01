@@ -1,4 +1,4 @@
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaStar } from "react-icons/fa";
 import "./Productolistproductcard.css";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -113,22 +113,22 @@ export default function Productolistproductcard(Props) {
           to={`/${selectedCountry?.code}/product-inner/${product._id}`}
           style={{ textDecoration: "none", color: "inherit" }}
         >
-          <p className="product-name">{product?.productName || ""}</p>
+          <h3 className="product-name">{product?.productName || ""}</h3>
         </Link>
-        <div className="product-price">
-          <span className="price">
-            {selectedCountry?.priceLabel}
-            {discountedPrice.toLocaleString()}
-          </span>
-          {discountPercent > 0 && (
-            <>
-              <span className="original-price">
-                {selectedCountry?.priceLabel}
-                {basePrice.toLocaleString()}
-              </span>
-              <span className="discount">({discountPercent}% OFF)</span>
-            </>
-          )}
+        <div className="product-price-row">
+          <div className="price-details">
+            <p className="current-price">
+              {selectedCountry?.priceLabel}
+              {discountedPrice.toLocaleString()}
+            </p>
+            {discountPercent > 0 && (
+              <p className="discount-tag">{discountPercent}% Off</p>
+            )}
+          </div>
+          <div className="rating-badge">
+            <FaStar className="star-icon" />
+            <span>{product?.productRating || "4.9"}</span>
+          </div>
         </div>
       </div>
     </div>
