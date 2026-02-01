@@ -264,17 +264,18 @@ export default function NavBar() {
   };
 
   useEffect(() => {
-    if (isCartOpen || isMenuOpen) {
-      // lock scroll
+    const lockScroll = isCartOpen || isMenuOpen;
+    if (lockScroll) {
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     } else {
-      // restore scroll
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     }
 
-    // cleanup on unmount
     return () => {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     };
   }, [isCartOpen, isMenuOpen]);
 

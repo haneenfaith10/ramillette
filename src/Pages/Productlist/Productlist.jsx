@@ -57,11 +57,14 @@ export default function Productlist() {
   useEffect(() => {
     if (isMobileFilterOpen) {
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     };
   }, [isMobileFilterOpen]);
 
@@ -256,42 +259,7 @@ export default function Productlist() {
                   isMobileFilterOpen ? "mobile-open" : ""
                 }`}
               >
-                {isMobileFilterOpen && (
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginBottom: "24px",
-                      paddingBottom: "16px",
-                      borderBottom: "1px solid #e5e7eb",
-                    }}
-                  >
-                    <h3
-                      style={{
-                        margin: 0,
-                        fontSize: "20px",
-                        fontWeight: 600,
-                        color: "#292524",
-                      }}
-                    >
-                      Filters
-                    </h3>
-                    <button
-                      onClick={() => setIsMobileFilterOpen(false)}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        fontSize: "24px",
-                        cursor: "pointer",
-                        padding: "4px 8px",
-                        color: "#525252",
-                      }}
-                    >
-                      <IoClose />
-                    </button>
-                  </div>
-                )}
+                {/* Filter content starts directly */}
                 <FilterSide
                   price={priceRange}
                   setPrice={setPriceRange}
