@@ -111,6 +111,13 @@ const navLinks = [
     link: "/admin/config",
   },
   {
+    name: "Dynamic Coupons",
+    subLinks: [
+      { name: "Manage Coupons", link: "/admin/dynamic-coupons" },
+      { name: "Create Coupon", link: "/admin/add-dynamic-coupon" },
+    ],
+  },
+  {
     name: "Logout",
   },
 ];
@@ -257,19 +264,20 @@ export default function AdminSideBar() {
               hasSubLinks && item.subLinks.some((sub) => sub.link === location);
 
             return (
-              <div key={index} className={`admin-side-bar-nav-item ${isActiveParent
-                  ? "active"
-                  : isActiveSub
-                    ? "active-parent"
-                    : ""
-                }`}>
+              <div
+                key={index}
+                className={`admin-side-bar-nav-item ${
+                  isActiveParent ? "active" : isActiveSub ? "active-parent" : ""
+                }`}
+              >
                 <p
-                  className={`admin-side-bar-nav-link ${isActiveParent
+                  className={`admin-side-bar-nav-link ${
+                    isActiveParent
                       ? "active"
                       : isActiveSub
                         ? "active-parent"
                         : ""
-                    }`}
+                  }`}
                   onClick={() => {
                     if (item.name === "Logout") {
                       setShowLogoutModal(true);
@@ -297,8 +305,9 @@ export default function AdminSideBar() {
                     {item.subLinks.map((sub, subIndex) => (
                       <p
                         key={subIndex}
-                        className={`admin-side-bar-subnav-link ${sub.link === location ? "active" : ""
-                          }`}
+                        className={`admin-side-bar-subnav-link ${
+                          sub.link === location ? "active" : ""
+                        }`}
                         onClick={() => navigate(sub.link)}
                       >
                         {sub.name}

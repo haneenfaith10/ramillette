@@ -113,6 +113,8 @@ const CouponOfferPage = lazy(
 const NewCustomerOfferPage = lazy(
   () => import("../Pages/NewCustomerOfferPage/NewCustomerOfferPage"),
 );
+const AdminCoupons = lazy(() => import("../Pages/AdminCoupons/AdminCoupons"));
+const AddCoupon = lazy(() => import("../Pages/AddCoupon/AddCoupon"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -194,6 +196,9 @@ export default function AdminRoute() {
               path="/new-customer-offers"
               element={<NewCustomerOfferPage />}
             />
+            <Route path="/dynamic-coupons" element={<AdminCoupons />} />
+            <Route path="/add-dynamic-coupon" element={<AddCoupon />} />
+            <Route path="/edit-dynamic-coupon/:id" element={<AddCoupon />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

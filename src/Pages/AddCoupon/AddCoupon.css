@@ -1,0 +1,39 @@
+.add-coupon-container {
+  background-color: #fcfcfc;
+  min-height: calc(100vh - 80px);
+}
+
+.MuiTextField-root {
+  background-color: #fff;
+}
+
+.MuiOutlinedInput-root {
+  border-radius: 8px !important;
+}
+
+.MuiInputLabel-root.Mui-focused {
+  color: #edc862 !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #edc862 !important;
+}
+
+.variant-section {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px dashed #edc862;
+  border-radius: 12px;
+  background-color: #fffdf5;
+}
+
+/* Custom styles for React Select to match MUI */
+.react-select__control {
+  min-height: 45px !important;
+  border-color: rgba(0, 0, 0, 0.23) !important;
+}
+
+.react-select__control--is-focused {
+  border-color: #edc862 !important;
+  box-shadow: 0 0 0 1px #edc862 !important;
+}

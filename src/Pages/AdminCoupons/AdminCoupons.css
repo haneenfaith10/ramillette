@@ -1,0 +1,47 @@
+.admin-coupons-container {
+  padding: 20px;
+  background-color: #fcfcfc;
+  min-height: calc(100vh - 80px);
+}
+
+.admin-coupons-filters {
+  margin-top: 20px;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge.active {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.inactive {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.admin-add-category-submit-btn-wrapper:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+}
+
+.MuiTableCell-head {
+  background-color: #f8f9fa !important;
+  color: #555 !important;
+  font-size: 0.85rem !important;
+}
+
+.MuiTableRow-hover:hover {
+  background-color: #fffaf0 !important;
+  cursor: pointer;
+}

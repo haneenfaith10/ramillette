@@ -1,0 +1,51 @@
+.coupon-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.coupon-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border: 1px dashed #edc862;
+  border-radius: 12px;
+  background-color: #fffdf8;
+  transition: all 0.2s ease;
+}
+
+.coupon-item:hover {
+  background-color: #fffcf0;
+  border-style: solid;
+  box-shadow: 0 4px 12px rgba(237, 200, 98, 0.1);
+}
+
+.coupon-details {
+  flex: 1;
+}
+
+.coupon-code {
+  background-color: #fff9e6;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid #f9e7b1;
+  color: #856404;
+  letter-spacing: 1px;
+}
+
+.coupon-action {
+  margin-left: 16px;
+}
+
+@media (max-width: 600px) {
+  .coupon-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .coupon-action {
+    margin-left: 0;
+  }
+}

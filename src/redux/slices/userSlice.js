@@ -13,6 +13,8 @@ const initialState = {
     address: {},
     note: "",
     totalAmount: "",
+    promoCode: null,
+    promoDiscount: 0,
   },
   orderCount: 0,
   selectedCountry: {},
@@ -52,8 +54,10 @@ const userSlice = createSlice({
       // state.checkout.cart = action.payload;
       state.checkout.cart = action.payload.items;
       state.checkout.subtotal = action.payload.subtotal;
-      state.checkout.finalTotal = action.payload.finalTotal; // ⭐
-      state.checkout.newUserOffer = action.payload.newUserOffer; // ⭐
+      state.checkout.finalTotal = action.payload.finalTotal;
+      state.checkout.newUserOffer = action.payload.newUserOffer;
+      state.checkout.promoCode = action.payload.promoCode;
+      state.checkout.promoDiscount = action.payload.promoDiscount;
     },
     setCheckoutAddress: (state, action) => {
       state.checkout.address = action.payload;

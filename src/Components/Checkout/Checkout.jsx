@@ -23,12 +23,19 @@ import {
 } from "../../redux/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import { verifyCouponCode } from "../../services/offerApiService";
+import { toast } from "sonner";
+import {
+  getApplicableCoupons,
+  validateCoupon,
+} from "../../services/couponService";
+import CouponModal from "./CouponModal";
 
 export default function Checkout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const selectedCountry = useSelector((state) => state.user.selectedCountry);
-  const reduxCart = useSelector((state) => state.user.user?.cart?.items ?? []);
+  const user = useSelector((state) => state.user.user);
+  const reduxCart = user?.cart?.items ?? [];
   const note = useSelector((state) => state.user.checkout.note);
   const token = localStorage.getItem("remilletteTkn");
   const [cartItems, setCartItems] = useState([]);
@@ -37,12 +44,32 @@ export default function Checkout() {
   const [subtotal, setSubtotal] = useState(0);
   const [originalSubtotal, setOriginalSubtotal] = useState(0);
   const [newUserOffer, setNewUserOffer] = useState(null);
+  const [promoCodeInput, setPromoCodeInput] = useState("");
+  const [appliedPromo, setAppliedPromo] = useState(null);
   const [finalTotal, setFinalTotal] = useState(0);
   const prevCartLengthRef = useRef(reduxCart?.length || 0);
 
   // Mobile-specific states
   const [showPriceDetails, setShowPriceDetails] = useState(false);
   const [expandedOffers, setExpandedOffers] = useState({});
+
+  // Coupon enhancements
+  const [applicableCoupons, setApplicableCoupons] = useState([]);
+  const [isCouponModalOpen, setIsCouponModalOpen] = useState(false);
+
+  useEffect(() => {
+    async function loadApplicableCoupons() {
+      const res = await getApplicableCoupons(user?.id);
+      if (res?.isSuccess) {
+        setApplicableCoupons(res.coupons);
+      }
+    }
+    loadApplicableCoupons();
+  }, [user?.id]);
+
+  const handleDirectApply = (code) => {
+    handleApplyPromoCode(code);
+  };
 
   useEffect(() => {
     async function loadCheckoutData() {
@@ -137,9 +164,16 @@ export default function Checkout() {
         }
       }
     }
+    let afterPromoTotal = totalAfterOffer;
+    if (appliedPromo) {
+      afterPromoTotal = Math.max(
+        totalAfterOffer - appliedPromo.discountAmount,
+        0,
+      );
+    }
 
-    setFinalTotal(totalAfterOffer);
-  }, [cartItems, selectedOffers, newUserOffer]);
+    setFinalTotal(afterPromoTotal);
+  }, [cartItems, selectedOffers, newUserOffer, appliedPromo]);
 
   async function handleQuantityChange(cartItem, action) {
     try {
@@ -295,6 +329,48 @@ export default function Checkout() {
     }
   }
 
+  // Handle Global Promotional Coupon
+  async function handleApplyPromoCode(directCode = null) {
+    const codeToApply =
+      directCode && typeof directCode === "string"
+        ? directCode
+        : promoCodeInput;
+
+    if (!codeToApply.trim()) return toast.error("Please enter a coupon code");
+
+    try {
+      const res = await validateCoupon({
+        code: codeToApply,
+        cartItems: cartItems.map((item) => ({
+          productId: item.productId,
+          qty: item.qty,
+          price: item.selectedVariant?.price || item.basePrice,
+        })),
+        cartTotal: subtotal,
+        userId: user?.id,
+      });
+
+      if (res.isSuccess) {
+        setAppliedPromo({
+          code: res.couponCode,
+          discountAmount: res.discountAmount,
+        });
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error) {
+      console.error("Promo code apply error", error);
+      toast.error("Failed to apply coupon");
+    }
+  }
+
+  function handleRemovePromoCode() {
+    setAppliedPromo(null);
+    setPromoCodeInput("");
+    toast.info("Coupon removed");
+  }
+
   useEffect(() => {
     dispatch(clearCheckoutOffers());
   }, []);
@@ -360,6 +436,8 @@ export default function Checkout() {
           subtotal,
           finalTotal,
           newUserOffer,
+          promoCode: appliedPromo?.code || null,
+          promoDiscount: appliedPromo?.discountAmount || 0,
         }),
       );
     }
@@ -783,6 +861,209 @@ export default function Checkout() {
                 )}
               </div>
 
+              <div
+                className="mobile-promo-coupon-section"
+                style={{
+                  margin: "15px 0",
+                  padding: "15px",
+                  backgroundColor: "#fff",
+                  borderRadius: "10px",
+                  border: "1px solid #eee",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    marginBottom: "10px",
+                    color: "#666",
+                  }}
+                >
+                  Have a coupon code?
+                </p>
+                <div
+                  className="promo-input-group"
+                  style={{ display: "flex", gap: "10px" }}
+                >
+                  <input
+                    type="text"
+                    placeholder="Enter Code"
+                    value={promoCodeInput}
+                    onChange={(e) =>
+                      setPromoCodeInput(e.target.value.toUpperCase())
+                    }
+                    style={{
+                      flex: 1,
+                      padding: "10px",
+                      borderRadius: "8px",
+                      border: "1px solid #ddd",
+                      fontSize: "14px",
+                    }}
+                    disabled={appliedPromo}
+                  />
+                  {appliedPromo ? (
+                    <button
+                      onClick={handleRemovePromoCode}
+                      style={{
+                        padding: "10px 15px",
+                        borderRadius: "8px",
+                        border: "none",
+                        backgroundColor: "#ffebee",
+                        color: "#d32f2f",
+                        cursor: "pointer",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Remove
+                    </button>
+                  ) : (
+                    <button
+                      id="apply-promo-btn-mobile"
+                      onClick={handleApplyPromoCode}
+                      style={{
+                        padding: "10px 15px",
+                        borderRadius: "8px",
+                        border: "none",
+                        backgroundColor: "#edc862",
+                        color: "#fff",
+                        cursor: "pointer",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Apply
+                    </button>
+                  )}
+                </div>
+                {applicableCoupons.length > 0 && !appliedPromo && (
+                  <div
+                    className="available-coupons-mini"
+                    style={{ marginTop: "12px" }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "8px",
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: "12px",
+                          color: "#666",
+                          fontWeight: "600",
+                        }}
+                      >
+                        Available Coupons
+                      </span>
+                      <span
+                        onClick={() => setIsCouponModalOpen(true)}
+                        style={{
+                          fontSize: "12px",
+                          color: "#edc862",
+                          fontWeight: "bold",
+                          cursor: "pointer",
+                        }}
+                      >
+                        View All
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "8px",
+                      }}
+                    >
+                      {applicableCoupons.slice(0, 2).map((coupon) => (
+                        <div
+                          key={coupon._id}
+                          onClick={() => handleDirectApply(coupon.code)}
+                          style={{
+                            padding: "8px 12px",
+                            border: "1px dashed #edc862",
+                            borderRadius: "6px",
+                            backgroundColor: "#fffdf8",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <div>
+                            <span
+                              style={{
+                                fontSize: "12px",
+                                fontWeight: "bold",
+                                color: "#b99a45",
+                              }}
+                            >
+                              {coupon.code}
+                            </span>
+                            <p
+                              style={{
+                                fontSize: "10px",
+                                color: "#999",
+                                margin: 0,
+                              }}
+                            >
+                              {coupon.discountValue}
+                              {coupon.discountType === "percentage"
+                                ? "%"
+                                : ""}{" "}
+                              OFF
+                            </p>
+                          </div>
+                          <span
+                            style={{
+                              fontSize: "11px",
+                              fontWeight: "bold",
+                              color: "#edc862",
+                            }}
+                          >
+                            APPLY
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {appliedPromo && (
+                  <div
+                    className="applied-promo-info"
+                    style={{
+                      marginTop: "10px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      backgroundColor: "#f1f8e9",
+                      padding: "8px 12px",
+                      borderRadius: "6px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "13px",
+                        color: "#2e7d32",
+                        fontWeight: "600",
+                      }}
+                    >
+                      {appliedPromo.code} Applied
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "13px",
+                        color: "#2e7d32",
+                        fontWeight: "600",
+                      }}
+                    >
+                      - {selectedCountry.priceLabel}
+                      {appliedPromo.discountAmount.toFixed(2)}
+                    </span>
+                  </div>
+                )}
+              </div>
+
               <div className="note-section-mobile">
                 <label htmlFor="checkout-note">Add a note (optional)</label>
                 <textarea
@@ -1155,6 +1436,203 @@ export default function Checkout() {
                     </span>
                   </div>
                 )}
+
+                <div
+                  className="promo-coupon-section"
+                  style={{
+                    marginTop: "20px",
+                    borderTop: "1px dashed #ddd",
+                    paddingTop: "15px",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      marginBottom: "10px",
+                      color: "#666",
+                    }}
+                  >
+                    Have a coupon code?
+                  </p>
+                  <div
+                    className="promo-input-group"
+                    style={{ display: "flex", gap: "10px" }}
+                  >
+                    <input
+                      type="text"
+                      placeholder="Enter Promo Code"
+                      value={promoCodeInput}
+                      onChange={(e) =>
+                        setPromoCodeInput(e.target.value.toUpperCase())
+                      }
+                      style={{
+                        flex: 1,
+                        padding: "10px",
+                        borderRadius: "8px",
+                        border: "1px solid #ddd",
+                        fontSize: "14px",
+                      }}
+                      disabled={appliedPromo}
+                    />
+                    {appliedPromo ? (
+                      <button
+                        onClick={handleRemovePromoCode}
+                        style={{
+                          padding: "10px 15px",
+                          borderRadius: "8px",
+                          border: "none",
+                          backgroundColor: "#ffebee",
+                          color: "#d32f2f",
+                          cursor: "pointer",
+                          fontWeight: "600",
+                        }}
+                      >
+                        Remove
+                      </button>
+                    ) : (
+                      <button
+                        id="apply-promo-btn-desktop"
+                        onClick={handleApplyPromoCode}
+                        style={{
+                          padding: "10px 15px",
+                          borderRadius: "8px",
+                          border: "none",
+                          backgroundColor: "#edc862",
+                          color: "#fff",
+                          cursor: "pointer",
+                          fontWeight: "600",
+                        }}
+                      >
+                        Apply
+                      </button>
+                    )}
+                  </div>
+                  {applicableCoupons.length > 0 && !appliedPromo && (
+                    <div
+                      className="available-coupons-mini"
+                      style={{ marginTop: "15px" }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: "13px",
+                            color: "#666",
+                            fontWeight: "600",
+                          }}
+                        >
+                          Available Coupons
+                        </span>
+                        <span
+                          onClick={() => setIsCouponModalOpen(true)}
+                          style={{
+                            fontSize: "13px",
+                            color: "#edc862",
+                            fontWeight: "bold",
+                            cursor: "pointer",
+                          }}
+                        >
+                          View All
+                        </span>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "10px",
+                        }}
+                      >
+                        {applicableCoupons.slice(0, 2).map((coupon) => (
+                          <div
+                            key={coupon._id}
+                            onClick={() => handleDirectApply(coupon.code)}
+                            style={{
+                              padding: "10px 15px",
+                              border: "1px dashed #edc862",
+                              borderRadius: "8px",
+                              backgroundColor: "#fffdf8",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <div>
+                              <span
+                                style={{
+                                  fontSize: "13px",
+                                  fontWeight: "bold",
+                                  color: "#b99a45",
+                                }}
+                              >
+                                {coupon.code}
+                              </span>
+                              <p
+                                style={{
+                                  fontSize: "11px",
+                                  color: "#999",
+                                  margin: 0,
+                                }}
+                              >
+                                {coupon.title}
+                              </p>
+                            </div>
+                            <span
+                              style={{
+                                fontSize: "12px",
+                                fontWeight: "bold",
+                                color: "#edc862",
+                              }}
+                            >
+                              APPLY
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {appliedPromo && (
+                    <div
+                      className="applied-promo-info"
+                      style={{
+                        marginTop: "10px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        backgroundColor: "#f1f8e9",
+                        padding: "8px 12px",
+                        borderRadius: "6px",
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: "13px",
+                          color: "#2e7d32",
+                          fontWeight: "600",
+                        }}
+                      >
+                        Code {appliedPromo.code} applied!
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "13px",
+                          color: "#2e7d32",
+                          fontWeight: "600",
+                        }}
+                      >
+                        - {selectedCountry.priceLabel}
+                        {appliedPromo.discountAmount.toFixed(2)}
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -1183,6 +1661,13 @@ export default function Checkout() {
           </div>
         </div>
       </div>
+      <CouponModal
+        open={isCouponModalOpen}
+        onClose={() => setIsCouponModalOpen(false)}
+        coupons={applicableCoupons}
+        onApply={handleDirectApply}
+        appliedCode={appliedPromo?.code}
+      />
     </div>
   );
 }
