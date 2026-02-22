@@ -191,7 +191,7 @@ export default function AdminRoute() {
             <Route path="/bogo-offers" element={<BogoOfferPage />} />
             <Route path="/discount-offers" element={<DiscountOfferPage />} />
             <Route path="/category-offers" element={<CategoryOfferPage />} />
-            <Route path="/coupon-offers" element={<CouponOfferPage />} />
+            {/* <Route path="/coupon-offers" element={<CouponOfferPage />} /> */}
             <Route
               path="/new-customer-offers"
               element={<NewCustomerOfferPage />}

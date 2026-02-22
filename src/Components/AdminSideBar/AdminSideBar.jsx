@@ -79,11 +79,6 @@ const navLinks = [
         name: "Category Offers",
         link: "/admin/category-offers",
       },
-
-      {
-        name: "Coupon Offers",
-        link: "/admin/coupon-offers",
-      },
       {
         name: "New Customer Offers",
         link: "/admin/new-customer-offers",
