@@ -383,6 +383,7 @@
 .rating-badge img {
   width: 14px;
   height: 14px;
+  color: #000000;
 }
 
 .rating-badge .rating-value {
