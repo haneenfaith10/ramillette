@@ -517,7 +517,7 @@
 
     .product-list-cards {
       grid-template-columns: repeat(2, 1fr) !important;
-      gap: 12px;
+      gap: 15px;
     }
   }
 }
