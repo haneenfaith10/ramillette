@@ -63,11 +63,17 @@ export default function AdminDashboard() {
           { label: "Products", value: stats?.totalProducts },
           {
             label: "Sales",
-            value: stats ? `${stats.sales?.toFixed(2)}` : null,
+            value: stats ? `${stats.sales?.toLocaleString(undefined, {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 1,
+            })}` : null,
           },
           {
             label: "Pending Payment",
-            value: stats ? `${stats.pendingAmount?.toFixed(2)}` : null,
+            value: stats ? `${stats.pendingAmount?.toLocaleString(undefined, {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 1,
+            })}` : null,
           },
           { label: "Pending Orders", value: pendingOrders },
           { label: "Delivered Orders", value: deliveredOrders },

@@ -76,7 +76,10 @@ function computeItemUnitFinalPrice(item) {
 
 function fmtPrice(val) {
   const n = Number(val || 0);
-  return n.toFixed(2);
+  return n.toLocaleString(undefined, {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
 }
 
 export default function OrderDetailsPage() {
@@ -479,7 +482,10 @@ export default function OrderDetailsPage() {
           <div className="order-modal-total-row">
             <span>Total (computed):</span>
             <strong>
-              {currency} {order.totalPrice.toFixed(2)}
+              {currency} {order.totalPrice.toLocaleString(undefined, {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              })}
             </strong>
           </div>
         </div>

@@ -112,7 +112,10 @@ export default function WishlistSection() {
                           basePrice,
                           product.product.productDiscount,
                         );
-                        return finalPrice.toFixed(2);
+                        return finalPrice.toLocaleString(undefined, {
+                          minimumFractionDigits: 1,
+                          maximumFractionDigits: 1,
+                        });
                       })()}
                     </p>
                   </div>

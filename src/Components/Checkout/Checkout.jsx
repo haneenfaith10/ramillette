@@ -463,7 +463,10 @@ export default function Checkout() {
                 <span className="summary-label">Order Total</span>
                 <span className="summary-amount">
                   {selectedCountry.priceLabel}
-                  {finalTotal.toFixed(2)}
+                  {finalTotal.toLocaleString(undefined, {
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 1,
+                  })}
                 </span>
               </div>
               {showPriceDetails ? (
@@ -479,7 +482,10 @@ export default function Checkout() {
                   <span>Subtotal</span>
                   <span>
                     {selectedCountry.priceLabel}
-                    {originalSubtotal.toFixed(2)}
+                    {originalSubtotal.toLocaleString(undefined, {
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    })}
                   </span>
                 </div>
 
@@ -488,7 +494,10 @@ export default function Checkout() {
                     <span>Discount</span>
                     <span className="discount-amount">
                       -{selectedCountry.priceLabel}
-                      {(originalSubtotal - finalTotal).toFixed(2)}
+                      {(originalSubtotal - finalTotal).toLocaleString(undefined, {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      })}
                     </span>
                   </div>
                 )}
@@ -499,7 +508,10 @@ export default function Checkout() {
                   <span>Total</span>
                   <span>
                     {selectedCountry.priceLabel}
-                    {finalTotal.toFixed(2)}
+                    {finalTotal.toLocaleString(undefined, {
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    })}
                   </span>
                 </div>
 
@@ -512,7 +524,10 @@ export default function Checkout() {
                     />
                     <span>
                       You're saving {selectedCountry.priceLabel}
-                      {(originalSubtotal - finalTotal).toFixed(2)}
+                      {(originalSubtotal - finalTotal).toLocaleString(undefined, {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      })}
                     </span>
                   </div>
                 )}
@@ -577,13 +592,19 @@ export default function Checkout() {
                         <div className="cart-item-price-section">
                           <span className="current-price">
                             {selectedCountry.priceLabel}
-                            {totalPrice.toFixed(2)}
+                            {totalPrice.toLocaleString(undefined, {
+                              minimumFractionDigits: 1,
+                              maximumFractionDigits: 1,
+                            })}
                           </span>
 
                           {(productDiscount > 0 || offer) && (
                             <span className="original-price-mobile">
                               {selectedCountry.priceLabel}
-                              {(basePrice * item.qty).toFixed(2)}
+                              {(basePrice * item.qty).toLocaleString(undefined, {
+                                minimumFractionDigits: 1,
+                                maximumFractionDigits: 1,
+                              })}
                             </span>
                           )}
                         </div>
@@ -822,7 +843,10 @@ export default function Checkout() {
                   <span>Subtotal</span>
                   <span>
                     {selectedCountry.priceLabel}
-                    {originalSubtotal.toFixed(2)}
+                    {originalSubtotal.toLocaleString(undefined, {
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    })}
                   </span>
                 </div>
 
@@ -831,7 +855,10 @@ export default function Checkout() {
                     <span>Discount</span>
                     <span className="discount-amount">
                       -{selectedCountry.priceLabel}
-                      {(originalSubtotal - finalTotal).toFixed(2)}
+                      {(originalSubtotal - finalTotal).toLocaleString(undefined, {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      })}
                     </span>
                   </div>
                 )}
@@ -842,7 +869,10 @@ export default function Checkout() {
                   <span>Total</span>
                   <span>
                     {selectedCountry.priceLabel}
-                    {finalTotal.toFixed(2)}
+                    {finalTotal.toLocaleString(undefined, {
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    })}
                   </span>
                 </div>
 
@@ -855,7 +885,10 @@ export default function Checkout() {
                     />
                     <span>
                       You're saving {selectedCountry.priceLabel}
-                      {(originalSubtotal - finalTotal).toFixed(2)}
+                      {(originalSubtotal - finalTotal).toLocaleString(undefined, {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      })}
                     </span>
                   </div>
                 )}
@@ -1058,7 +1091,10 @@ export default function Checkout() {
                       }}
                     >
                       - {selectedCountry.priceLabel}
-                      {appliedPromo.discountAmount.toFixed(2)}
+                      {appliedPromo.discountAmount.toLocaleString(undefined, {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      })}
                     </span>
                   </div>
                 )}
@@ -1148,7 +1184,10 @@ export default function Checkout() {
                           <div className="price-section">
                             <p className="total-price-checkout">
                               Price: {selectedCountry.priceLabel}
-                              {totalPrice.toFixed(2)}
+                              {totalPrice.toLocaleString(undefined, {
+                                minimumFractionDigits: 1,
+                                maximumFractionDigits: 1,
+                              })}
                             </p>
 
                             {/* Show old (original) price only if discounted */}
@@ -1156,7 +1195,10 @@ export default function Checkout() {
                               <p className="original-price">
                                 <strike>
                                   {selectedCountry.priceLabel}
-                                  {(basePrice * item.qty).toFixed(2)}
+                                  {(basePrice * item.qty).toLocaleString(undefined, {
+                                    minimumFractionDigits: 1,
+                                    maximumFractionDigits: 1,
+                                  })}
                                 </strike>
                               </p>
                             )}
@@ -1395,7 +1437,10 @@ export default function Checkout() {
                     <span>Subtotal</span>
                     <span>
                       {selectedCountry.priceLabel}
-                      {originalSubtotal.toFixed(2)}
+                      {originalSubtotal.toLocaleString(undefined, {
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    })}
                     </span>
                   </div>
 
@@ -1404,7 +1449,10 @@ export default function Checkout() {
                       <span>Discount</span>
                       <span className="discount-amount">
                         -{selectedCountry.priceLabel}
-                        {(originalSubtotal - finalTotal).toFixed(2)}
+                        {(originalSubtotal - finalTotal).toLocaleString(undefined, {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      })}
                       </span>
                     </div>
                   )}
@@ -1416,7 +1464,10 @@ export default function Checkout() {
                   <span>Grand Total</span>
                   <span>
                     {selectedCountry.priceLabel}
-                    {finalTotal.toFixed(2)}
+                    {finalTotal.toLocaleString(undefined, {
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    })}
                   </span>
                 </div>
 
@@ -1430,7 +1481,10 @@ export default function Checkout() {
                     <span>
                       <strong>
                         {selectedCountry.priceLabel}
-                        {(originalSubtotal - finalTotal).toFixed(2)}
+                        {(originalSubtotal - finalTotal).toLocaleString(undefined, {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      })}
                       </strong>{" "}
                       saved so far on this order
                     </span>
@@ -1628,7 +1682,10 @@ export default function Checkout() {
                         }}
                       >
                         - {selectedCountry.priceLabel}
-                        {appliedPromo.discountAmount.toFixed(2)}
+                        {appliedPromo.discountAmount.toLocaleString(undefined, {
+                          minimumFractionDigits: 1,
+                          maximumFractionDigits: 1,
+                        })}
                       </span>
                     </div>
                   )}

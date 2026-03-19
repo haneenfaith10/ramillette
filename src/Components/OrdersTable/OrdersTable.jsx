@@ -226,9 +226,10 @@ export default function OrdersTable() {
                               {order.status}
                             </span>
                           </td>
-                          <td>{`${order.totalPrice.toFixed(2)} ${
-                            order.currency
-                          }`}</td>
+                          <td>{`${order.totalPrice.toLocaleString(undefined, {
+                            minimumFractionDigits: 1,
+                            maximumFractionDigits: 1,
+                          })} ${order.currency}`}</td>
                           <td>
                             <button
                               className="view-order-btn"
@@ -311,7 +312,10 @@ export default function OrdersTable() {
                         <div className="order-card-info-row">
                           <span className="order-card-info-label">Total</span>
                           <span className="order-card-info-value">
-                            {`${order.totalPrice.toFixed(2)} ${order.currency}`}
+                            {`${order.totalPrice.toLocaleString(undefined, {
+                              minimumFractionDigits: 1,
+                              maximumFractionDigits: 1,
+                            })} ${order.currency}`}
                           </span>
                         </div>
                       </div>

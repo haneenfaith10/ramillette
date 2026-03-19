@@ -622,10 +622,16 @@ export default function NavBar() {
                     {getDiscountedPrice(
                       getCountryPrice(p),
                       p.productDiscount,
-                    ).toFixed(2)}
+                    ).toLocaleString(undefined, {
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    })}
                     <span className="old-price">
                       {selectedCountry.priceLabel}
-                      {getCountryPrice(p).toFixed(2)}
+                      {getCountryPrice(p).toLocaleString(undefined, {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      })}
                     </span>
                   </p>
                   {checkIsOutOfStock(p) ? (
@@ -726,7 +732,10 @@ export default function NavBar() {
                           item.selectedVariant?.price ||
                           item.price ||
                           0
-                        ).toFixed(2)}
+                        ).toLocaleString(undefined, {
+                          minimumFractionDigits: 1,
+                          maximumFractionDigits: 1,
+                        })}
                       </div>
                       <button
                         className="remove-item-btn"
@@ -773,7 +782,10 @@ export default function NavBar() {
                   {calculateCartSubtotal(
                     user.cart.items,
                     selectedCountry?._id,
-                  ).toFixed(2)}
+                  ).toLocaleString(undefined, {
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 1,
+                  })}
                 </button>
               </>
             )}

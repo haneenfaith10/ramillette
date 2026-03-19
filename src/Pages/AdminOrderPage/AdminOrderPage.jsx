@@ -592,7 +592,10 @@ export default function AdminOrderPage() {
                       {new Date(order.createdAt).toLocaleString()}
                     </TableCell>
                     <TableCell align="center">
-                      {order?.totalPrice.toFixed(2)} {order?.currency}
+                      {order?.totalPrice.toLocaleString(undefined, {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      })} {order?.currency}
                     </TableCell>
                     <TableCell
                       align="center"

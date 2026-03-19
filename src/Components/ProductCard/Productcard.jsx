@@ -12,6 +12,7 @@ import {
 import { updateUserWishList } from "../../redux/slices/userSlice";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import RatingBadge from "../../icons/RatingBadge";
 
 export default function Productcard(Props) {
   const { product, maxLength } = Props;
@@ -139,14 +140,20 @@ export default function Productcard(Props) {
             <div className="price-details">
               <p className="current-price">
                 {selectedCountry?.priceLabel}
-                {getDiscountedPrice(productPrice, product?.productDiscount)}
+                {getDiscountedPrice(
+                  productPrice,
+                  product?.productDiscount,
+                ).toLocaleString(undefined, {
+                  minimumFractionDigits: 1,
+                  maximumFractionDigits: 1,
+                })}
               </p>
               {product?.productDiscount > 0 && (
                 <p className="discount-tag">{product?.productDiscount}% Off</p>
               )}
             </div>
             <div className="rating-badge">
-              <FaStar className="star-icon" />
+              <RatingBadge />
               <span>{product?.productRating || "4.9"}</span>
             </div>
           </div>

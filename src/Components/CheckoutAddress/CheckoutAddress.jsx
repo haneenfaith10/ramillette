@@ -150,13 +150,19 @@ export function CheckoutSummeryCard({ cartItem }) {
 
                     <p className="cart-item-product-price">
                       {selectedCountry.priceLabel}
-                      {getEffectivePrice(item).toFixed(2)} × {item.qty}
+                      {getEffectivePrice(item).toLocaleString(undefined, {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      })} × {item.qty}
                     </p>
                     {(offer || item.productId?.productDiscount > 0) && (
                       <p className="cart-item-product-price-discount">
                         <strike style={{ color: "red", fontSize: "12px" }}>
                           {selectedCountry.priceLabel}
-                          {(variantPrice * item.qty).toFixed(2)}
+                          {(variantPrice * item.qty).toLocaleString(undefined, {
+                            minimumFractionDigits: 1,
+                            maximumFractionDigits: 1,
+                          })}
                         </strike>
                       </p>
                     )}
@@ -164,7 +170,10 @@ export function CheckoutSummeryCard({ cartItem }) {
 
                   <p className="cart-item-final-total">
                     {selectedCountry.priceLabel}
-                    {(getEffectivePrice(item) * item.qty).toFixed(2)}
+                    {(getEffectivePrice(item) * item.qty).toLocaleString(undefined, {
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    })}
                   </p>
                 </div>
               );
@@ -194,7 +203,10 @@ export function CheckoutSummeryCard({ cartItem }) {
           <p>Total Price:</p>
           <p>
             {selectedCountry.priceLabel}
-            {subtotal.toFixed(2)}
+            {subtotal.toLocaleString(undefined, {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 1,
+            })}
           </p>
         </div>
 
@@ -202,7 +214,10 @@ export function CheckoutSummeryCard({ cartItem }) {
           <p>Tax ({taxName || "Tax"}):</p>
           <p>
             {tax}% ({selectedCountry.priceLabel}
-            {taxAmount.toFixed(2)})
+            {taxAmount.toLocaleString(undefined, {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 1,
+            })})
           </p>
         </div>
 
@@ -210,7 +225,10 @@ export function CheckoutSummeryCard({ cartItem }) {
           <p>Subtotal (with Tax):</p>
           <p>
             {selectedCountry.priceLabel}
-            {totalPrice.toFixed(2)}
+            {totalPrice.toLocaleString(undefined, {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 1,
+            })}
           </p>
         </div>
       </div>

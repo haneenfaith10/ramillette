@@ -24,6 +24,7 @@ import {
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import RatingBadge from "../../icons/RatingBadge";
 
 // Accordion component
 const Accordion = ({
@@ -551,12 +552,18 @@ export default function ProductInner(Props) {
                   <div className="price-section-inline">
                     <span className="price">
                       {selectedCountry?.priceLabel}
-                      {totalPrice.toFixed(2)}
+                      {totalPrice.toLocaleString(undefined, {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      })}
                     </span>
                     {unitMRP > unitPrice && (
                       <span className="mrp">
                         {selectedCountry?.priceLabel}
-                        {totalMRP.toFixed(2)}
+                        {totalMRP.toLocaleString(undefined, {
+                          minimumFractionDigits: 1,
+                          maximumFractionDigits: 1,
+                        })}
                       </span>
                     )}
                     {product?.productDiscount > 0 && (
@@ -567,7 +574,7 @@ export default function ProductInner(Props) {
 
                     {averageRating > 0 && (
                       <div className="rating-badge">
-                        <img src={star} alt="Rating Star" />
+                        <RatingBadge />
                         <span className="rating-value">{averageRating}</span>
                         {ratingCount > 0 && (
                           <>

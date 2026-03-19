@@ -1,4 +1,4 @@
-import { FaHeart, FaRegHeart, FaStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 import "./Productolistproductcard.css";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUserWishList } from "../../redux/slices/userSlice";
 import { useMemo } from "react";
 import { getDiscountedPrice } from "../../utils/calculation";
+import Fav from "../../icons/Fav";
+import Heart from "../../icons/Heart";
+import RatingBadge from "../../icons/RatingBadge";
 
 export default function Productolistproductcard(Props) {
   const { product } = Props;
@@ -104,7 +107,7 @@ export default function Productolistproductcard(Props) {
               : addPRoductToWishlist();
           }}
         >
-          {isWishListed() ? <FaHeart color="red" /> : <FaRegHeart />}
+          {isWishListed() ? <Heart /> : <Fav />}
         </button>
       </div>
 
@@ -119,14 +122,17 @@ export default function Productolistproductcard(Props) {
           <div className="price-details">
             <p className="current-price">
               {selectedCountry?.priceLabel}
-              {discountedPrice.toLocaleString()}
+              {discountedPrice.toLocaleString(undefined, {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              })}
             </p>
             {discountPercent > 0 && (
               <p className="discount-tag">{discountPercent}% Off</p>
             )}
           </div>
           <div className="rating-badge">
-            <FaStar className="star-icon" />
+            <RatingBadge />
             <span>{product?.productRating || "4.9"}</span>
           </div>
         </div>

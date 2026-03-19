@@ -220,7 +220,10 @@ export default function UserOrderDetails() {
                         <strike>
                           {qty} × {currency}
                           {originalPrice} = {currency}
-                          {(originalPrice * qty).toFixed(2)}
+                          {(originalPrice * qty).toLocaleString(undefined, {
+                            minimumFractionDigits: 1,
+                            maximumFractionDigits: 1,
+                          })}
                         </strike>
                       </p>
                     )}
@@ -229,7 +232,10 @@ export default function UserOrderDetails() {
                   <p className="price-line">
                     {qty} × {currency}
                     {finalPrice} = {currency}
-                    {(finalPrice * qty).toFixed(2)}
+                    {(finalPrice * qty).toLocaleString(undefined, {
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    })}
                   </p>
                 </div>
               </div>
@@ -241,13 +247,20 @@ export default function UserOrderDetails() {
         <div className="totals">
           <p>
             <strong>Total (before tax):</strong>{" "}
-            {order.discountedPrice.toFixed(2)} {order.currency}
+            {order.discountedPrice.toLocaleString(undefined, {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 1,
+            })} {order.currency}
           </p>
           <p>
             <strong>Tax:</strong> {order.tax}%
           </p>
           <p>
-            <strong>Final Amount:</strong> {order.totalPrice.toFixed(2)}{" "}
+            <strong>Final Amount:</strong>{" "}
+            {order.totalPrice.toLocaleString(undefined, {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 1,
+            })}{" "}
             {order.currency}
           </p>
         </div>
