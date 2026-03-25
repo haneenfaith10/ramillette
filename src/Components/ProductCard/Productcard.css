@@ -2,23 +2,23 @@
   display: flex !important;
   flex-direction: column;
   background: #fff;
-  border-radius: 20px;
+  border-radius: 30px;
   border: 1px solid #f0f0f0;
   overflow: hidden;
   height: 100%;
   width: 100%;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
   position: relative;
   font-family: "Gilroy", "Segoe UI", sans-serif;
   box-sizing: border-box;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  box-shadow: 4px 4px 4px 0px #00000017;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .product-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
 }
 
 .product-card-image-sec {
@@ -107,7 +107,7 @@
 }
 
 .product-content {
-  padding: 12px 12px 15px 12px !important;
+  padding: 0px 22px 16px 22px !important;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -134,7 +134,7 @@
 .product-name {
   font-size: 15px !important;
   font-weight: 600 !important;
-  color: #1f2937;
+  color: #000000;
   margin: 0;
   text-transform: capitalize;
   text-align: left;
@@ -170,18 +170,18 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background: #e7ffef;
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 12px;
+  background: #E9F3EA;
+  padding: 2px 4px !important;
+  border-radius: 5px;
+  font-size: 14px;
   font-weight: 600;
-  color: #166534;
+  color: #000000;
   white-space: nowrap;
 }
 
 .star-icon {
-  color: #22c55e;
-  font-size: 10px;
+  color: #68c14d;
+  font-size: 9px;
 }
 
 .product-price-row {
@@ -195,7 +195,7 @@
   display: flex;
   flex-direction: column;
   gap: 0px;
-  min-height: 38px; /* Fixed height for price area to keep boxes aligned */
+  min-height: 35px; /* Fixed height for price area to keep boxes aligned */
   justify-content: flex-end;
 }
 
@@ -209,7 +209,7 @@
 
 .discount-tag {
   font-size: 12px !important;
-  color: #68c14d !important;
+  color: #53AD4D !important;
   font-weight: 600 !important;
   margin: 0;
   min-height: 15px; /* Space for discount tag even if not present */
@@ -244,7 +244,7 @@
 }
 @media (max-width: 1400px) {
   .product-content h3 {
-    font-size: 0.85rem !important;
+    font-size: 14px !important;
   }
   .shipping-content h3 {
     font-size: 1.2rem !important;
@@ -268,8 +268,8 @@
   .wishlist-btn {
     width: 26px;
     height: 26px;
-    top: 10px;
-    right: 10px;
+    top: 22px;
+    right: 22px;
   }
   .wishlist-btn svg {
     font-size: 14px;
@@ -309,7 +309,7 @@
   }
   .product-card {
     width: 100%;
-    border-radius: 12px;
+    border-radius: 30px;
   }
 }
 
@@ -333,7 +333,7 @@
 
 @media (max-width: 480px) {
   .product-card-image-sec {
-    padding: 15px;
+    padding: 5px;
     height: 160px; /* Slightly taller for better fit */
   }
   .product-image img {
@@ -348,7 +348,7 @@
 
 @media (max-width: 375px) {
   .product-card-image-sec {
-    padding: 10px;
+    padding: 0px;
     height: 140px;
   }
   .product-image img {
@@ -363,7 +363,7 @@
 
 @media (max-width: 320px) {
   .product-card-image-sec {
-    padding: 10px;
+    padding: 0px;
     height: 130px;
   }
   .product-image img {

@@ -1,4 +1,3 @@
-import { FaStar } from "react-icons/fa";
 import "./Productolistproductcard.css";
 import { Link, useNavigate } from "react-router-dom";
 

@@ -3,7 +3,6 @@ import "./Productcard.css";
 import { useState } from "react";
 import Popup from "../ProductPopup/ProductPopup";
 import { Link } from "react-router-dom";
-import { FaHeart, FaRegHeart, FaStar } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToWishlist,
@@ -13,6 +12,8 @@ import { updateUserWishList } from "../../redux/slices/userSlice";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import RatingBadge from "../../icons/RatingBadge";
+import Fav from "../../icons/Fav";
+import Heart from "../../icons/Heart";
 
 export default function Productcard(Props) {
   const { product, maxLength } = Props;
@@ -121,11 +122,7 @@ export default function Productcard(Props) {
                   : addPRoductToWishlist(e)
               }
             >
-              {isWishListed() ? (
-                <FaHeart color="#f43f5e" />
-              ) : (
-                <FaRegHeart color="#a1a1aa" />
-              )}
+              {isWishListed() ? <Heart /> : <Fav />}
             </button>
           </Link>
         </div>
