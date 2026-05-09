@@ -337,14 +337,14 @@ export default function NavBar() {
                       />
                       {suggestions.length > 0 ? (
                         <ul className="suggestion-dropdown">
-                          {suggestions.map((product) => (
+                          {suggestions.map((product) => product && (
                             <li
                               key={product._id}
                               onClick={() => handleSelect(product._id)}
                             >
                               <img
                                 src={`${import.meta.env.VITE_BASE_URL}/${
-                                  product.productImages[0].path
+                                  product.productImages?.[0]?.path
                                 }`}
                                 alt={product.productName}
                                 width="30"
@@ -405,7 +405,7 @@ export default function NavBar() {
                           >
                             {/* <span>
                               <img src={login} alt="" />
-                            </span>{" "} */}
+                            </span>{" */}
                             Profile
                           </Link>
                           <Link
@@ -415,7 +415,7 @@ export default function NavBar() {
                           >
                             {/* <span>
                               <img src={login} alt="" />
-                            </span>{" "} */}
+                            </span>{" */}
                             Orders
                           </Link>
                           <Link
@@ -429,7 +429,7 @@ export default function NavBar() {
                           >
                             {/* <span>
                               <img src={signup} alt="" />
-                            </span>{" "} */}
+                            </span>{" */}
                             Log out
                           </Link>
                         </div>
@@ -510,7 +510,7 @@ export default function NavBar() {
                     >
                       <img
                         src={`${import.meta.env.VITE_BASE_URL}/${
-                          product.productImages[0].path
+                          product.productImages?.[0]?.path
                         }`}
                         alt={product.productName}
                         width="30"
@@ -606,7 +606,7 @@ export default function NavBar() {
               <div className="offer-product" key={p._id}>
                 <img
                   src={`${import.meta.env.VITE_BASE_URL}/${
-                    p.productImages[0].path
+                    p.productImages?.[0]?.path
                   }`}
                   alt={p.productName}
                   onClick={() => {
@@ -671,13 +671,13 @@ export default function NavBar() {
               className={`cart-items-list ${!user?.cart || user.cart.items.length === 0 ? "is-empty" : ""}`}
             >
               {user && user.cart && user.cart.items.length > 0 ? (
-                user.cart.items.map((item, index) => (
+                user.cart.items.filter(item => item.productId).map((item, index) => (
                   <div className="cart-item" key={index}>
                     {item.productId && (
                       <div className="cart-item-img-wrap">
                         <img
                           src={`${import.meta.env.VITE_BASE_URL}/${
-                            item.productId.productImages[0].path
+                            item.productId.productImages?.[0]?.path
                           }`}
                           style={{ cursor: "pointer" }}
                           alt={item.name}

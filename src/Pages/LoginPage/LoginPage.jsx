@@ -53,12 +53,19 @@ const LoginPage = () => {
     onSubmit: async (values, { resetForm, setSubmitting }) => {
       // Call your login API here
       const response = await loginUser(values, resetForm, setSubmitting);
-      if (response && response?.cart) {
-        dispatch(login({ user: response?.user, token: response?.token }));
-        dispatch(updateCart({ cart: response?.cart }));
-        dispatch(updateUserWishList({ user: response?.wishlist?.products }));
+      if (response && response.isSuccess) {
+        dispatch(
+          login({
+            user: response.user,
+            token: response.token,
+            cart: response.cart,
+            wishlist: response.wishlist,
+          }),
+        );
         dispatch(updateOrderCount({ orderCount: response.orderCount }));
-        navigate(`/${selectedCountry.code}`);
+        
+        const targetPath = selectedCountry?.code ? `/${selectedCountry.code}` : "/";
+        navigate(targetPath);
       }
     },
   });

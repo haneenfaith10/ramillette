@@ -21,6 +21,8 @@ function App() {
   useEffect(() => {
     const fetchUserLocation = async () => {
       try {
+        setLoading(true);
+
         // Helper to fetch with timeout
         const fetchWithTimeout = (url, timeout = 3000) => {
           return Promise.race([
@@ -39,45 +41,30 @@ function App() {
           dispatch(fetchCountries()),
         ]);
 
-        let userCountryCode = null;
-        if (locationRes.status === "fulfilled") {
-          userCountryCode = locationRes.value.data.country;
-        }
-
-        // Process countries if fetchCountries succeeded
         const countriesPayload =
           countriesRes.status === "fulfilled" ? countriesRes.value.payload : [];
 
-        if (
-          countriesRes.status === "fulfilled" &&
-          countriesPayload.length > 0 &&
-          !selectedCountry.code
-        ) {
+        if (!selectedCountry.code && countriesPayload?.length > 0) {
+          let userCountryCode = null;
+          if (locationRes.status === "fulfilled") {
+            userCountryCode = locationRes.value.data.country;
+          }
+
           const matchedCountry = userCountryCode
             ? countriesPayload.find(
-                (country) =>
-                  country.code.toLowerCase() === userCountryCode.toLowerCase(),
+                (c) => c.code.toLowerCase() === userCountryCode.toLowerCase(),
               )
             : null;
 
           if (matchedCountry) {
             dispatch(setSelectedCountry(matchedCountry));
           } else {
-            const primaryCountry = countriesPayload.find(
-              (country) => country.isPrimary === true,
-            );
-
-            if (primaryCountry) {
-              dispatch(setSelectedCountry(primaryCountry));
-            } else {
-              console.warn("No primary country found, using first available");
-              dispatch(setSelectedCountry(countriesPayload[0]));
-            }
+            // Fallback to first available country
+            dispatch(setSelectedCountry(countriesPayload[0]));
           }
         }
       } catch (error) {
-        console.error("Initialization error", error);
-        // Fallback or handle error as needed, fetchCountries already handled in setSettled
+        console.error("Initialization error:", error);
       } finally {
         setLoading(false);
       }

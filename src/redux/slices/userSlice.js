@@ -26,21 +26,43 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
+      const { user, token, cart, wishlist } = action.payload;
+      state.user = user;
+      state.token = token;
       state.checkout = {};
-      state.user.cart = action.payload.cart ?? { items: [] };
-      state.user.wishlist = action.payload.wishlist?.products ?? [];
+
+      // Filter out items with null productId (deleted products)
+      const filteredCart = cart
+        ? {
+            ...cart,
+            items: (cart.items || []).filter((item) => item.productId),
+          }
+        : { items: [] };
+
+      state.user.cart = filteredCart;
+
+      // Filter out products with null product in wishlist
+      state.user.wishlist = (wishlist?.products || []).filter(
+        (item) => item.product,
+      );
     },
     logout: (state) => {
       state.user = {};
       state.token = null;
     },
     updateUserWishList: (state, action) => {
-      state.user.wishlist = action.payload.user;
+      state.user.wishlist = (action.payload.user || []).filter(
+        (item) => item.product,
+      );
     },
     updateCart: (state, action) => {
-      state.user.cart = action.payload.cart;
+      const cart = action.payload.cart;
+      state.user.cart = cart
+        ? {
+            ...cart,
+            items: (cart.items || []).filter((item) => item.productId),
+          }
+        : { items: [] };
     },
     updateUserProfileDetails: (state, action) => {
       state.user.id = action.payload.id;

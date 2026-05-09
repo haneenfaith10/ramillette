@@ -99,7 +99,7 @@ export default function Productcard(Props) {
             <div className="product-image">
               <img
                 src={`${import.meta.env.VITE_BASE_URL}/${
-                  product?.productImages[0].path || product?.productImages[0]
+                  product?.productImages?.[0]?.path || product?.productImages?.[0]
                 }`}
                 alt="product-image-1"
               />

@@ -63,6 +63,9 @@ export default function HomePage() {
   }, [selectedCountry?._id, dispatch]);
 
   if (localLoading || !selectedCountry?._id) {
+    if (!selectedCountry?._id && !localLoading) {
+      dispatch(setAppLoading(false));
+    }
     return null;
   }
 

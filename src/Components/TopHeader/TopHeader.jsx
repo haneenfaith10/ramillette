@@ -29,7 +29,7 @@ export default function Topheader() {
   const [collectionAlerts, setCollectionAlerts] = useState([]);
   const countries = useSelector((state) => state.countries.list);
   const selectedCountry = useSelector((state) => state.user.selectedCountry);
-  const token = localStorage.getItem("remilletteTkn");
+  const token = useSelector((state) => state.user.token);
   const [alertIndex, setAlertIndex] = useState(0);
 
   useEffect(() => {
@@ -53,15 +53,15 @@ export default function Topheader() {
   }, [collectionAlerts]);
 
   useEffect(() => {
-    if (token && token.length > 0) {
+    if (token && selectedCountry?._id) {
       (async () => {
         const response = await getUserCountrySpecificData(
           selectedCountry._id,
           token
         );
-        if (response) {
+        if (response && response.isSuccess) {
           dispatch(updateCart({ cart: response.cart }));
-          dispatch(updateUserWishList({ user: response.wishlist.products }));
+          dispatch(updateUserWishList({ user: response.wishlist?.products }));
         }
       })();
     }

@@ -69,7 +69,7 @@ export default function WishlistSection() {
                   product.product.productImages.length > 0 && (
                     <img
                       src={`${import.meta.env.VITE_BASE_URL}/${
-                        product.product.productImages[0].path
+                        product.product.productImages[0]?.path || product.product.productImages[0]
                       }`}
                       alt={product.product.productName}
                       className="wishlist-img"

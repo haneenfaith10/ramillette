@@ -30,8 +30,8 @@ import {
   errorToast,
   successToast,
 } from "../Components/Notification/NotificationMessage";
-const token = localStorage.getItem("remilletteTkn");
-const adminToken = localStorage.getItem("remilletAdminTkn");
+const getAuthToken = () => localStorage.getItem("remilletteTkn");
+const getAdminToken = () => localStorage.getItem("remilletAdminTkn");
 
 // function to register user
 export async function registerUser(data, navigate) {
@@ -89,7 +89,7 @@ export async function addToCart(
 ) {
   try {
     if (!countryId) {
-      return console.log("country id is missing ");
+      return;
     }
     const response = await axios.post(
       `${addToCartUrl}?countryId=${countryId}`,
@@ -229,7 +229,7 @@ export async function getUserWishlistDetails(userId, countryId, token) {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getAuthToken()}`,
           userId,
         },
       },
@@ -510,7 +510,7 @@ export async function isProductAvailable(
       setProductAvailableError(false);
     }
   } catch (error) {
-    console.log("Error", error);
+    console.error("Availability check error:", error);
     throw error;
   }
 }
@@ -522,7 +522,7 @@ export async function getUserSubCart(countryId, userId) {
       `${getUserSubCartUrl}?countryId=${countryId}&userId=${userId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getAuthToken()}`,
         },
       },
     );
@@ -530,7 +530,7 @@ export async function getUserSubCart(countryId, userId) {
       return response.data.data;
     }
   } catch (error) {
-    console.log("Error", error);
+    console.error("Sub cart fetch error:", error);
     throw error;
   }
 }
@@ -548,7 +548,7 @@ export async function resendOtp(email, setIsSubmitting) {
     if (error.response.status === 404) {
       errorToast(error?.response?.data?.message);
     }
-    console.log(error, "error");
+    console.error("OTP Resend error:", error);
     throw error;
   } finally {
     setIsSubmitting(false);
@@ -563,17 +563,14 @@ export async function getUserCountrySpecificData(countryId, token) {
     }
     const response = await axios.get(
       `${getUserCountrySpecificDataUrl}?countryId=${countryId}`,
-      { headers: { Authorization: `Bearer ${token}` } },
+      { headers: { Authorization: `Bearer ${getAuthToken()}` } },
     );
 
     if (response.status === 200 && response.data.isSuccess) {
       return response.data;
     }
   } catch (error) {
-    console.log(
-      error,
-      "error while getting user cart, wishlist and order details based on country",
-    );
+    console.error("Country specific data error:", error);
     throw error;
   }
 }
@@ -586,7 +583,7 @@ export async function toggleUserStatus(userId, token) {
       { userId },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getAuthToken()}`,
         },
       },
     );
@@ -594,7 +591,7 @@ export async function toggleUserStatus(userId, token) {
       return response.data;
     }
   } catch (error) {
-    console.log("Error while changing the user status", error);
+    console.error("User status toggle error:", error);
     throw error;
   }
 }
@@ -607,7 +604,7 @@ export async function permanentlyBlockUser(id, setChanged, token) {
       {},
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getAuthToken()}`,
         },
       },
     );
@@ -616,7 +613,7 @@ export async function permanentlyBlockUser(id, setChanged, token) {
       return response.data;
     }
   } catch (error) {
-    console.log("Error while blocking user", error);
+    console.error("User blocking error:", error);
     throw error;
   }
 }
@@ -628,12 +625,12 @@ export async function getCartData(countryId, userId) {
       `${getCartDataUrl}?countryId=${countryId}&userId=${userId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getAuthToken()}`,
         },
       },
     );
   } catch (error) {
-    console.log("Error while getting cart data", error);
+    console.error("Cart data fetch error:", error);
     throw error;
   }
 }
@@ -653,7 +650,7 @@ export async function notifyMeAboutProduct(data) {
       }
     }
   } catch (error) {
-    console.log("Error in notifyMeAboutProduct:", error);
+    console.error("Notify me error:", error);
     errorToast(error?.response?.data?.message || "Something went wrong!");
     throw error;
   }
