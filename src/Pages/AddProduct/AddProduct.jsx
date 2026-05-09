@@ -229,11 +229,10 @@ export default function AddProduct() {
       .max(20, "Short name can't exceed 20 characters"),
 
     productDiscount: Yup.number()
-      .required("Product discount is required")
       .typeError("Discount must be a number")
-      .positive("Discount must be greater than 0")
       .max(100, "Discount cannot exceed 100%")
-      .min(0, "Discount cannot be negative"),
+      .min(0, "Discount cannot be negative")
+      .nullable(),
 
     productDescription: Yup.string()
       .required("Product description is required")
@@ -252,16 +251,17 @@ export default function AddProduct() {
       .required("Product category is required"),
 
     productRating: Yup.number()
+      .nullable()
       .typeError("Rating must be a number")
-      .positive("Rating must be greater than 0")
+      .min(0, "Rating must be at least 0")
       .max(5, "Rating cannot exceed 5"),
 
     productUseCase: Yup.string()
-      .required("Product use case is required")
+      .nullable()
       .min(5, "Please describe a use case with minimum 5 characters"),
 
     productIngredients: Yup.string()
-      .required("Product ingredients are required")
+      .nullable()
       .min(5, "Please describe ingredients with minimum 5 characters"),
 
     productOtherInfo: Yup.string()
@@ -294,7 +294,7 @@ export default function AddProduct() {
           answer: Yup.string().required("Answer is required"),
         }),
       )
-      .min(1, "At least one FAQ is required"),
+      .nullable(),
 
     selectedCountries: Yup.array()
       .of(Yup.string().required("Country is required"))

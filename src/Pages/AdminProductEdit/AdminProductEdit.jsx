@@ -159,11 +159,10 @@ export default function AdminProductEdit() {
       .max(20, "Short name can't exceed 20 characters"),
 
     productDiscount: Yup.number()
-      .required("Product discount is required")
       .typeError("Discount must be a number")
-      .positive("Discount must be greater than 0")
       .max(100, "Discount cannot exceed 100%")
-      .min(0, "Discount cannot be negative"),
+      .min(0, "Discount cannot be negative")
+      .nullable(),
 
     productDescription: Yup.string()
       .required("Product description is required")
@@ -184,15 +183,15 @@ export default function AdminProductEdit() {
     productRating: Yup.number()
       .nullable()
       .typeError("Rating must be a number")
-      .positive("Rating must be greater than 0")
+      .min(0, "Rating must be at least 0")
       .max(5, "Rating cannot exceed 5"),
 
     productUseCase: Yup.string()
-      .required("Product use case is required")
+      .nullable()
       .min(5, "Please describe a use case with minimum 5 characters"),
 
     productIngredients: Yup.string()
-      .required("Product ingredients are required")
+      .nullable()
       .min(5, "Please describe ingredients with minimum 5 characters"),
 
     productOtherInfo: Yup.string()
@@ -251,7 +250,7 @@ export default function AdminProductEdit() {
           answer: Yup.string().required("Answer is required"),
         })
       )
-      .min(1, "At least one FAQ is required"),
+      .nullable(),
 
     selectedCountries: Yup.array()
       .of(
@@ -304,10 +303,10 @@ export default function AdminProductEdit() {
       formData.append("productName", values.productName);
       formData.append("productShortName", values.productShortName);
       // formData.append("productStock", values.productStock);
-      formData.append("productDiscount", values.productDiscount);
+      formData.append("productDiscount", values.productDiscount ?? "");
       formData.append("productDescription", values.productDescription);
-      formData.append("productRating", values.productRating);
-      formData.append("productOtherInfo", values.productOtherInfo);
+      formData.append("productRating", values.productRating ?? "");
+      formData.append("productOtherInfo", values.productOtherInfo ?? "");
       formData.append("productBenefits", values.productBenefits); // Join if needed
       formData.append("productUseCase", values.productUseCase);
       formData.append("productIngredients", values.productIngredients);
