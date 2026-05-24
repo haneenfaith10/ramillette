@@ -99,13 +99,13 @@ export default function Payment() {
                   )}
 
                   <div
-                    className={`checkout-payment-method-card ${
-                      paymentMethod === "online" ? "selected" : ""
-                    }`}
-                    onClick={() => setPaymentMethod("online")}
+                    className="checkout-payment-method-card disabled"
                   >
                     <div className="payment-method-details">
-                      <h4>Online Payment</h4>
+                      <h4>
+                        Online Payment{" "}
+                        <span className="coming-soon-badge">Coming Soon</span>
+                      </h4>
                       <p>Pay securely with card or digital wallet</p>
                     </div>
                     <div className="payment-method-radio">
@@ -113,6 +113,7 @@ export default function Payment() {
                         type="radio"
                         name="paymentMethod"
                         checked={paymentMethod === "online"}
+                        disabled
                         readOnly
                       />
                     </div>
