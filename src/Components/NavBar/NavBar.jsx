@@ -189,10 +189,19 @@ export default function NavBar() {
       navigate("/login");
       return;
     }
+
+    const variants =
+      product?.countryVariants?.[selectedCountry?._id] ||
+      product?.countryVariants?.get?.(selectedCountry?._id) ||
+      [];
+    const availableVariants = variants.filter((v) => Number(v.stock || 0) > 0);
+    const variantToPass = availableVariants.length > 0 ? availableVariants[0] : null;
+
     const response = await addToCart(
       product?._id,
       1,
       selectedCountry._id,
+      variantToPass,
       false,
     );
     if (response) {

@@ -91,9 +91,10 @@ export async function addToCart(
     if (!countryId) {
       return;
     }
+    const variantId = selectedVariant?._id || selectedVariant;
     const response = await axios.post(
       `${addToCartUrl}?countryId=${countryId}`,
-      { productId, quantity, selectedVariant },
+      { productId, quantity, selectedVariant: variantId },
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("remilletteTkn")}`,
@@ -125,9 +126,10 @@ export async function removeCartItem(
     return console.log("countryId is missing");
   }
   try {
+    const variantId = selectedVariant?._id || selectedVariant;
     const response = await axios.put(
       `${removeCartItemUrl}?countryId=${countryId}`,
-      { productId: id, selectedVariant },
+      { productId: id, selectedVariant: variantId },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -156,9 +158,10 @@ export async function updateCartItemQuantity(
   selectedVariant = {},
 ) {
   try {
+    const variantId = selectedVariant?._id || selectedVariant;
     const response = await axios.put(
       `${updateCartItemQuantityUrl}?countryId=${countryId}`,
-      { productId, action, selectedVariant },
+      { productId, action, selectedVariant: variantId },
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("remilletteTkn")}`,
@@ -354,12 +357,13 @@ export async function addToCartWithQuantity(
     if (!countryId) {
       return console.log("Country is required!");
     }
+    const variantId = selectedVariant?._id || selectedVariant;
     const response = await axios.post(
       `${addToCartWithQuantityUrl}?countryId=${countryId}`,
       {
         productId,
         quantity,
-        selectedVariant, // Pass variant to backend
+        selectedVariant: variantId, // Pass variant to backend
       },
       {
         headers: {
@@ -387,9 +391,10 @@ export async function changeCartQuantity(
   selectedVariant,
 ) {
   try {
+    const variantId = selectedVariant?._id || selectedVariant;
     const response = await axios.put(
       `${changeCartQuantityUrl}?countryId=${countryId}`,
-      { productId, quantity, selectedVariant },
+      { productId, quantity, selectedVariant: variantId },
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("remilletteTkn")}`,
