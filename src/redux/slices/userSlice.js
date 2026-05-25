@@ -18,7 +18,7 @@ const initialState = {
   },
   orderCount: 0,
   selectedCountry: {},
-  isAppLoading: true,
+  isAppLoading: false,
 };
 
 const userSlice = createSlice({

@@ -31,12 +31,18 @@ function App() {
         const countriesPayload = countriesAction.payload || [];
 
         // 2. If country is not already selected (e.g., first visit), auto-detect
-        if (!selectedCountry?._id && countriesPayload.length > 0) {
-          const userCountryCode = await fetchUserCountryCode();
-          const bestMatch = findBestCountryMatch(userCountryCode, countriesPayload);
+        if (!selectedCountry?._id) {
+          if (countriesPayload.length > 0) {
+            const userCountryCode = await fetchUserCountryCode();
+            const bestMatch = findBestCountryMatch(userCountryCode, countriesPayload);
 
-          if (bestMatch) {
-            dispatch(setSelectedCountry(bestMatch));
+            if (bestMatch) {
+              dispatch(setSelectedCountry(bestMatch));
+            }
+          } else {
+            // ROBUST FIX: If the API fails completely (e.g., CORS issue on different subdomain),
+            // ensure the app doesn't hang forever or show a blank screen. Provide a fallback.
+            dispatch(setSelectedCountry({ _id: "fallback-qa", code: "QA", name: "Qatar", isPrimary: true }));
           }
         }
       } catch (error) {

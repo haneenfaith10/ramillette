@@ -13,6 +13,8 @@
 | 2 | Filter sections staying open after drawer reopen (Mobile) | Medium | ✅ Fixed | 2024 | FilterSide.jsx |
 | 3 | White space issue between product cards (Checkout) | Medium | ✅ Fixed | 2024 | Checkout.jsx, Checkout.css |
 | 4 | Discount badge styling not applying (Checkout) | Medium | ✅ Fixed | 2024 | Checkout.css |
+| 5 | Infinite loading screen on direct product links | Critical | ✅ Fixed | 2024 | userSlice.js |
+| 6 | Infinite loading screen on direct links (First-time visitor API failure) | Critical | ✅ Fixed | 2024 | App.jsx, userSlice.js |
 
 ### UI/UX Improvements Summary
 
