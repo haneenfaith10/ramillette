@@ -49,6 +49,8 @@ function App() {
         console.error("Initialization error:", error);
       } finally {
         setLoading(false);
+        // ROBUST FIX: Force clear isAppLoading from any corrupted redux-persist caches
+        dispatch(setAppLoading(false));
       }
     };
 
