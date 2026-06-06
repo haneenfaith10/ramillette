@@ -284,7 +284,7 @@ export default function AddProduct() {
             file ? file.size <= 5 * 1024 * 1024 : false,
           ),
       )
-      .min(1, "At least one images are required")
+      .min(1, "At least one image are required")
       .required("Images are required"),
 
     productFAQ: Yup.array()
