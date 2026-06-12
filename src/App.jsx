@@ -40,8 +40,6 @@ function App() {
               dispatch(setSelectedCountry(bestMatch));
             }
           } else {
-            // ROBUST FIX: If the API fails completely (e.g., CORS issue on different subdomain),
-            // ensure the app doesn't hang forever or show a blank screen. Provide a fallback.
             dispatch(setSelectedCountry({ _id: "fallback-qa", code: "QA", name: "Qatar", isPrimary: true }));
           }
         }
